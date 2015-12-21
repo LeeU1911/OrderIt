@@ -1,4 +1,4 @@
-package OrderIt.MainApp;
+package OrderIt.mainapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

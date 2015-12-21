@@ -2,7 +2,7 @@
  * Description: Database access class
  */
 
-package OrderIt.MainApp;
+package orderit.mainapp;
 
 import android.content.Context;
 import android.database.Cursor;

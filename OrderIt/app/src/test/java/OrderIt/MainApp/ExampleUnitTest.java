@@ -1,4 +1,4 @@
-package OrderIt.MainApp;
+package OrderIt.mainapp;
 
 import org.junit.Test;
 

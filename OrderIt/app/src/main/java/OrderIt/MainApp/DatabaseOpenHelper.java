@@ -2,7 +2,7 @@
  * Description: SQLite Asset helper class
  */
 
-package OrderIt.MainApp;
+package orderit.mainapp;
 
 import android.content.Context;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;

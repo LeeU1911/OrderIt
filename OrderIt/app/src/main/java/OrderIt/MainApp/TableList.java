@@ -2,7 +2,7 @@
  * Description: Table list activity class
  */
 
-package OrderIt.MainApp;
+package orderit.mainapp;
 
 import android.app.Activity;
 import android.widget.ListView;
