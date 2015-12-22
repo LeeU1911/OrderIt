@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
@@ -59,12 +60,15 @@ public class DatabaseAccess {
      *
      * @return a list of table name
      */
-    public ArrayList<String> getTableList() {
-        ArrayList<String> list = new ArrayList<String>();
+    public List<TableItem> getTableItems() {
+        List<TableItem> list = new ArrayList<>();
         Cursor cursor = database.rawQuery("SELECT name FROM tables", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
-            list.add(cursor.getString(0));
+            TableItem tableItem = new TableItem();
+            tableItem.setTableName(cursor.getString(0));
+
+            list.add(tableItem);
             cursor.moveToNext();
         }
         cursor.close();
