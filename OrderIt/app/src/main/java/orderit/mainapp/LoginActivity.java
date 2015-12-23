@@ -21,11 +21,7 @@ public class LoginActivity extends Activity {
     EditText inputPassword;
     TextView loginErrorMsg;
 
-    private static String KEY_SUCCESS = "success";
-    private static String KEY_UID = "uid";
-    private static String KEY_NAME = "name";
-    private static String KEY_EMAIL = "email";
-    private static String KEY_CREATED_AT = "created_at";
+    private static String KEY_SUCCESS = "response";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +46,7 @@ public class LoginActivity extends Activity {
                     if (json.getString(KEY_SUCCESS) != null) {
                         loginErrorMsg.setText("");
                         String res = json.getString(KEY_SUCCESS);
-                        if (Integer.parseInt(res) == 1) {
+                        if (res.equalsIgnoreCase("success")) {
                             /** Jump to table list screen */
                             Intent dashboard = new Intent(getApplicationContext(), TableList.class);
                             dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
