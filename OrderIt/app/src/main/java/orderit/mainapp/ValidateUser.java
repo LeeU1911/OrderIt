@@ -15,7 +15,7 @@ public class ValidateUser {
 
     private JSONParser jsonParser;
 
-    private static String loginURL = "192.168.1.6:8080";
+    private static String loginURL = "http://192.168.1.6:8080";
 
     private static String login_tag = "login";
 
