@@ -5,24 +5,18 @@
 package orderit.mainapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import orderit.mainapp.TableItem;
-import java.util.ArrayList;
 import java.util.List;
 
-public class TableList extends ActionBarActivity {
+public class TableList extends AppCompatActivity {
 
     /**
      * Variables
@@ -50,7 +44,7 @@ public class TableList extends ActionBarActivity {
         /** Data from data source(database) is assigned to ArrayAdapter */
         updateListView();
 
-        // Set event listener to ListView
+        /** Set event listener to ListView */
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,22 +53,11 @@ public class TableList extends ActionBarActivity {
     }
 
     private void updateListView() {
-        // Create the adapter and assign to ListView
+        /** Create the adapter and assign to ListView */
         TableItemAdapter adapter = new TableItemAdapter(this, tableItems);
         this.listView.setAdapter(adapter);
     }
 
-    /**
-     * Start ViewActivity to update a Contact.
-     *
-     * @param index the index of the contact
-     */
-    /*private void updateContact(int index) {
-        TableItem contact = contacts.get(index);
-        Intent intent = new Intent(this, ViewActivity.class);
-        intent.putExtra("CONTACT", contact);
-        startActivity(intent);
-    }*/
 
     /**
      * Custom ArrayAdapter for Contacts.
