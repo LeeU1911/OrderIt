@@ -1,4 +1,4 @@
-package orderit.mainapp;
+package orderit.mainapp.model;
 
 import java.io.Serializable;
 

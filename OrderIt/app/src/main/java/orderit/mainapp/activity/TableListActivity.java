@@ -2,7 +2,7 @@
  * Description: Table list activity class
  */
 
-package orderit.mainapp;
+package orderit.mainapp.activity;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,7 +16,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class TableList extends AppCompatActivity {
+import orderit.mainapp.database.DatabaseAccess;
+import orderit.mainapp.R;
+import orderit.mainapp.model.TableItem;
+
+public class TableListActivity extends AppCompatActivity {
 
     /**
      * Variables

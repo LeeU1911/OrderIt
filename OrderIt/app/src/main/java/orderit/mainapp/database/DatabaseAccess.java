@@ -2,7 +2,7 @@
  * Description: Database access class
  */
 
-package orderit.mainapp;
+package orderit.mainapp.database;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import orderit.mainapp.model.TableItem;
 
 public class DatabaseAccess {
     private SQLiteOpenHelper openHelper;
