@@ -37,14 +37,13 @@ public class LoginActivity extends Activity {
     EditText inputPassword;
     TextView loginErrorMsg;
 
-    private int background; /** id of the image drawable */
-    private int layoutId; /** id of the activity layout */
-    private ImageView loginIcon; /** login icon */
-    private int loginIconImg; /** id of the image drawable */
-    private RelativeLayout layout; /** the layout of the activity */
-
+    private int background;         /** id of the image drawable */
+    private int layoutId;           /** id of the activity layout */
+    private ImageView loginIcon;    /** login icon */
+    private int loginIconImg;       /** id of the image drawable */
+    private RelativeLayout layout;  /** the layout of the activity */
     private static String KEY_SUCCESS = "response";
-    private AppProcess appProc;
+    private AppProcess appProcess;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,15 +59,13 @@ public class LoginActivity extends Activity {
         inputPassword = (EditText) findViewById(R.id.loginPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         loginIcon = (ImageView) findViewById(R.id.login_icon);
+        layout = (RelativeLayout) findViewById(R.id.relativeLogin);
 
         background = R.drawable.login;
         loginIconImg = R.drawable.login_icon;
-        layoutId = R.id.relativelogin;
-        layout = (RelativeLayout) findViewById(layoutId);
 
-        appProc = (AppProcess)getApplication();
-        appProc.setBackground(layout, background); /** free last background, and store new one */
-        //appProc.setImage(loginIcon, loginIconImg); /** free last image, and store new one */
+        appProcess = (AppProcess)getApplication();
+        appProcess.setBackground(layout, background); /** free last background, and store new one */
 
         Typeface face=Typeface.createFromAsset(getAssets(), "fonts/FuturaStd-Light.ttf");
 
@@ -77,41 +74,46 @@ public class LoginActivity extends Activity {
         RelativeLayout.LayoutParams paramLoginBtn;
         RelativeLayout.LayoutParams paramLoginIcon;
 
+        float alpha = (float)(0.9);
+        int editHeight = 130;
+        int iconSize = 220;
+        int margin = 30;
+
         paramUser = (RelativeLayout.LayoutParams) inputUsername.getLayoutParams();
-        paramUser.leftMargin = 10;
-        paramUser.rightMargin = 10;
+        paramUser.leftMargin = margin;
+        paramUser.rightMargin = margin;
         paramUser.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        paramUser.height = 130;
+        paramUser.height = editHeight;
         paramUser.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         paramUser.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         paramUser.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         paramPassword = (RelativeLayout.LayoutParams) inputPassword.getLayoutParams();
-        paramPassword.leftMargin = 10;
-        paramPassword.rightMargin = 10;
+        paramPassword.leftMargin = margin;
+        paramPassword.rightMargin = margin;
         paramPassword.topMargin = paramUser.bottomMargin + 15;
         paramPassword.width = RelativeLayout.LayoutParams.WRAP_CONTENT;
-        paramPassword.height = 130;
+        paramPassword.height = editHeight;
         paramPassword.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         paramPassword.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         paramLoginBtn = (RelativeLayout.LayoutParams) btnLogin.getLayoutParams();
-        paramLoginBtn.rightMargin = 10;
+        paramLoginBtn.rightMargin = margin;
         paramLoginBtn.topMargin = paramPassword.bottomMargin + 20;
         paramLoginBtn.width = 330;
-        paramLoginBtn.height = 130;
+        paramLoginBtn.height = editHeight;
         paramLoginBtn.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         paramLoginIcon = (RelativeLayout.LayoutParams) loginIcon.getLayoutParams();
-        paramLoginIcon.leftMargin = 10;
+        paramLoginIcon.leftMargin = margin;
         paramLoginIcon.bottomMargin = paramUser.topMargin + 20;
-        paramLoginIcon.width = 250;
-        paramLoginIcon.height = 250;
-        paramLoginIcon.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        paramLoginIcon.width = iconSize;
+        paramLoginIcon.height = iconSize;
+        paramLoginIcon.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 
         inputUsername.setLayoutParams(paramUser);
         inputUsername.setBackgroundColor(Color.parseColor("#f8ad19"));
-        inputUsername.setAlpha((float) (0.7));
+        inputUsername.setAlpha(alpha);
         inputUsername.setHint("user");
         inputUsername.setHintTextColor(Color.parseColor("#ffffff"));
         inputUsername.setTextColor(Color.parseColor("#ffffff"));
@@ -121,7 +123,7 @@ public class LoginActivity extends Activity {
 
         inputPassword.setLayoutParams(paramPassword);
         inputPassword.setBackgroundColor(Color.parseColor("#f8ad19"));
-        inputPassword.setAlpha((float) (0.8));
+        inputPassword.setAlpha(alpha);
         inputPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         inputPassword.setHint("password");
         inputPassword.setHintTextColor(Color.parseColor("#ffffff"));
@@ -132,7 +134,7 @@ public class LoginActivity extends Activity {
 
         btnLogin.setLayoutParams(paramLoginBtn);
         btnLogin.setBackgroundColor(Color.parseColor("#f8ad19"));
-        btnLogin.setAlpha((float) (0.8));
+        btnLogin.setAlpha(alpha);
         btnLogin.setText("sign in");
         btnLogin.setTextColor(Color.parseColor("#ffffff"));
         btnLogin.setTextSize(20);
@@ -140,7 +142,8 @@ public class LoginActivity extends Activity {
         btnLogin.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER);
 
         loginIcon.setLayoutParams(paramLoginIcon);
-        loginIcon.setAlpha((float) (0.8));
+        loginIcon.setAlpha(alpha);
+        appProcess.setImage(loginIcon, loginIconImg); /** free last image, and store new one */
 
         /** Sign in event */
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +162,13 @@ public class LoginActivity extends Activity {
         params.add(new BasicNameValuePair("password", password));
         AsyncServerCall asyncServerCall = new AsyncServerCall();
         asyncServerCall.execute(params);
+    }
+
+    @Override
+    protected void onDestroy() {
+        System.gc();
+        super.onDestroy();
+        loginIcon.setImageBitmap(null);
     }
 
     class AsyncServerCall extends AsyncTask<List<NameValuePair>, Void, String> {

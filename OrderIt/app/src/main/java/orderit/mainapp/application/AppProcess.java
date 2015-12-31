@@ -12,11 +12,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.app.Application;
 
 public class AppProcess extends Application {
-    private ImageView img; // the image
-    private RelativeLayout bgimg; // layout of the activity
-    private Bitmap nav; // the image in the Bitmap format
-    private Bitmap background; // background in the Bitmap format
-    private BitmapDrawable bg; // background in the Drawable format
+    private ImageView img;          /** the image */
+    private RelativeLayout bgimg;   /** layout of the activity */
+    private Bitmap nav;             /** the image in the Bitmap format */
+    private Bitmap background;      /** background in the Bitmap format */
+    private BitmapDrawable bg;      /** background in the Drawable format */
 
     public void loadBackground(int id) {
         background = BitmapFactory.decodeStream(getResources().openRawResource(id));
@@ -34,9 +34,12 @@ public class AppProcess extends Application {
     }
 
     public void loadBitmap(int id) {
-        nav = BitmapFactory.decodeStream(getResources().openRawResource(id));
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 8;
+        nav = BitmapFactory.decodeStream(getResources().openRawResource(id), null, options);
         img.setImageBitmap(nav);
     }
+
     public void unloadBitmap() {
         if (img != null)
             img.setImageBitmap(null);
