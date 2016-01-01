@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/relativeLogin" >
 
-    <TextView
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/login_error"
-        android:layout_weight="1" />
+        android:id="@+id/login_icon"
+        android:layout_above="@+id/loginUser" />
 
-    <Button
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/background" />
+
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sign in"
-        android:id="@+id/btnLogin"
-        android:layout_weight="1" />
+        android:id="@+id/loginUser" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/loginPassword"
-        android:layout_weight="1" />
+        android:layout_below="@+id/loginUser" />
 
-    <EditText
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/loginUser"
-        android:layout_weight="1" />
-</LinearLayout>
+        android:id="@+id/btnLogin"
+        android:layout_below="@+id/loginPassword" />
+
+</RelativeLayout>
