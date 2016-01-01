@@ -5,6 +5,7 @@
 package orderit.mainapp.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -52,6 +53,10 @@ public class TableListActivity extends AppCompatActivity {
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent tableOrder = new Intent(getApplicationContext(), TableOrder2Activity.class);
+                tableOrder.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(tableOrder);
+                finish();
             }
         });
     }
