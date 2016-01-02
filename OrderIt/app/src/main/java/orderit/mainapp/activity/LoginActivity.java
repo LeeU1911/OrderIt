@@ -175,7 +175,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected String doInBackground(List<NameValuePair>... list) {
-            String loginURL = "http://192.168.1.6:8080";
+            String loginURL = "https://desolate-castle-2567.herokuapp.com/";
             JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
             /** return JSON object */
             return json.toString();
@@ -190,7 +190,6 @@ public class LoginActivity extends Activity {
             }
             try {
                 if (json.getString(KEY_SUCCESS) != null) {
-                loginErrorMsg.setText("");
                     String res = json.getString(KEY_SUCCESS);
                     if (res.equalsIgnoreCase("success")) {
                         /** Jump to table list screen */
