@@ -53,7 +53,7 @@ public class TableListActivity extends AppCompatActivity {
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent tableOrder = new Intent(getApplicationContext(), TableOrder2Activity.class);
+                Intent tableOrder = new Intent(getApplicationContext(), TableOrderActivity.class);
                 tableOrder.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(tableOrder);
                 finish();
