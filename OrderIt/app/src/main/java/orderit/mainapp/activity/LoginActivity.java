@@ -67,7 +67,7 @@ public class LoginActivity extends Activity {
 
 
                 String _password = databaseAccess.SearchPassword(userName);
-                if(password == _password)//Logging successfully
+                if(password.equalsIgnoreCase(_password))//Logging successfully
                 {
                     /** Jump to table list screen */
                     Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
