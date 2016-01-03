@@ -54,6 +54,9 @@ public class TableOrderActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         //TODO: add 10 rows for order
+        for(int i = 0; i < 10; i++){
+            addRow(findViewById(R.id.tableOrder));
+        }
 
     }
 
