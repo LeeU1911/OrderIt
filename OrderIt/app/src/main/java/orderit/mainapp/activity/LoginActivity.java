@@ -27,6 +27,8 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import orderit.mainapp.database.DatabaseAccess;
+import orderit.mainapp.database.DatabaseOpenHelper;
 import orderit.mainapp.utility.JSONParser;
 import orderit.mainapp.R;
 import orderit.mainapp.application.AppProcess;
@@ -45,21 +47,51 @@ public class LoginActivity extends Activity {
     private static String KEY_SUCCESS = "response";
     private AppProcess appProcess;
 
+    DatabaseAccess databaseAccess = null;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        databaseAccess = DatabaseAccess.getInstance(this);
         /** Set display of controls programmatically */
-        setControlDisplay();
+        //setControlDisplay();
+        Button button = (Button)findViewById(R.id.btnLoggin);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
+                String userName = txtUserName.getText().toString();
+                EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
+                String password = txtPassword.getText().toString();
+
+
+                String _password = databaseAccess.SearchPassword(userName);
+                if(password == _password)//Logging successfully
+                {
+                    /** Jump to table list screen */
+                    Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
+                    dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(dashboard);
+                    /** Close activity */
+                }
+                else
+                {
+                    TextView error = (TextView)findViewById(R.id.lblLogginErrMsg);
+                    error.setText("Tên đăng nhập hoặc mật khẩu không đúng");
+                }
+
+            }
+        });
     }
 
+
     private void setControlDisplay() {
-        inputUsername = (EditText) findViewById(R.id.loginUser);
-        inputPassword = (EditText) findViewById(R.id.loginPassword);
-        btnLogin = (Button) findViewById(R.id.btnLogin);
-        loginIcon = (ImageView) findViewById(R.id.login_icon);
-        layout = (RelativeLayout) findViewById(R.id.relativeLogin);
+        inputUsername = (EditText) findViewById(R.id.txtUserName);
+        inputPassword = (EditText) findViewById(R.id.txtPassword);
+        btnLogin = (Button) findViewById(R.id.btnLoggin);
+        //loginIcon = (ImageView) findViewById(R.id.login_icon);
+        //layout = (RelativeLayout) findViewById(R.id.relativeLogin);
 
         background = R.drawable.login;
         loginIconImg = R.drawable.login_icon;
@@ -163,7 +195,6 @@ public class LoginActivity extends Activity {
         AsyncServerCall asyncServerCall = new AsyncServerCall();
         asyncServerCall.execute(params);
     }
-
     @Override
     protected void onDestroy() {
         System.gc();

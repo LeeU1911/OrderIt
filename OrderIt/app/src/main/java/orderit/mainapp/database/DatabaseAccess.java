@@ -19,7 +19,11 @@ public class DatabaseAccess {
     private SQLiteDatabase database;
     private static DatabaseAccess instance;
 
-    /**
+
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
+    private static final String TABLE_USERS = "users";
+    /**;
      * Private constructor to avoid object creation from outside classes.
      *
      * @param context
@@ -76,4 +80,25 @@ public class DatabaseAccess {
         cursor.close();
         return list;
     }
+    public String SearchPassword(String userName)
+    {
+        this.database = openHelper.getWritableDatabase();
+        String query = "Select " + COLUMN_USERNAME + ", " + COLUMN_PASSWORD + " from " + TABLE_USERS;
+        Cursor cursor = database.rawQuery(query, null);
+        String _userName, _password = "12345677890-qrwereytryuuiuiyuisdfsdfggfhgjhkljklkl;czxcxzcvcbcvnvbmnbm,,<><><:";
+        if(cursor.moveToFirst())
+        {
+            do {
+                _userName = cursor.getString(0);
+                if(_userName == userName)
+                {
+                    _password = cursor.getString(1);
+                    break;
+                }
+            }
+            while (cursor.moveToNext());
+        }
+        return _password;
+    }
+
 }

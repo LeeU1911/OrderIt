@@ -1,35 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/relativeLogin" >
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="@drawable/login"
+    android:scaleType = "centerCrop"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.k451.myapplication.MainActivity"
+    tools:showIn="@layout/activity_main">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/login_icon"
-        android:layout_above="@+id/loginUser" />
+        android:id="@+id/send_icon"
+        android:layout_width="200px"
+        android:layout_height="200px"
+        android:scaleType="centerCrop"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/icon" />
 
-    <ImageView
+    <EditText
+
+        android:id="@+id/txtUserName"
+        android:hint="Tên đăng nhập"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/background" />
-
-    <EditText
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/loginUser" />
-
+        android:background="@color/colorOfLoginBackground"
+        android:layout_marginBottom="20dp"
+        android:padding="10px"
+        android:textColor="@color/fontColorWhite"
+        android:textColorHint="@color/fontColorWhite"
+        android:textSize="30sp"
+        />
     <EditText
-        android:layout_width="wrap_content"
+        android:id="@+id/txtPassword"
+        android:hint="Mật khẩu"
+        android:password="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/loginPassword"
-        android:layout_below="@+id/loginUser" />
-
+        android:background="@color/colorOfLoginBackground"
+        android:layout_marginBottom="30dp"
+        android:padding="10px"
+        android:textColor="@color/fontColorWhite"
+        android:textColorHint="@color/fontColorWhite"
+        android:textSize="30sp"
+        />
     <Button
-        android:layout_width="wrap_content"
+        android:id="@+id/btnLoggin"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btnLogin"
-        android:layout_below="@+id/loginPassword" />
+        android:text="ĐĂNG NHẬP"
+        android:background="@color/colorOfLoginBackground"
+        android:textSize="30sp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:textColor="@color/fontColorWhite"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="end"
+        android:onClick="btnLogin_Click" />
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ĐĂNG KÝ"
+        android:background="@color/colorOfLoginBackground"
+        android:textSize="30sp"
+        android:paddingRight="30dp"
+        android:paddingLeft="30dp"
+        android:textColor="@color/fontColorWhite"
 
-</RelativeLayout>
+        android:layout_gravity="end"
+        />
+    <TextView
+        android:id="@+id/lblLogginErrMsg"
+        android:text="error message"
+        android:textColor="@color/fontColorWhite"
+        android:layout_width="wrap_content"
+        android:textSize="30sp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
