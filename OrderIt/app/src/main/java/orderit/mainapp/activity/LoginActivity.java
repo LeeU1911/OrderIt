@@ -106,7 +106,7 @@ public class LoginActivity extends Activity {
         int iconSize = 220;
         int margin = 30;
         int frameHeight = 725;
-        int loginbtnSize = 400;
+        int loginBtnSize = 400;
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
@@ -138,10 +138,10 @@ public class LoginActivity extends Activity {
         inputPassword.setLayoutParams(paramPassword);
 
         paramLoginBtn = (RelativeLayout.LayoutParams) btnLogin.getLayoutParams();
-        paramLoginBtn.leftMargin = screenWidth - margin - loginbtnSize;
+        paramLoginBtn.leftMargin = screenWidth - margin - loginBtnSize;
         paramLoginBtn.rightMargin = margin;
         paramLoginBtn.topMargin = paramPassword.topMargin + editHeight + 20;
-        paramLoginBtn.width = loginbtnSize;
+        paramLoginBtn.width = loginBtnSize;
         paramLoginBtn.height = editHeight;
         btnLogin.setLayoutParams(paramLoginBtn);
 
@@ -153,16 +153,6 @@ public class LoginActivity extends Activity {
         loginIcon.setLayoutParams(paramLoginIcon);
 
         appProcess.setImage(loginIcon, loginIconImg); /** free last image, and store new one */
-
-        /** Sign in event */
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                String email = inputUsername.getText().toString();
-                String password = inputPassword.getText().toString();
-                /** Sign in with username and password */
-                loginUser(email, password);
-            }
-        });
     }
 
     private void loginUser(String username, String password){
