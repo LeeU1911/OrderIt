@@ -5,4 +5,5 @@
     <color name="colorAccent">#f8ad19</color>
     <color name="colorOfLoginBackground">#C89025</color>
     <color name="fontColorWhite">#FFFFFF</color>
+    <color name="colorLoginFrame">#000000</color>
 </resources>
