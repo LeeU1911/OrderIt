@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">OrderIt</string>
     <string name="title_activity_order">Order</string>
-    <string name="title_activity_table_order2">TableOrder2Activity</string>
+    <string name="title_activity_table_order2">Order</string>
     <string name="staff_id">Staff Id</string>
     <string name="order_id">Order Id</string>
     <string name="table_number">Table Number</string>
