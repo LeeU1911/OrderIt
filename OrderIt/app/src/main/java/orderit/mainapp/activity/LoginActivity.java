@@ -102,21 +102,21 @@ public class LoginActivity extends Activity {
         RelativeLayout.LayoutParams paramLoginBtn;
         RelativeLayout.LayoutParams paramLoginIcon;
 
-        int editHeight = 130;
-        int iconSize = 220;
-        int margin = 30;
-        int frameHeight = 725;
-        int loginBtnSize = 400;
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         int screenHeight = metrics.heightPixels;
         int screenWidth = metrics.widthPixels;
+        int frameHeight = screenHeight*3/7;
+        int margin = 30;
+        int editHeight = (frameHeight - 30*2 - 20*2 - 15)/5;
+        int iconSize = editHeight*2;
+        int loginBtnSize = screenWidth/3;
 
         paramFrame = (RelativeLayout.LayoutParams) frame.getLayoutParams();
         paramFrame.leftMargin = 0;
         paramFrame.rightMargin = 0;
-        paramFrame.topMargin = screenHeight/2 - frameHeight/2;
+        paramFrame.topMargin = screenHeight*2/7;
         paramFrame.height = frameHeight;
         paramFrame.width = screenWidth;
         frame.setLayoutParams(paramFrame);
