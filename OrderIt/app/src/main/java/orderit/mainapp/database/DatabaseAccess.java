@@ -90,7 +90,7 @@ public class DatabaseAccess {
         {
             do {
                 _userName = cursor.getString(0);
-                if(_userName == userName)
+                if(userName.equalsIgnoreCase(_userName))
                 {
                     _password = cursor.getString(1);
                     break;
