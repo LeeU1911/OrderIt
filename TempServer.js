@@ -7,7 +7,7 @@ const PORT= process.env.PORT || 8080;
 //We need a function which handles requests and send response
 function handleRequest(request, response){
 console.log("request is ", request);
-    response.end('{"request":' + request + '}');
+    response.end('{"request":', request);
 }
 
 //Create a server
