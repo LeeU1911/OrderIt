@@ -21,11 +21,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.util.DisplayMetrics;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.utility.JSONParser;
+import orderit.mainapp.utility.GZipIOStream;
 import orderit.mainapp.R;
 import orderit.mainapp.application.AppProcess;
 
@@ -54,15 +56,15 @@ public class LoginActivity extends Activity {
         /** Set display of controls programmatically */
         setControlDisplay();
 
-        Button button = (Button)findViewById(R.id.btnLoggin);
-        button.setOnClickListener(new View.OnClickListener() {
+        btnLogin = (Button)findViewById(R.id.btnLoggin);
+        loginErrorMsg = (TextView)findViewById(R.id.lblLogginErrMsg);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
                 String userName = txtUserName.getText().toString();
                 EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
                 String password = txtPassword.getText().toString();
-
 
                 String _password = databaseAccess.SearchPassword(userName);
                 /** Logging successfully */
@@ -74,8 +76,8 @@ public class LoginActivity extends Activity {
                     /** Close activity */
                 }
                 else {
-                    TextView error = (TextView)findViewById(R.id.lblLogginErrMsg);
-                    error.setText("Tên đăng nhập hoặc mật khẩu không đúng");
+                    /** Not found on local database , find on server */
+                    loginUserOnServer(userName, password);
                 }
 
             }
@@ -155,8 +157,16 @@ public class LoginActivity extends Activity {
         appProcess.setImage(loginIcon, loginIconImg); /** free last image, and store new one */
     }
 
-    private void loginUser(String username, String password){
+    private void loginUserOnServer(String username, String password){
         List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+        try {
+            username = new GZipIOStream().compressString(username);
+            password = new GZipIOStream().compressString(password);
+        }
+        catch (IOException e) {
+        }
+
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
         AsyncServerCall asyncServerCall = new AsyncServerCall();
@@ -175,6 +185,7 @@ public class LoginActivity extends Activity {
         protected String doInBackground(List<NameValuePair>... list) {
             String loginURL = "https://desolate-castle-2567.herokuapp.com/";
             JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
+            System.out.println(json);
             /** return JSON object */
             return json.toString();
         }
@@ -198,7 +209,7 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         /** Log in failed */
-                    loginErrorMsg.setText("username or password is not correct.");
+                        loginErrorMsg.setText("Tên đăng nhập hoặc mật khẩu không đúng.");
                     }
                 }
             } catch (JSONException e) {
