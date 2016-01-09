@@ -3,7 +3,7 @@
     <string name="title_activity_order">Order</string>
     <string name="staff_id">Staff Id</string>
     <string name="order_id">Order Id</string>
-    <string name="table_number">Table Number</string>
+    <string name="table_number">Table #</string>
     <string name="quantity">Qty</string>
     <string name="item">Item</string>
     <string name="code">Code</string>
