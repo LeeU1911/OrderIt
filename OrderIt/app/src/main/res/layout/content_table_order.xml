@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +11,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.TableOrderActivity"
     tools:showIn="@layout/activity_table_order"
-    android:id="@+id/tableOrder">
+    android:id="@+id/tableOrder"
+    android:orientation="vertical">
 
     <GridLayout
         android:layout_width="match_parent"
@@ -25,22 +26,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/staff_id"
-            android:id="@+id/staff_id_lbl"
-            />
-        <Space />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="10001"
-            android:id="@+id/staff_id_txt"
-            android:layout_columnSpan="2"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -117,7 +103,8 @@
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/container_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dip"
+        android:layout_weight="1"
         android:layout_below="@id/orderItemsHeader">
         <GridLayout
             android:layout_width="match_parent"
@@ -135,10 +122,9 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:id="@+id/bottom_btn"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
         android:layout_below="@id/container_scroll_view">
 
 
@@ -161,9 +147,9 @@
             android:layout_height="wrap_content"
             android:text="@string/reset_btn"
             android:id="@+id/reset_btn"
-            android:layout_gravity="end"
+            android:layout_gravity="bottom"
             />
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>
