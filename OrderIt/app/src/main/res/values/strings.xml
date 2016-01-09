@@ -9,6 +9,9 @@
     <string name="code">Code</string>
     <string name="no">No</string>
     <string name="cancel">Cancel</string>
+    <string name="order_btn">Order</string>
+    <string name="pay_btn">Pay</string>
+    <string name="reset_btn">Reset</string>
     <string-array name="qty_array">
         <item>1</item>
         <item>2</item>

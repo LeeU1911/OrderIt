@@ -123,14 +123,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/orderItems"
-            android:layout_below="@id/orderDetails"
             android:columnCount="8"
             android:paddingTop="@dimen/activity_vertical_margin"
             android:useDefaultMargins="true">
 
-            
+
         </GridLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom_btn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@id/container_scroll_view">
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/order_btn"
+            android:id="@+id/order_btn"
+            android:layout_gravity="bottom" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pay_btn"
+            android:id="@+id/pay_btn"
+            android:layout_gravity="bottom" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/reset_btn"
+            android:id="@+id/reset_btn"
+            android:layout_gravity="end"
+            />
+    </LinearLayout>
 
 
 </RelativeLayout>
