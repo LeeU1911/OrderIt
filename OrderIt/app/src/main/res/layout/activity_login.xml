@@ -4,70 +4,82 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:scaleType = "centerCrop"
-    android:id="@+id/layoutLogin" >
+    android:id="@+id/layoutLogin"
+    android:clickable="true"
+    android:focusableInTouchMode="true">
 
-    <RelativeLayout
-        android:orientation="vertical"
-        android:id="@+id/frame"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/lblLoginErrMsg"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorLoginFrame"
-        android:alpha="0.4">
-    </RelativeLayout>
+        android:layout_alignParentTop="true"
+        android:textColor="@color/fontColorWhite"
+        android:fontFamily="fonts/FutureStd-Light.ttf"
+        android:textSize="20sp"
+        android:alpha="0.8" />
 
     <ImageView
         android:id="@+id/send_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/frame"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/icon"
-        android:alpha="0.8" />
+        android:alpha="0.8"
+        android:contentDescription="icon"/>
 
-    <EditText
-        android:id="@+id/txtUserName"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tên đăng nhập"
-        android:background="@color/colorOfLoginBackground"
-        android:textColor="@color/fontColorWhite"
-        android:textColorHint="@color/fontColorWhite"
-        android:fontFamily="fonts/FuturaStd-Light.ttf"
-        android:textSize="20sp"
-        android:alpha="0.8" />
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:alpha="1.6">
 
-    <EditText
-        android:id="@+id/txtPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Mật khẩu"
-        android:password="true"
-        android:background="@color/colorOfLoginBackground"
-        android:textColor="@color/fontColorWhite"
-        android:textColorHint="@color/fontColorWhite"
-        android:fontFamily="fonts/FuturaStd-Light.ttf"
-        android:textSize="20sp"
-        android:alpha="0.8" />
+        <EditText
+            android:id="@+id/txtUserName"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="1dp"
+            android:hint="@string/txt_username_hint"
+            android:inputType="textFilter"
+            android:background="@color/colorOfLoginBackground"
+            android:textColor="@color/fontColorWhite"
+            android:textColorHint="@color/fontColorWhite"
+            android:fontFamily="fonts/FutureStd-Light.ttf"
+            android:textSize="20sp"
+            android:alpha="0.8" />
 
-    <Button
-        android:id="@+id/btnLoggin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ĐĂNG NHẬP"
-        android:background="@color/colorOfLoginBackground"
-        android:textSize="20sp"
-        android:textColor="@color/fontColorWhite"
-        android:fontFamily="fonts/FuturaStd-Light.ttf"
-        android:layout_gravity="end"
-        android:onClick="btnLogin_Click"
-        android:alpha="0.8" />
+        <EditText
+            android:id="@+id/txtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/txt_password_hint"
+            android:inputType="textPassword"
+            android:background="@color/colorOfLoginBackground"
+            android:textColor="@color/fontColorWhite"
+            android:textColorHint="@color/fontColorWhite"
+            android:fontFamily="fonts/FutureStd-Light.ttf"
+            android:textSize="20sp"
+            android:alpha="0.8"
+            android:imeOptions="actionDone"/>
 
-    <TextView
-        android:id="@+id/lblLogginErrMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="error message"
-        android:textColor="@color/fontColorWhite"
-        android:fontFamily="fonts/FuturaStd-Light.ttf"
-        android:textSize="20sp"
-        android:alpha="0.8" />
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnLogin"
+            style="@style/NiceButton"
+            android:textSize="20sp"
+            android:textColor="@color/fontColorWhite"
+            android:fontFamily="fonts/FutureStd-Light.ttf"
+            android:layout_gravity="end"
+            android:onClick="onBtnLoginClick"
+            android:alpha="0.8" />
+    </LinearLayout>
 
 </RelativeLayout>
