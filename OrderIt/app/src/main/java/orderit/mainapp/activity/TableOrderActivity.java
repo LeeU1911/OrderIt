@@ -39,6 +39,7 @@ public class TableOrderActivity extends AppCompatActivity {
     private AtomicInteger no = new AtomicInteger(1);
 
     private Map<Integer, List<View>> itemRows = new HashMap<>();
+    private boolean focusRequested = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class TableOrderActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                focusRequested = false;
                 addRow(view);
             }
         });
@@ -81,9 +83,42 @@ public class TableOrderActivity extends AppCompatActivity {
         addToView(orderItems, createQuantitySpinner(view.getContext()));
         addToView(orderItems, createCancelButton(view.getContext()));
 
+        requestFocusOnFirstEmptyRow();
         no.incrementAndGet();
     }
 
+    private void requestFocusOnFirstEmptyRow() {
+        for(int i = 1; i <= no.get(); i++) {
+            List<View> row = itemRows.get(i);
+            if (isEmptyRow(row)) {
+                for (View v : row) {
+                    if (v instanceof AppCompatEditText) {
+                        EditText input = (EditText) v;
+                        if (isPrimaryInput(input) && !focusRequested) {
+                            input.requestFocus();
+                            focusRequested = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean isEmptyRow(List<View> row) {
+        for(View v: row){
+            if(v instanceof AppCompatEditText){
+                EditText input = (EditText) v;
+                if(isPrimaryInput(input) && "".equalsIgnoreCase(String.valueOf(input.getText()))){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isPrimaryInput(EditText input){
+        return input.getInputType() == InputType.TYPE_CLASS_NUMBER;
+    }
     private void addToView(GridLayout orderItems, View view){
         itemRows.get(no.get()).add(view);
         orderItems.addView(view);
