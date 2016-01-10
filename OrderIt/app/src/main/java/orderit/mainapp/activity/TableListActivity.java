@@ -4,6 +4,8 @@
 
 package orderit.mainapp.activity;
 
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,9 +55,16 @@ public class TableListActivity extends AppCompatActivity {
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent tableOrder = new Intent(getApplicationContext(), TableOrderActivity.class);
-                tableOrder.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(tableOrder);
+                Intent tableOrderIntent = new Intent(getApplicationContext(), TableOrderActivity.class);
+                tableOrderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
+                PendingIntent pendingIntent =
+                        builder
+                                // add all of DetailsActivity's parents to the stack,
+                                // followed by DetailsActivity itself
+                                .addNextIntentWithParentStack(tableOrderIntent)
+                                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.startActivities();
                 finish();
             }
         });

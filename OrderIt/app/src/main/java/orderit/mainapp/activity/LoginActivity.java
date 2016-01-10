@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 
 import android.os.AsyncTask;
@@ -214,9 +216,16 @@ public class LoginActivity extends Activity {
                     String res = json.getString(KEY_SUCCESS);
                     if (res.equalsIgnoreCase("success")) {
                         /** Jump to table list screen */
-                        Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
-                        dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(dashboard);
+                        Intent tableListIntent = new Intent(getApplicationContext(), TableListActivity.class);
+                        tableListIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
+                        PendingIntent pendingIntent =
+                                builder
+                                        // add all of DetailsActivity's parents to the stack,
+                                        // followed by DetailsActivity itself
+                                        .addNextIntentWithParentStack(tableListIntent)
+                                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                        builder.startActivities();
                         /** Close activity */
                         finish();
                     } else {
