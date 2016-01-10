@@ -97,7 +97,9 @@ public class DatabaseAccess {
                 }
             }
             while (cursor.moveToNext());
+
         }
+        cursor.close();
         return _password;
     }
 

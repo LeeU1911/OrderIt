@@ -71,11 +71,35 @@ public class LoginActivity extends Activity {
         inputPassword = (EditText) findViewById(R.id.txtPassword);
         inputPassword.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
+<<<<<<< HEAD
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     OnLogin();
                     handled = true;
+=======
+            public void onClick(View v) {
+                EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
+                String userName = txtUserName.getText().toString();
+                EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
+                String password = txtPassword.getText().toString();
+
+
+                String _password = databaseAccess.SearchPassword(userName);
+                if(password.equalsIgnoreCase(_password))//Logging successfully
+                {
+                    /** Jump to table list screen */
+                    Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
+                    dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(dashboard);
+                    /** Close activity */
+                    finish();
+                }
+                else
+                {
+                    TextView error = (TextView)findViewById(R.id.lblLogginErrMsg);
+                    error.setText("Tên đăng nhập hoặc mật khẩu không đúng");
+>>>>>>> no message
                 }
                 return handled;
             }
