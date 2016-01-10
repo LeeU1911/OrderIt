@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.util.TypedValue;
@@ -14,22 +15,30 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.ImageButton;
-import android.widget.NumberPicker;
-import android.widget.Space;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import orderit.mainapp.R;
 
 public class TableOrderActivity extends AppCompatActivity {
 
-    private static final int ITEMS_LAYOUT = 999;
-    private int cancelBtnImg = R.drawable.close;
+    private static final int CODE_INPUT_WIDTH = 60;
+    private static final int ITEM_NAME_INPUT_WIDTH = 120;
+    private static final int CODE_INPUT_COL_SPAN = 2;
+    private static final int CODE_INPUT_START_COL = 1;
+    private static final int ITEM_NAME_INPUT_COL_SPAN = 3;
+    private static final int ITEM_NAME_INPUT_START_COL = 3;
+    private static final int QTY_WIDTH = 25;
+    private static final String CANCEL_BTN_TEXT = "X";
     private AtomicInteger no = new AtomicInteger(1);
-    private static final int ONE_LINE = 1;
+
+    private Map<Integer, List<View>> itemRows = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +53,6 @@ public class TableOrderActivity extends AppCompatActivity {
             }
         });
 
-        /*cancelBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //delete row
-
-            }
-        });*/
     }
 
     private void initGui() {
@@ -69,52 +71,88 @@ public class TableOrderActivity extends AppCompatActivity {
     }
 
     private void addRow(View view) {
-        //add new order row
         GridLayout orderItems = (GridLayout) findViewById(R.id.orderItems);
-        TextView no = createSequenceLabel(view.getContext());
-        orderItems.addView(no);
-        EditText code = createTextInput(view.getContext());
-        code.setInputType(InputType.TYPE_CLASS_NUMBER);
-        code.setWidth(getPixelFromDP(60));
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.columnSpec = GridLayout.spec(1, 2);
-        params.setGravity(Gravity.FILL);
-        code.setLayoutParams(params);
-        orderItems.addView(code);
-        TextView itemName = createTextInput(view.getContext());
-        itemName.setWidth(getPixelFromDP(120));
-        GridLayout.LayoutParams params1 = new GridLayout.LayoutParams();
-        params1.columnSpec = GridLayout.spec(3, 3);
-        params1.setGravity(Gravity.FILL);
-        itemName.setLayoutParams(params1);
-        orderItems.addView(itemName);
-        Spinner quantity = getQuantitySpinner(view.getContext());
-        quantity.setDropDownWidth(getPixelFromDP(25));
-        orderItems.addView(quantity);
-        Button cancel = getCancelButton(view.getContext());
-        orderItems.addView(cancel);
+
+        itemRows.put(no.get(), new ArrayList<View>());
+
+        addToView(orderItems, createSequenceLabel(view.getContext()));
+        addToView(orderItems, createCodeInput());
+        addToView(orderItems, createItemNameInput());
+        addToView(orderItems, createQuantitySpinner(view.getContext()));
+        addToView(orderItems, createCancelButton(view.getContext()));
+
+        no.incrementAndGet();
     }
 
-    private Button getCancelButton(Context context){
+    private void addToView(GridLayout orderItems, View view){
+        itemRows.get(no.get()).add(view);
+        orderItems.addView(view);
+    }
+
+    private EditText createCodeInput(){
+        EditText code = createTextInput();
+        code.setInputType(InputType.TYPE_CLASS_NUMBER);
+        code.setWidth(getPixelFromDP(CODE_INPUT_WIDTH));
+        code.setLayoutParams(getGridLayoutParams(CODE_INPUT_START_COL, CODE_INPUT_COL_SPAN));
+        return code;
+    }
+
+    private TextView createItemNameInput(){
+        TextView itemName = createTextInput();
+        itemName.setWidth(getPixelFromDP(ITEM_NAME_INPUT_WIDTH));
+        itemName.setLayoutParams(getGridLayoutParams(ITEM_NAME_INPUT_START_COL, ITEM_NAME_INPUT_COL_SPAN));
+        itemName.setSingleLine();
+        return itemName;
+    }
+
+    private GridLayout.LayoutParams getGridLayoutParams(int startCol, int colSpan){
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.columnSpec = GridLayout.spec(startCol, colSpan);
+        params.setGravity(Gravity.FILL);
+        return params;
+    }
+    private Button createCancelButton(Context context){
         Button cancel = new Button(context, null, android.R.attr.buttonStyleSmall);
-        cancel.setText("X");
+        cancel.setText(CANCEL_BTN_TEXT);
+        cancel.setId(no.get());
+        cancel.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearRowData(view);
+            }
+        }));
         return cancel;
     }
-    private Spinner getQuantitySpinner(Context context) {
+
+    private void clearRowData(View view) {
+        List<View> row = itemRows.get(view.getId());
+        for(View v: row){
+            if(v instanceof AppCompatEditText){
+                EditText input = (EditText) v;
+                input.setText("");
+            }
+            if(v instanceof Spinner){
+                Spinner qty = (Spinner) v;
+                qty.setSelection(0);
+            }
+        }
+    }
+
+    private Spinner createQuantitySpinner(Context context) {
         Spinner quantity = new Spinner(context);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.qty_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        quantity.setAdapter(adapter);
+        quantity.setAdapter(prepareQtyAdapter());
+        quantity.setDropDownWidth(getPixelFromDP(QTY_WIDTH));
         return quantity;
     }
 
+    private ArrayAdapter<CharSequence> prepareQtyAdapter(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.qty_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        return adapter;
+    }
+
     private int getPixelFromDP(int dps) {
-//        final float scale = getApplicationContext().getResources().getDisplayMetrics().density;
-//        int pixels = (int) (dps * scale + 0.5f);
         int pixels = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dps, getResources().getDisplayMetrics());
         return pixels;
     }
@@ -131,29 +169,16 @@ public class TableOrderActivity extends AppCompatActivity {
 
     private TextView createSequenceLabel(Context context) {
         TextView lbl = createLabel(context);
-        lbl.setText(no.getAndIncrement() + "");
+        lbl.setText(no.get() + "");
         return lbl;
     }
 
-    private EditText createTextInput(Context context) {
+    private EditText createTextInput() {
         EditText input = (EditText) getLayoutInflater().inflate(R.layout.edit_text, null);
+        input.setId(no.get());
         return input;
     }
 
-    private Space createSpace(Context context) {
-        return new Space(context);
-    }
 
-    private ImageButton createCancelImgBtn(View row) {
-        ImageButton cancelBtn = prepareImgBtn(this.cancelBtnImg);
-        return cancelBtn;
-    }
-
-
-    private ImageButton prepareImgBtn(int imageId) {
-        ImageButton imgBtn = new ImageButton(getApplicationContext());
-        imgBtn.setBackgroundResource(imageId);
-        return imgBtn;
-    }
 
 }

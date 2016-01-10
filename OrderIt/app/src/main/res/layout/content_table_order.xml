@@ -95,8 +95,7 @@
         android:id="@+id/container_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"
-        android:layout_below="@id/orderItemsHeader">
+        android:layout_weight="1">
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -114,9 +113,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:id="@+id/bottom_btn"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@id/container_scroll_view">
+        android:id="@+id/bottom_btn">
 
 
         <Button
