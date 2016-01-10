@@ -18,14 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name=".activity.LoginActivity">
+		<activity android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize">
 
         </activity>
         <activity android:name=".activity.TableListActivity"></activity>
-        <activity android:name=".activity.TableOrderActivity"></activity>
         <activity
-            android:name=".activity.TableOrder2Activity"
-            android:label="@string/title_activity_table_order2"
+            android:name=".activity.TableOrderActivity"
+            android:label="@string/title_activity_order"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

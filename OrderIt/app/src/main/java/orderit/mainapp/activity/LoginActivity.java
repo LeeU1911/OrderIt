@@ -11,19 +11,28 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.view.View;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.util.DisplayMetrics;
 
-import java.io.IOException;
+import android.util.DisplayMetrics;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.io.IOException;
 
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.utility.JSONParser;
@@ -36,7 +45,7 @@ public class LoginActivity extends Activity {
     EditText inputUsername;
     EditText inputPassword;
     TextView loginErrorMsg;
-    RelativeLayout frame;
+    LinearLayout frame;
 
     private int background;         /** id of the image drawable */
     private ImageView loginIcon;    /** login icon */
@@ -56,41 +65,80 @@ public class LoginActivity extends Activity {
         /** Set display of controls programmatically */
         setControlDisplay();
 
-        btnLogin = (Button)findViewById(R.id.btnLoggin);
-        loginErrorMsg = (TextView)findViewById(R.id.lblLogginErrMsg);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        /* Action listener*/
+        inputPassword = (EditText) findViewById(R.id.txtPassword);
+        inputPassword.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
-                String userName = txtUserName.getText().toString();
-                EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
-                String password = txtPassword.getText().toString();
-
-                String _password = databaseAccess.SearchPassword(userName);
-                /** Logging successfully */
-                if(password.equalsIgnoreCase(_password)) {
-                    /** Jump to table list screen */
-                    Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
-                    dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(dashboard);
-                    /** Close activity */
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    OnLogin();
+                    handled = true;
                 }
-                else {
-                    /** Not found on local database , find on server */
-                    loginUserOnServer(userName, password);
-                }
-
+                return handled;
             }
         });
+
+//        inputPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
+
+//        inputUsername = (EditText) findViewById(R.id.txtUserName);
+//        inputUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if (!hasFocus) {
+//                    hideKeyboard(v);
+//                }
+//            }
+//        });
+    }
+
+    /** Called when the user touches the Login button */
+    public void onBtnLoginClick(View view) {
+        // Do something in response to button click
+        OnLogin();
+    }
+
+    public void OnLogin() {
+
+        /* Get button handle*/
+        btnLogin = (Button)findViewById(R.id.btnLogin);
+        /* Unable to click*/
+        btnLogin.setClickable(false);
+
+        EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
+        String userName = txtUserName.getText().toString();
+        EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
+        String password = txtPassword.getText().toString();
+
+        String _password = databaseAccess.SearchPassword(userName);
+        /** Logging successfully */
+        if(password.equalsIgnoreCase(_password)) {
+            /** Jump to table list screen */
+            Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
+            dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(dashboard);
+            /** Close activity */
+        }
+        else {
+            /** Not found on local database , find on server */
+            loginUserOnServer(userName, password);
+        }
+
+        /* Unable to click*/
+        btnLogin.setClickable(true);
     }
 
     private void setControlDisplay() {
-        inputUsername = (EditText) findViewById(R.id.txtUserName);
-        inputPassword = (EditText) findViewById(R.id.txtPassword);
-        btnLogin = (Button) findViewById(R.id.btnLoggin);
+
         loginIcon = (ImageView) findViewById(R.id.send_icon);
         layout = (RelativeLayout) findViewById(R.id.layoutLogin);
-        frame = (RelativeLayout) findViewById(R.id.frame);
 
         background = R.drawable.login;
         loginIconImg = R.drawable.login_icon;
@@ -98,64 +146,28 @@ public class LoginActivity extends Activity {
         appProcess = (AppProcess)getApplication();
         appProcess.setBackground(layout, background); /** free last background, and store new one */
 
-        RelativeLayout.LayoutParams paramFrame;
-        RelativeLayout.LayoutParams paramUser;
-        RelativeLayout.LayoutParams paramPassword;
-        RelativeLayout.LayoutParams paramLoginBtn;
         RelativeLayout.LayoutParams paramLoginIcon;
 
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         int screenHeight = metrics.heightPixels;
-        int screenWidth = metrics.widthPixels;
         int frameHeight = screenHeight*3/7;
-        int margin = 30;
         int editHeight = (frameHeight - 30*2 - 20*2 - 15)/5;
         int iconSize = editHeight*2;
-        int loginBtnSize = screenWidth/3;
-
-        paramFrame = (RelativeLayout.LayoutParams) frame.getLayoutParams();
-        paramFrame.leftMargin = 0;
-        paramFrame.rightMargin = 0;
-        paramFrame.topMargin = screenHeight*2/7;
-        paramFrame.height = frameHeight;
-        paramFrame.width = screenWidth;
-        frame.setLayoutParams(paramFrame);
-
-        paramUser = (RelativeLayout.LayoutParams) inputUsername.getLayoutParams();
-        paramUser.leftMargin = margin;
-        paramUser.rightMargin = margin;
-        paramUser.topMargin = paramFrame.topMargin + 30 + iconSize + 20;
-        paramUser.height = editHeight;
-        paramUser.width = screenWidth - (2*margin);
-        inputUsername.setLayoutParams(paramUser);
-
-        paramPassword = (RelativeLayout.LayoutParams) inputPassword.getLayoutParams();
-        paramPassword.leftMargin = margin;
-        paramPassword.rightMargin = margin;
-        paramPassword.topMargin = paramUser.topMargin + editHeight + 15;
-        paramPassword.height = editHeight;
-        paramPassword.width = paramUser.width;
-        inputPassword.setLayoutParams(paramPassword);
-
-        paramLoginBtn = (RelativeLayout.LayoutParams) btnLogin.getLayoutParams();
-        paramLoginBtn.leftMargin = screenWidth - margin - loginBtnSize;
-        paramLoginBtn.rightMargin = margin;
-        paramLoginBtn.topMargin = paramPassword.topMargin + editHeight + 20;
-        paramLoginBtn.width = loginBtnSize;
-        paramLoginBtn.height = editHeight;
-        btnLogin.setLayoutParams(paramLoginBtn);
 
         paramLoginIcon = (RelativeLayout.LayoutParams) loginIcon.getLayoutParams();
-        paramLoginIcon.leftMargin = margin;
-        paramLoginIcon.topMargin = paramUser.topMargin - iconSize - 20;
         paramLoginIcon.width = iconSize;
         paramLoginIcon.height = iconSize;
         loginIcon.setLayoutParams(paramLoginIcon);
 
         appProcess.setImage(loginIcon, loginIconImg); /** free last image, and store new one */
     }
+
+//    public void hideKeyboard(View view) {
+//        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+//    }
 
     private void loginUserOnServer(String username, String password){
         List<NameValuePair> params = new ArrayList<NameValuePair>();

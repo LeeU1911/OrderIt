@@ -12,6 +12,11 @@
     <string name="order_btn">Order</string>
     <string name="pay_btn">Pay</string>
     <string name="reset_btn">Reset</string>
+
+    <string name="txt_username_hint">Tên đăng nhập</string>
+    <string name="txt_password_hint">Mật khẩu</string>
+    <string name="btnLogin">ĐĂNG NHẬP</string>
+
     <string-array name="qty_array">
         <item>1</item>
         <item>2</item>
