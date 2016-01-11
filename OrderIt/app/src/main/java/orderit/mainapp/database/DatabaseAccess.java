@@ -4,14 +4,17 @@
 
 package orderit.mainapp.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import orderit.mainapp.User;
 import orderit.mainapp.model.TableItem;
 
 public class DatabaseAccess {
@@ -20,8 +23,13 @@ public class DatabaseAccess {
     private static DatabaseAccess instance;
 
 
-    private static final String COLUMN_USERNAME = "username";
-    private static final String COLUMN_PASSWORD = "password";
+    private static final String USER_COLUMN_USERNAME = "username";
+    private static final String USER_COLUMN_PASSWORD = "password";
+    private static final String USER_COLUMN_BUSINESSID = "business_id";
+    private static final String USER_COLUMN_ROLEID = "role_id";
+    private static final String USER_COLUMN_CREATEDATE = "created";
+    private static final String USER_COLUMN_MODIFIEDDATE = "modified";
+
     private static final String TABLE_USERS = "users";
     /**;
      * Private constructor to avoid object creation from outside classes.
@@ -82,8 +90,8 @@ public class DatabaseAccess {
     }
     public String SearchPassword(String userName)
     {
-        this.database = openHelper.getWritableDatabase();
-        String query = "Select " + COLUMN_USERNAME + ", " + COLUMN_PASSWORD + " from " + TABLE_USERS;
+        this.database = openHelper.getReadableDatabase();
+        String query = "Select " + USER_COLUMN_USERNAME + ", " + USER_COLUMN_PASSWORD + " from " + TABLE_USERS;
         Cursor cursor = database.rawQuery(query, null);
         String _userName, _password = "12345677890-qrwereytryuuiuiyuisdfsdfggfhgjhkljklkl;czxcxzcvcbcvnvbmnbm,,<><><:";
         if(cursor.moveToFirst())
@@ -98,7 +106,30 @@ public class DatabaseAccess {
             }
             while (cursor.moveToNext());
         }
+        this.database.close();
         return _password;
+    }
+
+    public void InsertUser(User u)
+    {
+        this.database = openHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        String query = "Select * from " + TABLE_USERS;
+        Cursor cursor = database.rawQuery(query, null);
+        int count = cursor.getCount();
+
+
+
+        values.put(USER_COLUMN_USERNAME, u.getUserName());
+        values.put(USER_COLUMN_PASSWORD, u.getPassword());
+        values.put(USER_COLUMN_BUSINESSID, u.getBusinessId());
+        values.put(USER_COLUMN_ROLEID, u.getRoleId());
+        //values.put(USER_COLUMN_CREATEDATE, u.getCreateDate());
+        //values.put(USER_COLUMN_MODIFIEDDATE, u.getModifiedDate());
+        this.database.insert(TABLE_USERS, null, values);
+
+        this.database.close();
     }
 
 }
