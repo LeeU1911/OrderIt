@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.text.format.Time;
 import android.view.View;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import java.io.IOException;
 
+import orderit.mainapp.User;
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.utility.JSONParser;
 import orderit.mainapp.utility.GZipIOStream;
@@ -129,6 +131,8 @@ public class LoginActivity extends Activity {
             /** Close activity */
         }
         else {
+            //Check network connection
+
             /** Not found on local database , find on server */
             loginUserOnServer(userName, password);
         }
@@ -215,6 +219,15 @@ public class LoginActivity extends Activity {
                 if (json.getString(KEY_SUCCESS) != null) {
                     String res = json.getString(KEY_SUCCESS);
                     if (res.equalsIgnoreCase("success")) {
+                        /* Save the user information to local database */
+                        User user = new User();
+                        inputPassword = (EditText) findViewById(R.id.txtPassword);
+                        inputUsername = (EditText) findViewById(R.id.txtUserName);
+                        user.setUserName(inputUsername.getText().toString());
+                        user.setPassword(inputPassword.getText().toString());
+                        user.setBusinessId(1);
+                        user.setRoleId(1);
+                        databaseAccess.InsertUser(user);
                         /** Jump to table list screen */
                         Intent tableListIntent = new Intent(getApplicationContext(), TableListActivity.class);
                         tableListIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
