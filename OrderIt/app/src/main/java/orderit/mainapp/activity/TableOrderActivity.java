@@ -36,7 +36,7 @@ public class TableOrderActivity extends AppCompatActivity {
     private static final int ITEM_NAME_INPUT_START_COL = 3;
     private static final int QTY_WIDTH = 25;
     private static final String CANCEL_BTN_TEXT = "X";
-    private AtomicInteger no = new AtomicInteger(1);
+    private AtomicInteger no = new AtomicInteger(0);
 
     private Map<Integer, List<View>> itemRows = new HashMap<>();
     private boolean focusRequested = false;
@@ -50,17 +50,40 @@ public class TableOrderActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                focusRequested = false;
+                getReadyToGetFocusAgain();
                 addRow(view);
             }
         });
 
+        Button reset = (Button) findViewById(R.id.reset_btn);
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clearAllRows();
+                getReadyToGetFocusAgain();
+                requestFocusOnFirstEmptyRow();
+            }
+        });
+
+    }
+
+    private void getReadyToGetFocusAgain() {
+        focusRequested = false;
+    }
+
+    private void clearAllRows() {
+        for (int i = 1; i <= no.get(); i++) {
+            List<View> row = itemRows.get(i);
+            resetRowDataToDefault(row);
+        }
     }
 
     private void initGui() {
         setContentView(R.layout.activity_table_order);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         addItemOrders();
 
     }
@@ -73,6 +96,7 @@ public class TableOrderActivity extends AppCompatActivity {
     }
 
     private void addRow(View view) {
+        no.incrementAndGet();
         GridLayout orderItems = (GridLayout) findViewById(R.id.orderItems);
 
         itemRows.put(no.get(), new ArrayList<View>());
@@ -84,7 +108,6 @@ public class TableOrderActivity extends AppCompatActivity {
         addToView(orderItems, createCancelButton(view.getContext()));
 
         requestFocusOnFirstEmptyRow();
-        no.incrementAndGet();
     }
 
     private void requestFocusOnFirstEmptyRow() {
@@ -161,12 +184,16 @@ public class TableOrderActivity extends AppCompatActivity {
 
     private void clearRowData(View view) {
         List<View> row = itemRows.get(view.getId());
-        for(View v: row){
-            if(v instanceof AppCompatEditText){
+        resetRowDataToDefault(row);
+    }
+
+    private void resetRowDataToDefault(List<View> row) {
+        for (View v : row) {
+            if (v instanceof AppCompatEditText) {
                 EditText input = (EditText) v;
                 input.setText("");
             }
-            if(v instanceof Spinner){
+            if (v instanceof Spinner) {
                 Spinner qty = (Spinner) v;
                 qty.setSelection(0);
             }
