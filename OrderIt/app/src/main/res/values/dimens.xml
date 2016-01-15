@@ -5,4 +5,5 @@
     <dimen name="item_order_space">5dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="status_img_margin">12dp</dimen>
+    <dimen name="tbl_stt_heading">20sp</dimen>
 </resources>
