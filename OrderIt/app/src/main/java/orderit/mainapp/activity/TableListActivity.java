@@ -6,30 +6,31 @@ package orderit.mainapp.activity;
 
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.SearchView;
 
 import java.util.List;
 
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.R;
 import orderit.mainapp.model.TableItem;
+import orderit.mainapp.model.TableItemAdapter;
 
-public class TableListActivity extends AppCompatActivity {
+public class TableListActivity extends AppCompatActivity implements
+        SearchView.OnQueryTextListener {
 
     /**
      * Variables
      */
     private ListView listView;
     private List<TableItem> tableItems;
+    private SearchView searchView;
+    private TableItemAdapter adapter;
 
     /**
      * Method of creating
@@ -41,6 +42,8 @@ public class TableListActivity extends AppCompatActivity {
 
         /** Get table list by ID */
         listView = (ListView) findViewById(R.id.TableList);
+        /** Get search view by ID */
+        searchView = (SearchView) findViewById(R.id.SearchView);
 
         /** Query table list from database and assign to array */
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
@@ -68,35 +71,26 @@ public class TableListActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        /** Set event listener to SearchView */
+        searchView.setOnQueryTextListener(this);
+
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.filter(newText);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
     }
 
     private void updateListView() {
         /** Create the adapter and assign to ListView */
-        TableItemAdapter adapter = new TableItemAdapter(this, tableItems);
+        adapter = new TableItemAdapter(this, tableItems);
         this.listView.setAdapter(adapter);
     }
-
-
-    /**
-     * Custom ArrayAdapter for Contacts.
-     */
-    private class TableItemAdapter extends ArrayAdapter<TableItem> {
-
-
-        public TableItemAdapter(Context context, List<TableItem> objects) {
-            super(context, 0, objects);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.list_row, parent, false);
-            }
-            TextView txtName = (TextView) convertView.findViewById(R.id.tvTableName);
-            TableItem tableItem = tableItems.get(position);
-            txtName.setText(tableItem.getTableName());
-            return convertView;
-        }
-    }
-
 }

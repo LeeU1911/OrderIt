@@ -5,8 +5,7 @@
     android:orientation="horizontal"
     android:padding="5dip" >
 
-    <!-- ListRow Left sied Thumbnail image -->
-
+    <!-- ListRow Left side Thumbnail image -->
     <LinearLayout
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
@@ -22,13 +21,13 @@
             android:layout_height="50dip"
             android:layout_gravity="top"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/table" />
+            android:src="@android:drawable/ic_delete" />
 
     </LinearLayout>
 
-    <!-- Rightend Arrow -->
+    <!-- Right end Arrow -->
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imageArrow"
         android:contentDescription="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,13 +41,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
-        android:layout_toEndOf="@+id/thumbnail"
-        android:layout_marginLeft="15dip"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginLeft="5dip"
         android:layout_centerVertical="true"
-        android:paddingBottom ="9dip"
-        android:text="Table 1"
+        android:text="@string/table_name_exp"
         android:textColor="#040404"
-        android:textSize="20dip"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:typeface="sans" />
 
@@ -57,13 +55,11 @@
         android:id="@+id/tvTableStat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTableName"
-        android:layout_alignLeft="@+id/tvTableName"
-        android:layout_alignBottom="@+id/thumbnail"
-        android:paddingTop="5dip"
-        android:layout_centerHorizontal="true"
-        android:text="Ordering"
-        android:textColor="#343434"
-        android:textSize="10dip" />
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dip"
+        android:layout_alignTop="@+id/tvTableName"
+        android:layout_toLeftOf="@+id/imageArrow"
+        android:text="@string/table_stat_exp"
+        android:textSize="20sp" />
 
 </RelativeLayout>
