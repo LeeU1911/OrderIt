@@ -19,21 +19,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
-        <activity android:name=".activity.TableListActivity"
+        <activity
+            android:name=".activity.LoginActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
+        <activity
+            android:name=".activity.TableListActivity"
             android:parentActivityName=".activity.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.LoginActivity" />
         </activity>
+        <activity android:name=".activity.TableStatusActivity"
+            android:parentActivityName=".activity.TableListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TableListActivity" />
+        </activity>
         <activity
             android:name=".activity.TableOrderActivity"
             android:label="@string/title_activity_order"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".activity.TableListActivity">
+            android:parentActivityName=".activity.TableListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TableListActivity" />

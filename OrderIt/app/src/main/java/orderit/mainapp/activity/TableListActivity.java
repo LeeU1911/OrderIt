@@ -58,14 +58,14 @@ public class TableListActivity extends AppCompatActivity implements
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent tableOrderIntent = new Intent(getApplicationContext(), TableOrderActivity.class);
-                tableOrderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent tableStatusIntent = new Intent(getApplicationContext(), TableStatusActivity.class);
+                tableStatusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
                 PendingIntent pendingIntent =
                         builder
                                 // add all of DetailsActivity's parents to the stack,
                                 // followed by DetailsActivity itself
-                                .addNextIntentWithParentStack(tableOrderIntent)
+                                .addNextIntentWithParentStack(tableStatusIntent)
                                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                 builder.startActivities();
                 finish();
