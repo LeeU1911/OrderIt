@@ -17,11 +17,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.text.format.Time;
 import android.view.View;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,7 +35,7 @@ import java.util.List;
 
 import java.io.IOException;
 
-import orderit.mainapp.User;
+import orderit.mainapp.model.User;
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.utility.JSONParser;
 import orderit.mainapp.utility.GZipIOStream;

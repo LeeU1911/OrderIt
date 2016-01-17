@@ -11,10 +11,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import orderit.mainapp.User;
+import orderit.mainapp.model.User;
 import orderit.mainapp.model.TableItem;
 
 public class DatabaseAccess {
