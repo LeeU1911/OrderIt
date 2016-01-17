@@ -22,6 +22,7 @@ CREATE TABLE tables (
 	id integer NOT NULL,
 	business_id integer,
 	name varchar,
+	status integer,
 	created datetime,
 	modified datetime,
 	PRIMARY KEY (id)
@@ -66,3 +67,10 @@ CREATE TABLE order_status (
 	PRIMARY KEY (id)
 );
 
+CREATE TABLE table_status (
+	id integer NOT NULL,
+	name varchar,
+	created datetime,
+	modified datetime,
+	PRIMARY KEY (id)
+);

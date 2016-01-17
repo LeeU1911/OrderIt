@@ -11,8 +11,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashScreenActivity"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+        <activity
+            android:name=".activity.SplashScreenActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +22,7 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.TableListActivity"
             android:parentActivityName=".activity.LoginActivity">
@@ -29,12 +30,19 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.LoginActivity" />
         </activity>
-        <activity android:name=".activity.TableStatusActivity"
+        <activity
+            android:name=".activity.TableStatusActivity"
             android:parentActivityName=".activity.TableListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TableListActivity" />
         </activity>
+        <activity android:name=".activity.NewTableOrderActivity"
+            android:parentActivityName=".activity.TableStatusActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TableStatusActivity" /></activity>
         <activity
             android:name=".activity.TableOrderActivity"
             android:label="@string/title_activity_order"
