@@ -38,8 +38,7 @@
                 android:value=".activity.TableListActivity" />
         </activity>
         <activity android:name=".activity.NewTableOrderActivity"
-            android:parentActivityName=".activity.TableStatusActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".activity.TableStatusActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TableStatusActivity" /></activity>

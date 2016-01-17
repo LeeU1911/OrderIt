@@ -13,6 +13,8 @@ public class NewTableOrderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_order_new);
-        getSupportActionBar().setTitle(ACTION_BAR_TITTLE);
+        if(getSupportActionBar() != null){
+            getSupportActionBar().setTitle(ACTION_BAR_TITTLE);
+        }
     }
 }
