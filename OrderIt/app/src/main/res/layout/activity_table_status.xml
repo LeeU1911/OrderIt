@@ -12,7 +12,8 @@
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/rectangle">
+        android:background="@drawable/list_item_tbl_stt_default"
+        android:id="@+id/status_row">
         <ImageView
             android:id="@+id/tbl_stt_img"
             android:layout_width="wrap_content"
@@ -53,8 +54,8 @@
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/rectangle"
-        >
+        android:background="@drawable/list_item_tbl_stt_default"
+        android:id="@+id/reservation_row">
         <ImageView
             android:id="@+id/tbl_reserve_img"
             android:layout_width="wrap_content"
@@ -120,8 +121,8 @@
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/rectangle"
-        >
+        android:background="@drawable/list_item_tbl_stt"
+        android:id="@+id/order_row">
         <ImageView
             android:id="@+id/tbl_order_img"
             android:layout_width="wrap_content"
@@ -173,8 +174,8 @@
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/rectangle"
-        >
+        android:background="@drawable/list_item_tbl_stt_default"
+        android:id="@+id/bill_row">
         <ImageView
             android:id="@+id/tbl_bill_img"
             android:layout_width="wrap_content"
