@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name=".....WelcomeActivity"
-    android:label="@string/app_name"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true"
+    tools:context=".activity.TableListActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorLoginFrame">
-        <SearchView
-            android:id="@+id/SearchView"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:queryHint="@string/app_name"
-            android:background="@drawable/search_view"
-            android:layout_marginTop="5sp"
-            android:layout_marginBottom="5sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp">
-        </SearchView>
-    </LinearLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:layout_margin="@dimen/fab_margin">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/app_name"
+                    android:id="@+id/app_name_lbl"
+                    />
+            </LinearLayout>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
-    <ListView
-        android:id="@+id/TableList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="#b5b5b5"
-        android:dividerHeight="1dp"
-        android:scrollbars="vertical">
-    </ListView>
-</LinearLayout>
+    <include layout="@layout/content_table_list" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">OrderIt</string>
+    <string name="app_name">Order it!</string>
     <string name="title_activity_order">Order Details</string>
+    <string name="title_activity_table_list">Tables</string>
     <string name="staff_id">Staff Id</string>
     <string name="order_id">Order Id</string>
     <string name="table_number">Table #</string>
