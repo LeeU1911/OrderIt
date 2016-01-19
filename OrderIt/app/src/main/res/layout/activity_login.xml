@@ -8,15 +8,7 @@
     android:clickable="true"
     android:focusableInTouchMode="true">
 
-    <TextView
-        android:id="@+id/lblLoginErrMsg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:textColor="@color/fontColorWhite"
-        android:fontFamily="fonts/FutureStd-Light.ttf"
-        android:textSize="20sp"
-        android:alpha="0.8" />
+
 
     <ImageView
         android:id="@+id/send_icon"
@@ -51,6 +43,7 @@
             android:textColorHint="@color/fontColorWhite"
             android:fontFamily="fonts/FutureStd-Light.ttf"
             android:textSize="20sp"
+            android:paddingLeft="20px"
             android:alpha="0.8" />
 
         <EditText
@@ -66,7 +59,20 @@
             android:fontFamily="fonts/FutureStd-Light.ttf"
             android:textSize="20sp"
             android:alpha="0.8"
+            android:layout_marginTop="20px"
+            android:paddingLeft="20px"
             android:imeOptions="actionDone"/>
+
+        <TextView
+            android:id="@+id/lblLoginErrMsg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/fontColorWhite"
+            android:fontFamily="fonts/FutureStd-Light.ttf"
+            android:textSize="20sp"
+            android:layout_marginTop="0px"
+            android:layout_marginBottom="10px"
+            android:alpha="0.8" />
 
         <Button
             android:id="@+id/btnLogin"
