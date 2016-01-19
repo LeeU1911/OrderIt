@@ -17,6 +17,8 @@ import android.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 
 import java.util.List;
 
@@ -96,6 +98,7 @@ public class TableListActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_signOut:
+                signOutBtnClick();
                 break;
             default:
                 break;
@@ -104,6 +107,34 @@ public class TableListActivity extends AppCompatActivity implements
         return true;
     }
 
+    public void signOutBtnClick(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setMessage(R.string.msg_sign_out);
+        alertDialog.setPositiveButton(R.string.msg_yes,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent tableLoginIntent = new Intent(getApplicationContext(), LoginActivity.class);
+                        tableLoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
+                        PendingIntent pendingIntent =
+                                builder
+                                        /** add all of DetailsActivity's parents to the stack, */
+                                        /** followed by DetailsActivity itself */
+                                        .addNextIntentWithParentStack(tableLoginIntent)
+                                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                        builder.startActivities();
+                        finish();
+
+                    }
+                });
+
+        alertDialog.setNegativeButton(R.string.msg_no,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        alertDialog.show();
+    }
 
     @Override
     public boolean onQueryTextChange(String newText) {

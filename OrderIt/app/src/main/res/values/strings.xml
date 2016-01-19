@@ -28,6 +28,10 @@
     <string name="tbl_bill_heading_txt">Bill</string>
     <string name="tbl_reserve_heading_txt">Reservation</string>
 
+    <string name="msg_sign_out">Do you want to sign out?</string>
+    <string name="msg_yes">Yes</string>
+    <string name="msg_no">No</string>
+
     <string-array name="qty_array">
         <item>1</item>
         <item>2</item>
