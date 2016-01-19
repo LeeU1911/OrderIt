@@ -35,6 +35,7 @@ import java.util.List;
 
 import java.io.IOException;
 
+import orderit.mainapp.ConnectionDetector;
 import orderit.mainapp.model.User;
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.utility.JSONParser;
@@ -130,9 +131,16 @@ public class LoginActivity extends Activity {
         }
         else {
             //Check network connection
-
-            /** Not found on local database , find on server */
-            loginUserOnServer(userName, password);
+            ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+            if(cd.isConnectingToInternet() == false){
+                TextView loginErrorMsg;
+                loginErrorMsg = (TextView) findViewById(R.id.lblLoginErrMsg);
+                loginErrorMsg.setText("Tên đăng nhập hoặc mật khẩu không đúng.");
+                //startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            }
+            else
+                /** Not found on local database , find on server */
+                loginUserOnServer(userName, password);
         }
 
         /* Unable to click*/
