@@ -211,7 +211,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected String doInBackground(List<NameValuePair>... list) {
-            String loginURL = "https://desolate-castle-2567.herokuapp.com/";
+            String loginURL = "http://orderit-server.herokuapp.com/";
             JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
             System.out.println(json);
             /** return JSON object */
