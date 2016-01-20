@@ -115,36 +115,40 @@ public class LoginActivity extends Activity {
         /* Unable to click*/
         btnLogin.setClickable(false);
 
+        TextView loginErrorMsg;
+        loginErrorMsg = (TextView) findViewById(R.id.lblLoginErrMsg);
+
         EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
         String userName = txtUserName.getText().toString();
         EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
         String password = txtPassword.getText().toString();
-
-        String _password = databaseAccess.SearchPassword(userName);
-        /** Logging successfully */
-        if(password.equalsIgnoreCase(_password)) {
-            /** Jump to table list screen */
-            Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
-            dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(dashboard);
-            /** Close activity */
+        if(userName == null || userName.equals("") || password == null || password.equals(""))
+        {
+            loginErrorMsg.setText(R.string.msg_login_error);
         }
         else {
-            //Check network connection
-            ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
-            if(cd.isConnectingToInternet() == false){
-                TextView loginErrorMsg;
-                loginErrorMsg = (TextView) findViewById(R.id.lblLoginErrMsg);
-                loginErrorMsg.setText("Tên đăng nhập hoặc mật khẩu không đúng.");
-                //startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-            }
-            else
+            String _password = databaseAccess.SearchPassword(userName);
+            /** Logging successfully */
+            if (password.equalsIgnoreCase(_password)) {
+                /** Jump to table list screen */
+                Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
+                dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(dashboard);
+                /** Close activity */
+            } else {
+                //Check network connection
+                ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+                if (cd.isConnectingToInternet() == false) {
+                    loginErrorMsg.setText(R.string.msg_login_error);
+                    //startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+                } else
                 /** Not found on local database , find on server */
-                loginUserOnServer(userName, password);
+                    loginUserOnServer(userName, password);
+            }
         }
-
         /* Unable to click*/
         btnLogin.setClickable(true);
+
     }
 
     private void setControlDisplay() {
@@ -249,7 +253,7 @@ public class LoginActivity extends Activity {
                         finish();
                     } else {
                         /** Log in failed */
-                        loginErrorMsg.setText("Tên đăng nhập hoặc mật khẩu không đúng.");
+                        loginErrorMsg.setText(R.string.msg_login_error);
                     }
                 }
             } catch (JSONException e) {
