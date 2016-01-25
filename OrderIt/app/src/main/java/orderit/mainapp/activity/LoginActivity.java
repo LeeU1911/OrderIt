@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
         /** Set display of controls programmatically */
         setControlDisplay();
 
-        /* Action listener*/
+        /** Action listener */
         inputPassword = (EditText) findViewById(R.id.txtPassword);
         inputPassword.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
@@ -81,38 +81,19 @@ public class LoginActivity extends Activity {
                 return handled;
             }
         });
-
-//        inputPassword.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    hideKeyboard(v);
-//                }
-//            }
-//        });
-
-//        inputUsername = (EditText) findViewById(R.id.txtUserName);
-//        inputUsername.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (!hasFocus) {
-//                    hideKeyboard(v);
-//                }
-//            }
-//        });
     }
 
     /** Called when the user touches the Login button */
     public void onBtnLoginClick(View view) {
-        // Do something in response to button click
+        /** Do something in response to button click */
         OnLogin();
     }
 
     public void OnLogin() {
 
-        /* Get button handle*/
+        /** Get button handle */
         btnLogin = (Button)findViewById(R.id.btnLogin);
-        /* Unable to click*/
+        /** Unable to click */
         btnLogin.setClickable(false);
 
         TextView loginErrorMsg;
@@ -136,7 +117,7 @@ public class LoginActivity extends Activity {
                 startActivity(dashboard);
                 /** Close activity */
             } else {
-                //Check network connection
+                /** Check network connection */
                 ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
                 if (cd.isConnectingToInternet() == false) {
                     loginErrorMsg.setText(R.string.msg_login_error);
@@ -146,7 +127,7 @@ public class LoginActivity extends Activity {
                     loginUserOnServer(userName, password);
             }
         }
-        /* Unable to click*/
+        /** Unable to click */
         btnLogin.setClickable(true);
 
     }
@@ -179,11 +160,6 @@ public class LoginActivity extends Activity {
 
         appProcess.setImage(loginIcon, loginIconImg); /** free last image, and store new one */
     }
-
-//    public void hideKeyboard(View view) {
-//        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
-//        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//    }
 
     private void loginUserOnServer(String username, String password){
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -229,7 +205,7 @@ public class LoginActivity extends Activity {
                 if (json.getString(KEY_SUCCESS) != null) {
                     String res = json.getString(KEY_SUCCESS);
                     if (res.equalsIgnoreCase("success")) {
-                        /* Save the user information to local database */
+                        /** Save the user information to local database */
                         User user = new User();
                         inputPassword = (EditText) findViewById(R.id.txtPassword);
                         inputUsername = (EditText) findViewById(R.id.txtUserName);
@@ -244,8 +220,8 @@ public class LoginActivity extends Activity {
                         TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
                         PendingIntent pendingIntent =
                                 builder
-                                        // add all of DetailsActivity's parents to the stack,
-                                        // followed by DetailsActivity itself
+                                        /** add all of DetailsActivity's parents to the stack, */
+                                        /** followed by DetailsActivity itself */
                                         .addNextIntentWithParentStack(tableListIntent)
                                         .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
                         builder.startActivities();

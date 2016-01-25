@@ -27,7 +27,6 @@
         <activity
             android:name=".activity.TableListActivity"
             android:parentActivityName=".activity.LoginActivity"
-            android:label="@string/title_activity_table_list"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -35,8 +34,7 @@
         </activity>
         <activity
             android:name=".activity.TableStatusActivity"
-            android:parentActivityName=".activity.TableListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".activity.TableListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TableListActivity" />
