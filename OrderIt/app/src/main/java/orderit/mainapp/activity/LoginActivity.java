@@ -35,7 +35,7 @@ import java.util.List;
 
 import java.io.IOException;
 
-import orderit.mainapp.ConnectionDetector;
+import orderit.mainapp.utility.ConnectionDetector;
 import orderit.mainapp.model.User;
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.utility.JSONParser;

@@ -27,14 +27,32 @@ public class TableStatusActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent tableOrderIntent = new Intent(getApplicationContext(), NewTableOrderActivity.class);
                 tableOrderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
-                PendingIntent pendingIntent =
-                        builder
+                TaskStackBuilder builderOrder = TaskStackBuilder.create(getApplicationContext());
+                PendingIntent pendingOrderIntent =
+                        builderOrder
                                 // add all of DetailsActivity's parents to the stack,
                                 // followed by DetailsActivity itself
                                 .addNextIntentWithParentStack(tableOrderIntent)
                                 .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.startActivities();
+                builderOrder.startActivities();
+                finish();
+            }
+        });
+
+        View bill = findViewById(R.id.bill_row);
+        bill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tableBillIntent = new Intent(getApplicationContext(), BillManagementActivity.class);
+                tableBillIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                TaskStackBuilder builderBill = TaskStackBuilder.create(getApplicationContext());
+                PendingIntent pendingBillIntent =
+                        builderBill
+                                // add all of DetailsActivity's parents to the stack,
+                                // followed by DetailsActivity itself
+                                .addNextIntentWithParentStack(tableBillIntent)
+                                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+                builderBill.startActivities();
                 finish();
             }
         });

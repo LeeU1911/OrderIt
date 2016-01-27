@@ -1,4 +1,4 @@
-package orderit.mainapp;
+package orderit.mainapp.utility;
 
 /**
  * Created by Tri Trieu on 11/01/2016.

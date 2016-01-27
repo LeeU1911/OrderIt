@@ -53,6 +53,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TableListActivity" />
         </activity>
+        <activity android:name=".activity.BillManagementActivity"
+            android:parentActivityName=".activity.TableStatusActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.TableStatusActivity" />
+        </activity>
     </application>
 
 </manifest>
