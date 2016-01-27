@@ -80,6 +80,7 @@ public class DatabaseAccess {
         while (!cursor.isAfterLast()) {
             TableItem tableItem = new TableItem();
             tableItem.setTableName(cursor.getString(0));
+            //tableItem.setTableStat(cursor.getString(1));
 
             list.add(tableItem);
             cursor.moveToNext();
