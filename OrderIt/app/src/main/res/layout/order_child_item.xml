@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/txtOrderDisk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="Chicken"
+        android:paddingLeft="25dp" />
+
+    <TextView
+        android:id="@+id/txtOrderDiskNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/btnOrderAdd"
+        android:layout_centerVertical="true"
+        android:text="2"
+        android:paddingRight="10dp" />
+
+    <ImageView
+        android:id="@+id/btnOrderAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/ic_input_add"
+        android:contentDescription="@string/app_name"/>
+
+</RelativeLayout>

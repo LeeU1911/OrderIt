@@ -80,6 +80,7 @@ public class DatabaseAccess {
         while (!cursor.isAfterLast()) {
             TableItem tableItem = new TableItem();
             tableItem.setTableName(cursor.getString(0));
+            //tableItem.setTableStat(cursor.getString(1));
 
             list.add(tableItem);
             cursor.moveToNext();
@@ -114,11 +115,9 @@ public class DatabaseAccess {
         this.database = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        String query = "Select * from " + TABLE_USERS;
-        Cursor cursor = database.rawQuery(query, null);
-        int count = cursor.getCount();
-
-
+        //String query = "Select * from " + TABLE_USERS;
+        //Cursor cursor = database.rawQuery(query, null);
+        //int count = cursor.getCount();
 
         values.put(USER_COLUMN_USERNAME, u.getUserName());
         values.put(USER_COLUMN_PASSWORD, u.getPassword());
