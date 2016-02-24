@@ -44,15 +44,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.TableStatusActivity" /></activity>
-        <activity
-            android:name=".activity.TableOrderActivity"
-            android:label="@string/title_activity_order"
-            android:parentActivityName=".activity.TableListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TableListActivity" />
-        </activity>
         <activity android:name=".activity.BillManagementActivity"
             android:parentActivityName=".activity.TableStatusActivity">
             <meta-data
