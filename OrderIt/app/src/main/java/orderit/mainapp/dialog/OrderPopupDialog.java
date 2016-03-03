@@ -2,20 +2,35 @@ package orderit.mainapp.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import orderit.mainapp.R;
+import orderit.mainapp.activity.TableListActivity;
 import orderit.mainapp.model.ExpandableListAdapter;
+import orderit.mainapp.model.User;
+import orderit.mainapp.utility.JSONParser;
 
 /**
  * Created by LanTuan on 1/25/16.
@@ -98,10 +113,26 @@ public class OrderPopupDialog extends DialogFragment {
         {
             if(setCount == null) Log.d("AA", "NULL");
             else{
+                AsyncServerCall serverCall = new AsyncServerCall();
+                serverCall.execute(new ArrayList<NameValuePair>());
                 String value = setCount.getText().toString();
                 parentAdapter.onUserChangedDiskCnt(Integer.valueOf(value));
             }
             dialog.dismiss();
+        }
+
+        class AsyncServerCall extends AsyncTask<List<NameValuePair>, Void, String> {
+
+            @Override
+            protected String doInBackground(List<NameValuePair>... list) {
+                String loginURL = "http://192.168.1.8:5000/v1/order";
+                JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
+                return json.toString();
+            }
+
+            protected void onPostExecute(String result){
+                System.out.println("Item added");
+            }
         }
     }
 }
