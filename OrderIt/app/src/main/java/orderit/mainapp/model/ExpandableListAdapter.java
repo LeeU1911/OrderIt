@@ -27,7 +27,7 @@ import orderit.mainapp.dialog.OrderPopupDialog;
  * Created by LanTuan on 1/19/16.
  */
 
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
     private Context context;
     private LayoutInflater layoutInflater;
