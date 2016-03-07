@@ -26,6 +26,15 @@
         <item name="android:clickable">true</item>
     </style>
 
+    <style name="FinishButton" parent="@android:style/Widget.Button">
+        <item name="android:gravity">center_vertical|center_horizontal</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:background">@color/colorOfLoginBackground</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+    </style>
+
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@color/colorWhite</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
