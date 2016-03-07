@@ -102,3 +102,19 @@ INSERT INTO items (rowid, id, name, price, price_unit, average_make_time, averag
 INSERT INTO items (rowid, id, name, price, price_unit, average_make_time, average_make_time_unit, category_id, created, modified) VALUES (null, null, '	Sex on the beach	',	85000	 , 'VND', 10, 'min', 8, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000'); 
 INSERT INTO items (rowid, id, name, price, price_unit, average_make_time, average_make_time_unit, category_id, created, modified) VALUES (null, null, '	Black Russia	',	65000	 , 'VND', 10, 'min', 8, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000'); 
 INSERT INTO items (rowid, id, name, price, price_unit, average_make_time, average_make_time_unit, category_id, created, modified) VALUES (null, null, '	Strawberry	',	85000	 , 'VND', 10, 'min', 8, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000'); 
+
+
+INSERT INTO order_status (rowid, id, name, created, modified) VALUES (null, null, 'new', '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_status (rowid, id, name, created, modified) VALUES (null, null, 'order', '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_status (rowid, id, name, created, modified) VALUES (null, null, 'paid', '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+
+INSERT INTO orders (rowid, id, user_id, table_id, status, created, modified) VALUES (null, null, 1, 1, 1, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 1, 2, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 2, 2, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 5, 2, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 45, 4, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 40, 5, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 35, 10, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 23, 21, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');
+INSERT INTO order_details (rowid, id, order_id, item_id, item_quantity, created, modified) VALUES (null, null, 1, 56, 7, '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');

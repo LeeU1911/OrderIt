@@ -41,8 +41,6 @@ CREATE TABLE orders (
 	id integer NOT NULL,
 	user_id integer,
 	table_id integer,
-	item_id integer,
-	item_quantity integer,
 	status integer,
 	created datetime,
 	modified datetime,
@@ -81,6 +79,16 @@ CREATE TABLE table_status (
 CREATE TABLE categories (
 	id integer,
 	name varchar,
+	created datetime,
+	modified datetime,
+	PRIMARY KEY (id)
+);
+
+CREATE TABLE order_details (
+	id integer,
+	order_id integer,
+	item_id integer,
+	item_quantity integer,
 	created datetime,
 	modified datetime,
 	PRIMARY KEY (id)
