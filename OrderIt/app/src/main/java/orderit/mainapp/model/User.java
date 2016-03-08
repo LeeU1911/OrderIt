@@ -8,9 +8,18 @@ import java.util.Locale;
  * Created by Tri Trieu on 10/01/2016.
  */
 public class User {
+    int id;
     String userName, password;
     int businessId, roleId;
     Date createDate, modifiedDate;
+
+    public void setId(int id){
+        this.id = id;
+    }
+
+    public int getId(){
+        return this.id;
+    }
 
     public void setUserName(String userName){
         this.userName = userName;

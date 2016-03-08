@@ -16,6 +16,7 @@ import orderit.mainapp.model.BillOrderItemAdapter;
 import orderit.mainapp.model.BillExpandListAdapter;
 import orderit.mainapp.model.BillTotalChildItem;
 import orderit.mainapp.model.BillTotalGroupItem;
+import orderit.mainapp.database.DatabaseAccess;
 
 public class BillManagementActivity extends AppCompatActivity {
     /**
@@ -37,38 +38,20 @@ public class BillManagementActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        /** Query table list from database and assign to array */
-        //DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
-        //databaseAccess.open();
-        //billRowItem = databaseAccess.getBillRowItems();
-        //databaseAccess.close();
-
         orderList = (ListView) findViewById(R.id.OrderList);
         expListView = (ExpandableListView) findViewById(R.id.Bill);
         expListAdapter = new BillExpandListAdapter(this);
 
-        /** Test */
-        createTestListView();
+        /** Display data on list view */
+        createListViewData();
     }
 
-    private void createTestListView() {
-        BillOrderItem billOrderItem1 = new BillOrderItem();
-        billOrderItem1.setOrderName("Bia Saigon");
-        billOrderItem1.setQuantity("x10");
-        billOrderItem1.setSinglePrice("150.000");
-        billOrderItemList.add(billOrderItem1);
-
-        BillOrderItem billOrderItem2 = new BillOrderItem();
-        billOrderItem2.setOrderName("Hao nuong pho mai");
-        billOrderItem2.setQuantity("x6");
-        billOrderItem2.setSinglePrice("15.000");
-        billOrderItemList.add(billOrderItem2);
-
-        BillOrderItem billOrderItem3 = new BillOrderItem();
-        billOrderItem3.setOrderName("Lau bo");
-        billOrderItem3.setQuantity("x1");
-        billOrderItem3.setSinglePrice("280.000");
-        billOrderItemList.add(billOrderItem3);
+    private void createListViewData() {
+        /** Query table list from database and assign to array */
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        billOrderItemList = databaseAccess.getBillOrderItemListByOrderID(1);
+        databaseAccess.close();
 
         adapter = new BillOrderItemAdapter(this, billOrderItemList);
         this.orderList.setAdapter(adapter);
