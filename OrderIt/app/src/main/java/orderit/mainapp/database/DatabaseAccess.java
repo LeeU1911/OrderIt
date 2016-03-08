@@ -75,12 +75,12 @@ public class DatabaseAccess {
      */
     public List<TableItem> getTableItems() {
         List<TableItem> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT name FROM tables", null);
+        Cursor cursor = database.rawQuery("SELECT name, status FROM tables", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TableItem tableItem = new TableItem();
             tableItem.setTableName(cursor.getString(0));
-            //tableItem.setTableStat(cursor.getString(1));
+            tableItem.setTableStatId(cursor.getInt(1));
 
             list.add(tableItem);
             cursor.moveToNext();

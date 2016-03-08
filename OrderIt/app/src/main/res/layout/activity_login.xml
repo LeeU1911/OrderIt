@@ -8,14 +8,22 @@
     android:clickable="true"
     android:focusableInTouchMode="true">
 
-
+    <TextView
+        android:id="@+id/lblLoginErrMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorWhite"
+        android:fontFamily="fonts/FutureStd-Light.ttf"
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"
+        android:alpha="0.8" />
 
     <ImageView
         android:id="@+id/send_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/frame"
-        android:layout_centerHorizontal="true"
+        android:layout_alignLeft="@+id/frame"
         android:src="@drawable/icon"
         android:alpha="0.8"
         android:contentDescription="icon"/>
@@ -43,8 +51,9 @@
             android:textColorHint="@color/colorWhite"
             android:fontFamily="fonts/FutureStd-Light.ttf"
             android:textSize="20sp"
-            android:paddingLeft="20px"
-            android:alpha="0.8" />
+            android:paddingLeft="20dp"
+            android:alpha="0.8"
+            android:privateImeOptions="nm"/>
 
         <EditText
             android:id="@+id/txtPassword"
@@ -59,20 +68,9 @@
             android:fontFamily="fonts/FutureStd-Light.ttf"
             android:textSize="20sp"
             android:alpha="0.8"
-            android:layout_marginTop="20px"
-            android:paddingLeft="20px"
+            android:layout_marginTop="1dp"
+            android:paddingLeft="20dp"
             android:imeOptions="actionDone"/>
-
-        <TextView
-            android:id="@+id/lblLoginErrMsg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:fontFamily="fonts/FutureStd-Light.ttf"
-            android:textSize="20sp"
-            android:layout_marginTop="0px"
-            android:layout_marginBottom="10px"
-            android:alpha="0.8" />
 
         <Button
             android:id="@+id/btnLogin"
