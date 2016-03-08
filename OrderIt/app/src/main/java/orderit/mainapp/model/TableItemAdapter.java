@@ -40,9 +40,15 @@ public class TableItemAdapter extends ArrayAdapter<TableItem> {
         if (convertView == null) {
             convertView = this.inflater.inflate(R.layout.list_row, parent, false);
         }
-        TextView txtName = (TextView) convertView.findViewById(R.id.tvTableName);
+
         TableItem tableItem = tableItemList.get(position);
+
+        TextView txtName = (TextView) convertView.findViewById(R.id.tvTableName);
         txtName.setText(tableItem.getTableName());
+
+        TextView txtStatus = (TextView) convertView.findViewById(R.id.tvTableStat);
+        txtStatus.setText(getTableStatusbyId(tableItem.getTableStatId()));
+
         return convertView;
     }
 
@@ -64,5 +70,35 @@ public class TableItemAdapter extends ArrayAdapter<TableItem> {
             }
         }
         notifyDataSetChanged();
+    }
+
+    protected String getTableStatusbyId(int tableStatusId) {
+
+        String tableStatus = "";
+        switch (tableStatusId) {
+            case TableItem.TABLE_STATUS_AVAILABLE:
+                tableStatus = mContext.getString(R.string.table_status_available);
+                break;
+            case TableItem.TABLE_STATUS_NOT_AVAILABLE:
+                tableStatus = mContext.getString(R.string.table_status_not_available);
+                break;
+            case TableItem.TABLE_STATUS_STARTER_ORDER:
+                tableStatus = mContext.getString(R.string.table_status_starter);
+                break;
+            case TableItem.TABLE_STATUS_MAIN_ORDER:
+                tableStatus = mContext.getString(R.string.table_status_main);
+                break;
+            case TableItem.TABLE_STATUS_DESSERT_ORDER:
+                tableStatus = mContext.getString(R.string.table_status_dessert);
+                break;
+            case TableItem.TABLE_STATUS_DRINK_ORDER:
+                tableStatus = mContext.getString(R.string.table_status_drink);
+                break;
+            default:
+                tableStatus = mContext.getString(R.string.table_status_available);
+                break;
+        }
+
+        return tableStatus;
     }
 }
