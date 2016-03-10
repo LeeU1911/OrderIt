@@ -108,7 +108,9 @@ public class LoginActivity extends Activity {
             loginErrorMsg.setText(R.string.msg_login_error);
         }
         else {
+            databaseAccess.open();
             String _password = databaseAccess.SearchPassword(userName);
+            databaseAccess.close();
             /** Logging successfully */
             if (password.equalsIgnoreCase(_password)) {
                 /** Jump to table list screen */
@@ -213,7 +215,9 @@ public class LoginActivity extends Activity {
                         user.setPassword(inputPassword.getText().toString());
                         user.setBusinessId(1);
                         user.setRoleId(1);
+                        databaseAccess.open();
                         databaseAccess.InsertUser(user);
+                        databaseAccess.close();
                         /** Jump to table list screen */
                         Intent tableListIntent = new Intent(getApplicationContext(), TableListActivity.class);
                         tableListIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

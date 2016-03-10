@@ -59,15 +59,6 @@ public class DatabaseAccess {
     private static final String ORDERDETAILS_COLUMN_CREATEDATE = "created";
     private static final String ORDERDETAILS_COLUMN_MODIFIEDDATE = "modified";
 
-    /** "items" table */
- /**   private static final String ITEMS_TABLE = "items";
-    private static final String ITEMS_COLUMN_ORDERID = "order_id";
-    private static final String ITEMS_COLUMN_ITEMID = "item_id";
-    private static final String ITEMS_COLUMN_ITEMQUANTITY = "item_quantity";
-    private static final String ITEMS_COLUMN_STATUS = "status";
-    private static final String ITEMS_COLUMN_CREATEDATE = "created";
-    private static final String ITEMS_COLUMN_MODIFIEDDATE = "modified";
-*/
     /** Private constructor to avoid object creation from outside classes */
     private DatabaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
@@ -96,7 +87,8 @@ public class DatabaseAccess {
     /** Read table name from the database */
     public List<TableItem> getTableItems() {
         List<TableItem> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT name, status FROM tables", null);
+        String query = "Select " + TABLES_COLUMN_NAME + ", " + TABLES_COLUMN_STATUS + " from " + TABLES_TABLE;
+        Cursor cursor = database.rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TableItem tableItem = new TableItem();
@@ -113,7 +105,6 @@ public class DatabaseAccess {
     /** Search password */
     public String SearchPassword(String userName)
     {
-        this.database = openHelper.getReadableDatabase();
         String query = "Select " + USERS_COLUMN_USERNAME + ", " + USERS_COLUMN_PASSWORD + " from " + USERS_TABLE;
         Cursor cursor = database.rawQuery(query, null);
         String _userName, _password = "12345677890-qrwereytryuuiuiyuisdfsdfggfhgjhkljklkl;czxcxzcvcbcvnvbmnbm,,<><><:";
@@ -129,24 +120,19 @@ public class DatabaseAccess {
             }
             while (cursor.moveToNext());
         }
-        this.database.close();
         return _password;
     }
 
     /** Insert user to local database */
     public void InsertUser(User u)
     {
-        this.database = openHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USERS_COLUMN_ID, u.getId());
         values.put(USERS_COLUMN_USERNAME, u.getUserName());
         values.put(USERS_COLUMN_PASSWORD, u.getPassword());
         values.put(USERS_COLUMN_BUSINESSID, u.getBusinessId());
         values.put(USERS_COLUMN_ROLEID, u.getRoleId());
-//        values.put(USERS_COLUMN_CREATEDATE, u.getCreateDate());
-//        values.put(USERS_COLUMN_MODIFIEDDATE, u.getModifiedDate());
         this.database.insert(USERS_TABLE, null, values);
-        this.database.close();
     }
 
     /** Get list of bill order details */
