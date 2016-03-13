@@ -9,10 +9,19 @@ import android.os.Bundle;
 import android.view.View;
 
 import orderit.mainapp.R;
+import orderit.mainapp.database.DatabaseAccess;
+import orderit.mainapp.model.OrderManager;
 
 public class TableStatusActivity extends AppCompatActivity {
 
     public static final String ACTION_BAR_TITTLE = "Table Status";
+
+    public final static String ORDER_INFO = "orderInfo";
+    public final static String ORDER_ID = "orderId";
+
+    private int tableId;
+    private int tableStatus;
+    private OrderManager orderManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +30,32 @@ public class TableStatusActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(ACTION_BAR_TITTLE);
         }
         setContentView(R.layout.activity_table_status);
+
+        // Receive table information from Table List Activity
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra(TableListActivity.TABLE_INFO);
+        tableId = bundle.getInt(TableListActivity.TABLE_ID);
+        tableStatus = bundle.getInt(TableListActivity.TABLE_STATUS);
+
+        /** Query Order Information of specified Table ID from database */
+        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        orderManager = databaseAccess.QueryOrderInfoByTableID(tableId);
+        databaseAccess.close();
+
+
         View order = findViewById(R.id.order_row);
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent tableOrderIntent = new Intent(getApplicationContext(), NewTableOrderActivity.class);
                 tableOrderIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                // Pass Order ID to Table Order Activity
+                Bundle bundle = new Bundle();
+                bundle.putInt(ORDER_ID, orderManager.getId());
+                tableOrderIntent.putExtra(ORDER_INFO, bundle);
+
                 TaskStackBuilder builderOrder = TaskStackBuilder.create(getApplicationContext());
                 PendingIntent pendingOrderIntent =
                         builderOrder

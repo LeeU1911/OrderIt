@@ -11,9 +11,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import orderit.mainapp.model.BillOrderItem;
+import orderit.mainapp.model.MenuItem;
+import orderit.mainapp.model.MenuGroup;
+import orderit.mainapp.model.OrderItem;
+import orderit.mainapp.model.OrderManager;
 import orderit.mainapp.model.User;
 import orderit.mainapp.model.TableItem;
 
@@ -69,6 +75,32 @@ public class DatabaseAccess {
     private static final String ITEMS_COLUMN_MODIFIEDDATE = "modified";
 */
     /** Private constructor to avoid object creation from outside classes */
+
+    private static final String USER_COLUMN_USERNAME = "username";
+    private static final String USER_COLUMN_PASSWORD = "password";
+    private static final String USER_COLUMN_BUSINESSID = "business_id";
+    private static final String USER_COLUMN_ROLEID = "role_id";
+    private static final String USER_COLUMN_CREATEDATE = "created";
+    private static final String USER_COLUMN_MODIFIEDDATE = "modified";
+
+    private static final String TABLE_USERS = "users";
+
+
+    private static final int ITEM_CATEGORY_1_ID = 1;
+    private static final int ITEM_CATEGORY_2_ID = 2;
+    private static final int ITEM_CATEGORY_3_ID = 3;
+    private static final int ITEM_CATEGORY_4_ID = 4;
+    private static final int ITEM_CATEGORY_5_ID = 5;
+    private static final int ITEM_CATEGORY_6_ID = 6;
+    private static final int ITEM_CATEGORY_7_ID = 7;
+    private static final int ITEM_CATEGORY_8_ID = 8;
+
+    /**;
+     * Private constructor to avoid object creation from outside classes.
+     *
+     * @param context
+     */
+
     private DatabaseAccess(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
@@ -93,15 +125,22 @@ public class DatabaseAccess {
         }
     }
 
-    /** Read table name from the database */
-    public List<TableItem> getTableItems() {
+    /**
+     * Read table name from the database.
+     *
+     * @return a list of table name
+     */
+    public List<TableItem> InitTableItems() {
         List<TableItem> list = new ArrayList<>();
-        Cursor cursor = database.rawQuery("SELECT name, status FROM tables", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM tables", null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TableItem tableItem = new TableItem();
-            tableItem.setTableName(cursor.getString(0));
-            tableItem.setTableStatId(cursor.getInt(1));
+
+            tableItem.setId(cursor.getInt(0));
+            tableItem.setBusinessId(cursor.getInt(1));
+            tableItem.setName(cursor.getString(2));
+            tableItem.setStatus(cursor.getInt(3));
 
             list.add(tableItem);
             cursor.moveToNext();
@@ -168,4 +207,164 @@ public class DatabaseAccess {
         return list;
     }
 
+    /**
+     * Read Menu from the database.
+     *
+     * @return a hash map of Menu
+     */
+    public Map<Integer, MenuItem> InitMenu() {
+        Map<Integer, MenuItem> menuManager = new LinkedHashMap<Integer, MenuItem>();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM items", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            // Create new item
+            MenuItem menuItem = new MenuItem();
+
+            menuItem.setId(cursor.getInt(0));
+            menuItem.setName(cursor.getString(1));
+            menuItem.setPrice(cursor.getInt(2));
+            menuItem.setPriceUnit(cursor.getString(3));
+            menuItem.setAveMakeTime(cursor.getInt(4));
+            menuItem.setAveMakeTimeUnit(cursor.getString(5));
+            menuItem.setCategoryId(cursor.getInt(8));
+
+            menuManager.put(menuItem.getId(), menuItem);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return menuManager;
+    }
+
+    public OrderManager QueryOrderInfoByTableID(int tableID) {
+        OrderManager orderManager = new OrderManager();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM orders where table_id="+tableID+"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            orderManager.setId(cursor.getInt(0));
+            orderManager.setUserId(cursor.getInt(1));
+            orderManager.setTableId(cursor.getInt(2));
+            orderManager.setStatus(cursor.getInt(3));
+
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return orderManager;
+    }
+
+    public Map<Integer, OrderItem> QueryOrderItemByOrderID(int orderID) {
+        Map<Integer, OrderItem> orderItemMap = new LinkedHashMap<Integer, OrderItem>();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM order_details where order_id="+orderID+"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            OrderItem orderItem = new OrderItem();
+
+            orderItem.setId(cursor.getInt(0));
+            orderItem.setOrderId(cursor.getInt(1));
+            orderItem.setMenuItemId(cursor.getInt(2));
+            orderItem.setMenuItemQuantity(cursor.getInt(3));
+
+            orderItemMap.put(orderItem.getMenuItemId(), orderItem);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return orderItemMap;
+    }
+
+    public List<MenuGroup> QueryGroupMenu() {
+        List<MenuGroup> list = new ArrayList<MenuGroup>();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM categories", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            MenuGroup menuGroup = new MenuGroup();
+
+            menuGroup.setId(cursor.getInt(0));
+            menuGroup.setName(cursor.getString(1));
+
+            list.add(menuGroup);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return list;
+    }
+
+    public Map<Integer, List<MenuItem>> makeMenu(List<MenuGroup> menuGroups, Map<Integer, OrderItem> orderItemMap ) {
+        Map<Integer, List<MenuItem>> menuMap = new LinkedHashMap<Integer, List<MenuItem>>();
+
+        for (MenuGroup menuGroup : menuGroups) {
+
+            List<MenuItem> menuItemList = new ArrayList<MenuItem>();
+
+            int totalOrderQuantity = 0;
+
+            Cursor cursor = database.rawQuery("SELECT * FROM items where category_id="+menuGroup.getId()+"", null);
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                // Create new item
+                MenuItem menuItem = new MenuItem();
+
+                menuItem.setId(cursor.getInt(0));
+                menuItem.setName(cursor.getString(1));
+                menuItem.setPrice(cursor.getInt(2));
+                menuItem.setPriceUnit(cursor.getString(3));
+                menuItem.setAveMakeTime(cursor.getInt(4));
+                menuItem.setAveMakeTimeUnit(cursor.getString(5));
+                menuItem.setCategoryId(cursor.getInt(8));
+
+                if(orderItemMap.get(menuItem.getId()) != null) {
+                    totalOrderQuantity += orderItemMap.get(menuItem.getId()).getMenuItemQuantity();
+                }
+
+                menuItemList.add(menuItem);
+                cursor.moveToNext();
+            }
+            cursor.close();
+
+            menuGroup.setOrderQuantity(totalOrderQuantity);
+            menuMap.put(menuGroup.getId(), menuItemList);
+        }
+
+        return menuMap;
+    }
+
+    public int QueryTableIdByOrderId(int OrderId) {
+        int tableId = 0;
+
+        Cursor cursor = database.rawQuery("SELECT table_id FROM orders where id="+OrderId+"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            tableId = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return tableId;
+    }
+
+    public int QueryTableStatusByTableId(int TableId) {
+        int tableStatus = 0;
+
+        Cursor cursor = database.rawQuery("SELECT status FROM tables where id="+TableId+"", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            tableStatus = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return tableStatus;
+    }
+
+    public void UpdateOrderQuantity(int orderId, int itemId, int newQuantity) {
+        ContentValues cv = new ContentValues();
+        cv.put("item_quantity", newQuantity);
+        database.update("order_details", cv, "order_id="+orderId+" and item_id="+itemId, null);
+    }
 }

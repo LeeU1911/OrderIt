@@ -44,12 +44,17 @@ public class TableItemAdapter extends ArrayAdapter<TableItem> {
         TableItem tableItem = tableItemList.get(position);
 
         TextView txtName = (TextView) convertView.findViewById(R.id.tvTableName);
-        txtName.setText(tableItem.getTableName());
+        txtName.setText(tableItem.getName());
 
         TextView txtStatus = (TextView) convertView.findViewById(R.id.tvTableStat);
-        txtStatus.setText(getTableStatusbyId(tableItem.getTableStatId()));
+        txtStatus.setText(getTableStatusbyId(tableItem.getStatus()));
 
         return convertView;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return this.dataList.get(position).getId();
     }
 
     // Filter Class
@@ -63,7 +68,7 @@ public class TableItemAdapter extends ArrayAdapter<TableItem> {
         {
             for (TableItem tableItem : dataList)
             {
-                if (tableItem.getTableName().toLowerCase(Locale.getDefault()).contains(charText))
+                if (tableItem.getName().toLowerCase(Locale.getDefault()).contains(charText))
                 {
                     tableItemList.add(tableItem);
                 }

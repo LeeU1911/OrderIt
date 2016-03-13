@@ -30,6 +30,10 @@ import orderit.mainapp.model.TableItemAdapter;
 public class TableListActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener {
 
+    public final static String TABLE_INFO = "tableInfo";
+    public final static String TABLE_ID = "tableId";
+    public final static String TABLE_STATUS = "tableStatus";
+
     /**
      * Variables
      */
@@ -58,7 +62,7 @@ public class TableListActivity extends AppCompatActivity implements
         /** Query table list from database and assign to array */
         DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
-        tableItems = databaseAccess.getTableItems();
+        tableItems = databaseAccess.InitTableItems();
         databaseAccess.close();
 
         /** Data from data source(database) is assigned to ArrayAdapter */
@@ -70,6 +74,13 @@ public class TableListActivity extends AppCompatActivity implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent tableStatusIntent = new Intent(getApplicationContext(), TableStatusActivity.class);
                 tableStatusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                // Pass table ID and Status to Table Status Activity
+                Bundle bundle = new Bundle();
+                bundle.putInt(TABLE_ID, tableItems.get(position).getId());
+                bundle.putInt(TABLE_STATUS, tableItems.get(position).getStatus());
+                tableStatusIntent.putExtra(TABLE_INFO, bundle);
+
                 TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
                 PendingIntent pendingIntent =
                         builder
