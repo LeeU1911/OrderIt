@@ -123,12 +123,7 @@ public class DatabaseAccess {
      */
     public List<TableItem> InitTableItems() {
         List<TableItem> list = new ArrayList<>();
-<<<<<<< HEAD
-        String query = "Select " + TABLES_COLUMN_NAME + ", " + TABLES_COLUMN_STATUS + " from " + TABLES_TABLE;
-        Cursor cursor = database.rawQuery(query, null);
-=======
         Cursor cursor = database.rawQuery("SELECT * FROM tables", null);
->>>>>>> origin/master
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             TableItem tableItem = new TableItem();
