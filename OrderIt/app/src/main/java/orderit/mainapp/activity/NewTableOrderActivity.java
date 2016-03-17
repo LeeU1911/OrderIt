@@ -1,29 +1,50 @@
 package orderit.mainapp.activity;
 
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Menu;
-import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import orderit.mainapp.R;
+import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.model.ExpandableListAdapter;
+import orderit.mainapp.model.MenuItem;
+import orderit.mainapp.model.MenuGroup;
 import orderit.mainapp.model.OrderChildItem;
-import orderit.mainapp.model.OrderGroupItem;
+import orderit.mainapp.model.OrderItem;
 
 public class NewTableOrderActivity extends AppCompatActivity {
 
     private static final String ACTION_BAR_TITTLE = "Order";
 
+    private static final int GROUP_ID_RANGE_DRINK = 10; // 1 ~ 10
+    private static final int GROUP_ID_HEADER_RECENT = 101;
+    private static final int GROUP_ID_RECENT = 102;
+    private static final int GROUP_ID_HEADER_TOPRANK = 103;
+    private static final int GROUP_ID_TOPRANK = 104;
+
     ExpandableListView expListView;
     ExpandableListAdapter expListAdapter;
+
+    private int orderId;
+
+    public Map<Integer, OrderItem> orderItemMap;
+    private Map<Integer, MenuItem> menuManager;
+
+
+    public List<MenuGroup> groupMenuList;
+    public Map<Integer, List<MenuItem>> mapMenu;
+    public Map<Integer, List<MenuItem>> mapFilteredMenu;
+
+
+    private DatabaseAccess databaseAccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,83 +54,71 @@ public class NewTableOrderActivity extends AppCompatActivity {
             getSupportActionBar().setTitle(ACTION_BAR_TITTLE);
         }
 
+        // Receive order information from Table Status Activity
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra(TableStatusActivity.ORDER_INFO);
+        orderId = bundle.getInt(TableStatusActivity.ORDER_ID);
+
+        /** Query Order Item base on Order ID from database */
+        databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess.open();
+        orderItemMap = databaseAccess.QueryOrderItemByOrderID(orderId);
+        databaseAccess.close();
+
+        /** Init menu item */
+        databaseAccess.open();
+        menuManager = databaseAccess.InitMenu();
+        databaseAccess.close();
+
+        makeMenuGroupData();
+        makeMenuItemData();
+
         this.expListView = (ExpandableListView) findViewById(R.id.OrderList);
-
-        this.expListAdapter = new ExpandableListAdapter(this);
-        createTestData();
-
+        this.expListAdapter = new ExpandableListAdapter(this, groupMenuList, mapMenu, mapFilteredMenu, orderItemMap, databaseAccess);
         this.expListView.setAdapter(this.expListAdapter);
 
         //setGroupIndicatorToRight();
         this.expListView.setGroupIndicator(null);
     }
 
-    private void createTestData() {
-        // Stater
-        OrderGroupItem stater = new OrderGroupItem();
-        stater.setIsHeader(false);
-        stater.setCatName("Stater");
-        List<OrderChildItem> staterChild = new ArrayList<OrderChildItem>();
-        staterChild.add(new OrderChildItem("Soup1", 1));
-        staterChild.add(new OrderChildItem("Soup2", 2));
-        staterChild.add(new OrderChildItem("Soup3", 1));
-        this.expListAdapter.addCategory(stater, staterChild);
+    private void makeMenuGroupData() {
 
-        // Main
-        OrderGroupItem main = new OrderGroupItem();
-        main.setIsHeader(false);
-        main.setCatName("Mains");
-        List<OrderChildItem> mainChild = new ArrayList<OrderChildItem>();
-        mainChild.add(new OrderChildItem("Chicken", 2));
-        mainChild.add(new OrderChildItem("Fish", 2));
-        mainChild.add(new OrderChildItem("Fork", 3));
-        mainChild.add(new OrderChildItem("Egg", 4));
-        this.expListAdapter.addCategory(main, mainChild);
+        // Init menu group
+        databaseAccess.open();
+        groupMenuList = databaseAccess.QueryGroupMenu();
+        databaseAccess.close();
 
-        // Desert
-        OrderGroupItem desert = new OrderGroupItem();
-        desert.setIsHeader(false);
-        desert.setCatName("Desert");
-        List<OrderChildItem> desertChild = new ArrayList<OrderChildItem>();
-        desertChild.add(new OrderChildItem("Fruit", 5));
-        this.expListAdapter.addCategory(desert, desertChild);
-
-        // Drinks
-        OrderGroupItem drink = new OrderGroupItem();
-        drink.setIsHeader(false);
-        drink.setCatName("Drinks");
-        List<OrderChildItem> drinkChild = new ArrayList<OrderChildItem>();
-        drinkChild.add(new OrderChildItem("Beer", 50));
-        drinkChild.add(new OrderChildItem("Coca cola", 2));
-        drinkChild.add(new OrderChildItem("Pepsi", 4));
-        this.expListAdapter.addCategory(drink, drinkChild);
-
-        // Header1
-        OrderGroupItem header1 = new OrderGroupItem();
-        header1.setIsHeader(true);
-        header1.setCatName("Header1");
-        List<OrderChildItem> header1Child = new ArrayList<OrderChildItem>();
-        this.expListAdapter.addCategory(header1, header1Child);
+        // Init other group
+        // Recent Header
+        MenuGroup headerRecent = new MenuGroup();
+        headerRecent.setId(GROUP_ID_HEADER_RECENT);
+        headerRecent.setIsHeader(true);
+        groupMenuList.add(headerRecent);
 
         // Recent
-        OrderGroupItem recent = new OrderGroupItem();
-        recent.setIsHeader(false);
-        recent.setCatName("Recent");
-        List<OrderChildItem> recentChild = new ArrayList<OrderChildItem>();
-        this.expListAdapter.addCategory(recent, recentChild);
+        MenuGroup recent = new MenuGroup();
+        recent.setId(GROUP_ID_RECENT);
+        recent.setName("Recent");
+        groupMenuList.add(recent);
 
-        OrderGroupItem header2 = new OrderGroupItem();
-        header2.setIsHeader(true);
-        header2.setCatName("Header2");
-        List<OrderChildItem> header2Child = new ArrayList<OrderChildItem>();
-        this.expListAdapter.addCategory(header2, header2Child);
+        // Top Ranking Header
+        MenuGroup headerTopRank = new MenuGroup();
+        headerTopRank.setId(GROUP_ID_HEADER_TOPRANK);
+        headerTopRank.setIsHeader(true);
+        groupMenuList.add(headerTopRank);
 
         // Top Ranking
-        OrderGroupItem topRank = new OrderGroupItem();
-        topRank.setIsHeader(false);
-        topRank.setCatName("Top Ranking");
-        List<OrderChildItem> topRankChild = new ArrayList<OrderChildItem>();
-        this.expListAdapter.addCategory(topRank, topRankChild);
+        MenuGroup topRank = new MenuGroup();
+        topRank.setId(GROUP_ID_TOPRANK);
+        topRank.setName("Top Ranking");
+        groupMenuList.add(topRank);
+    }
+
+    private void makeMenuItemData() {
+        // Init menu group
+        databaseAccess.open();
+        mapFilteredMenu = mapMenu = databaseAccess.makeMenu(groupMenuList, orderItemMap);
+        databaseAccess.close();
     }
 
     private void setGroupIndicatorToRight() {
@@ -141,4 +150,45 @@ public class NewTableOrderActivity extends AppCompatActivity {
 //        getMenuInflater().inflate(R.menu.activity_main, menu);
 //        return true;
 //    }
+
+    @Override
+    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                backBtnClick();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
+    private void backBtnClick() {
+        Intent tableStatusIntent = new Intent(getApplicationContext(), TableStatusActivity.class);
+        tableStatusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        databaseAccess.open();
+        int tableId, tableStatus;
+        tableId = databaseAccess.QueryTableIdByOrderId(orderId);
+        //tableStatus = databaseAccess.QueryTableStatusByTableId(tableId);
+        tableStatus = 0;
+        databaseAccess.close();
+        // Pass table ID and Status to Table Status Activity
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(TableListActivity.TABLE_ID, tableId);
+        bundle.putInt(TableListActivity.TABLE_STATUS, tableStatus);
+        tableStatusIntent.putExtra(TableListActivity.TABLE_INFO, bundle);
+
+        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
+        PendingIntent pendingIntent =
+                builder
+                        // add all of DetailsActivity's parents to the stack,
+                        // followed by DetailsActivity itself
+                        .addNextIntentWithParentStack(tableStatusIntent)
+                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.startActivities();
+        finish();
+    }
 }

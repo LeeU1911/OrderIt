@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import orderit.mainapp.R;
+import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.dialog.OrderPopupDialog;
 
 /**
@@ -32,36 +33,40 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private Context context;
     private LayoutInflater layoutInflater;
 
-    private List<OrderGroupItem> categoryList = new ArrayList<OrderGroupItem>();
-
-    private Map<OrderGroupItem, List<OrderChildItem>> orderList = new LinkedHashMap<OrderGroupItem, List<OrderChildItem>>();
-
-    private Map<OrderGroupItem, List<OrderChildItem>> filteredList = new LinkedHashMap<OrderGroupItem, List<OrderChildItem>>();
+    private List<MenuGroup> groupMenuList;
+    private Map<Integer, List<MenuItem>> mapMenu;
+    private Map<Integer, List<MenuItem>> mapFilteredMenu;
+    private Map<Integer, OrderItem> orderItemMap;
 
     private Filter                  filter;
 
     protected int selGroupPosition = -1;
     protected int selChildPosition = -1;
 
+    private DatabaseAccess databaseAccess;
 
-    public ExpandableListAdapter(Context context) {
+
+    public ExpandableListAdapter(Context context,
+                                 List<MenuGroup> groupMenuList,
+                                 Map<Integer, List<MenuItem>> mapMenu,
+                                 Map<Integer, List<MenuItem>> mapFilteredMenu,
+                                 Map<Integer, OrderItem> orderItemMap,
+                                 DatabaseAccess databaseAccess) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
-
-    public void addCategory(OrderGroupItem groupItems, List<OrderChildItem> childItems) {
-        this.categoryList.add(groupItems);
-        this.orderList.put(groupItems, childItems);
-        this.filteredList.put(groupItems, childItems);
-        notifyDataSetChanged();
+        this.groupMenuList = groupMenuList;
+        this.mapMenu = mapMenu;
+        this.mapFilteredMenu = mapFilteredMenu;
+        this.orderItemMap = orderItemMap;
+        this.databaseAccess = databaseAccess;
     }
 
     public Object getChild(int groupPosition, int childPosition) {
-        return this.filteredList.get(this.categoryList.get(groupPosition)).get(childPosition);
+        return this.mapFilteredMenu.get(this.groupMenuList.get(groupPosition).getId()).get(childPosition);
     }
 
     public int getChildrenCount(int groupPosition) {
-        return this.filteredList.get(this.categoryList.get(groupPosition)).size();
+        return this.mapFilteredMenu.get(this.groupMenuList.get(groupPosition).getId()).size();
     }
 
     public long getChildId(int groupPosition, int childPosition) {
@@ -73,17 +78,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
         try {
-            OrderChildItem orderChildItem = (OrderChildItem)this.getChild(groupPosition, childPosition);
-            final String diskName = orderChildItem.getChildName();
-            final int diskCnt = orderChildItem.getOrderCnt();
-
+            MenuItem menuItem = (MenuItem)this.getChild(groupPosition, childPosition);
+            final String name = menuItem.getName();
+            int value = 0;
+            if(orderItemMap.get(menuItem.getId()) != null) {
+                value = orderItemMap.get(menuItem.getId()).getMenuItemQuantity();
+            }
+            final int quantity = value;
 
             convertView = layoutInflater.inflate(R.layout.order_child_item, null);
 
             TextView disk = (TextView) convertView.findViewById(R.id.txtOrderDisk);
-            disk.setText(diskName);
+            disk.setText(name);
             TextView diskNo = (TextView) convertView.findViewById(R.id.txtOrderDiskNo);
-            diskNo.setText(String.format("%s", diskCnt));
+            diskNo.setText(String.format("%s", quantity));
 
             ImageView btnAdd = (ImageView) convertView.findViewById(R.id.btnOrderAdd);
             btnAdd.setOnClickListener(new OnClickListener() {
@@ -93,7 +101,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     selGroupPosition = groupPosition;
                     selChildPosition = childPosition;
 
-                    DialogFragment newFragment = OrderPopupDialog.newInstance(ExpandableListAdapter.this, context, diskName, diskCnt);
+                    DialogFragment newFragment = OrderPopupDialog.newInstance(ExpandableListAdapter.this, context, name, quantity);
                     FragmentActivity activity = (FragmentActivity)(context);
                     FragmentManager fm = activity.getSupportFragmentManager();
                     newFragment.show(fm, "popup_dialog");
@@ -106,11 +114,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     }
 
     public Object getGroup(int groupPosition) {
-        return this.categoryList.get(groupPosition);
+        return this.groupMenuList.get(groupPosition);
     }
 
     public int getGroupCount() {
-        return this.categoryList.size();
+        return this.groupMenuList.size();
     }
 
     public long getGroupId(int groupPosition) {
@@ -120,19 +128,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
         try {
-            OrderGroupItem orderGroupItem = (OrderGroupItem)this.getGroup(groupPosition);
+            MenuGroup menuGroup = (MenuGroup)this.getGroup(groupPosition);
 
-            int resourceId = orderGroupItem.isHeader() ?
+            int resourceId = menuGroup.isHeader() ?
                         R.layout.order_group_header :
                         R.layout.order_group_item;
 
             convertView = layoutInflater.inflate(resourceId, null);
 
 
-            if(!orderGroupItem.isHeader()) {
+            if(!menuGroup.isHeader()) {
                 TextView item = (TextView) convertView.findViewById(R.id.tvOrderCat);
-                item.setText(orderGroupItem.getCatName());
+                item.setText(menuGroup.getName());
                 item.setTypeface(null, Typeface.BOLD);
+            }
+
+            TextView txtQuantity = (TextView) convertView.findViewById(R.id.tvOrderCnt);
+            if(menuGroup.getOrderQuantity() > 0) {
+                txtQuantity.setText(String.format("%s", menuGroup.getOrderQuantity()));
+            }else {
+                txtQuantity.setText("");
             }
 
         }catch (Exception e) {
@@ -160,8 +175,20 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         // TODO add your implementation.
         if((selGroupPosition >= 0) && (selChildPosition >= 0)) {
             Log.d("TAG", String.format("%s", changedValue));
-            OrderChildItem orderChildItem = (OrderChildItem)this.getChild(selGroupPosition, selChildPosition);
-            orderChildItem.setOrderCnt(changedValue);
+            MenuItem menuItem = (MenuItem)this.getChild(selGroupPosition, selChildPosition);
+            MenuGroup menuGroup = (MenuGroup)this.getGroup(selGroupPosition);
+            if(orderItemMap.get(menuItem.getId()) != null) {
+                int curOrderQuantity = orderItemMap.get(menuItem.getId()).getMenuItemQuantity();
+                orderItemMap.get(menuItem.getId()).setMenuItemQuantity(changedValue);
+
+                // Update database
+                databaseAccess.open();
+                databaseAccess.UpdateOrderQuantity(orderItemMap.get(menuItem.getId()).getOrderId(), menuItem.getId(), changedValue);
+                databaseAccess.close();
+
+                int curGrpQuantity = menuGroup.getOrderQuantity();
+                menuGroup.setOrderQuantity(curGrpQuantity + (changedValue - curOrderQuantity));
+            }
             notifyDataSetChanged();
         }
     }

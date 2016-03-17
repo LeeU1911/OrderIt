@@ -3,12 +3,13 @@ package orderit.mainapp.model;
 /**
  * Created by LanTuan on 1/21/16.
  */
-public class OrderChildItem {
+public class MenuGroup {
 
     // Variables
     private int     id;
-    private String  name;
+    private String  name = "";
     private int     orderQuantity = 0;
+    private boolean isHeader = false;
 
     public int getId() {
         return id;
@@ -32,5 +33,13 @@ public class OrderChildItem {
 
     public void setOrderQuantity(int orderQuantity) {
         this.orderQuantity = orderQuantity;
+    }
+
+    public boolean isHeader() {
+        return isHeader;
+    }
+
+    public void setIsHeader(boolean isHeader) {
+        this.isHeader = isHeader;
     }
 }

@@ -15,22 +15,50 @@ public class TableItem implements Serializable {
     public static final int TABLE_STATUS_DESSERT_ORDER = 4;
     public static final int TABLE_STATUS_DRINK_ORDER = 5;
 
-    private String tableName;
-    private int tableStatId = TABLE_STATUS_AVAILABLE;
+    private int     id;
+    private int     businessId;
+    private String  name;
+    private int     status = TABLE_STATUS_AVAILABLE;
 
-    public String getTableName() {
-        return tableName;
+    private OrderManager    orderManager;
+
+    public int getId() {
+        return id;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getTableStatId() {
-        return tableStatId;
+    public int getBusinessId() {
+        return businessId;
     }
 
-    public void setTableStatId(int tableStat) {
-        this.tableStatId = tableStat;
+    public void setBusinessId(int businessId) {
+        this.businessId = businessId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public OrderManager getOrderManager() {
+        return orderManager;
+    }
+
+    public void setOrderManager(OrderManager orderManager) {
+        this.orderManager = orderManager;
     }
 }
