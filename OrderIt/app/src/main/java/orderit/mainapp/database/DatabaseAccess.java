@@ -10,7 +10,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,10 +60,10 @@ public class DatabaseAccess {
 
     /** "order_details" table */
     private static final String ORDERDETAILS_TABLE = "order_details";
+    private static final String ORDERDETAILS_COLUMN_ID = "id";
     private static final String ORDERDETAILS_COLUMN_ORDERID = "order_id";
     private static final String ORDERDETAILS_COLUMN_ITEMID = "item_id";
     private static final String ORDERDETAILS_COLUMN_ITEMQUANTITY = "item_quantity";
-    private static final String ORDERDETAILS_COLUMN_STATUS = "status";
     private static final String ORDERDETAILS_COLUMN_CREATEDATE = "created";
     private static final String ORDERDETAILS_COLUMN_MODIFIEDDATE = "modified";
 
@@ -85,6 +87,10 @@ public class DatabaseAccess {
     private static final int ITEM_CATEGORY_6_ID = 6;
     private static final int ITEM_CATEGORY_7_ID = 7;
     private static final int ITEM_CATEGORY_8_ID = 8;
+
+    private static final int ORDER_STATUS_NEW = 1;
+    private static final int ORDER_STATUS_ORDER = 2;
+    private static final int ORDER_STATUS_PAID = 3;
 
     /**;
      * Private constructor to avoid object creation from outside classes.
@@ -225,16 +231,42 @@ public class DatabaseAccess {
     public OrderManager QueryOrderInfoByTableID(int tableID) {
         OrderManager orderManager = new OrderManager();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM orders where table_id="+tableID+"", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            orderManager.setId(cursor.getInt(0));
-            orderManager.setUserId(cursor.getInt(1));
-            orderManager.setTableId(cursor.getInt(2));
-            orderManager.setStatus(cursor.getInt(3));
+        Cursor cursor = database.rawQuery("SELECT * FROM " + ORDERS_TABLE +
+                " WHERE " + ORDERS_COLUMN_TABLEID + "=" + tableID + " AND " + ORDERS_COLUMN_STATUS + "<" + ORDER_STATUS_PAID, null);
 
-            cursor.moveToNext();
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                orderManager.setId(cursor.getInt(0));
+                orderManager.setUserId(cursor.getInt(1));
+                orderManager.setTableId(cursor.getInt(2));
+                orderManager.setStatus(cursor.getInt(3));
+
+                cursor.moveToNext();
+            }
+        } else {
+            orderManager.setUserId(1); // Temporarily assign
+            orderManager.setTableId(tableID);
+            orderManager.setStatus(ORDER_STATUS_NEW);
+
+            // Insert new order information to database
+            ContentValues cv = new ContentValues(5);
+
+            cv.put(ORDERS_COLUMN_USERID, 1); // Temporarily assign
+            cv.put(ORDERS_COLUMN_TABLEID, tableID);
+            cv.put(ORDERS_COLUMN_STATUS, ORDER_STATUS_NEW);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            cv.put(ORDERS_COLUMN_CREATEDATE, dateFormat.format(new Date())); //Insert 'now' as the date
+            cv.put(ORDERS_COLUMN_MODIFIEDDATE, dateFormat.format(new Date())); //Insert 'now' as the date
+
+            long insertId = database.insert(ORDERS_TABLE, null, cv);
+
+            if(insertId != -1) {
+                orderManager.setId(safeLongToInt(insertId));
+            }
         }
+
         cursor.close();
 
         return orderManager;
@@ -349,7 +381,33 @@ public class DatabaseAccess {
 
     public void UpdateOrderQuantity(int orderId, int itemId, int newQuantity) {
         ContentValues cv = new ContentValues();
-        cv.put("item_quantity", newQuantity);
-        database.update("order_details", cv, "order_id="+orderId+" and item_id="+itemId, null);
+        cv.put(ORDERDETAILS_COLUMN_ITEMQUANTITY, newQuantity);
+        database.update(ORDERDETAILS_TABLE, cv, ORDERDETAILS_COLUMN_ORDERID + "=" + orderId + " and " + ORDERDETAILS_COLUMN_ITEMID + "=" + itemId, null);
+    }
+
+    public void InsertNewOrder(OrderItem newOrder) {
+        ContentValues cv = new ContentValues(5);
+
+        cv.put(ORDERDETAILS_COLUMN_ORDERID, newOrder.getOrderId());
+        cv.put(ORDERDETAILS_COLUMN_ITEMID, newOrder.getMenuItemId());
+        cv.put(ORDERDETAILS_COLUMN_ITEMQUANTITY, newOrder.getMenuItemQuantity());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        cv.put(ORDERDETAILS_COLUMN_CREATEDATE, dateFormat.format(new Date())); //Insert 'now' as the date
+        cv.put(ORDERDETAILS_COLUMN_MODIFIEDDATE, dateFormat.format(new Date())); //Insert 'now' as the date
+
+        database.insert(ORDERDETAILS_TABLE, null, cv);
+    }
+
+    public void DeleteOrder(int orderId, int itemId) {
+        database.delete(ORDERDETAILS_TABLE, ORDERDETAILS_COLUMN_ORDERID + "=" + orderId + " and " + ORDERDETAILS_COLUMN_ITEMID + "=" + itemId, null);
+    }
+
+    private static int safeLongToInt(long l) {
+        if (l < Integer.MIN_VALUE || l > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException
+                    (l + " cannot be cast to int without changing its value.");
+        }
+        return (int) l;
     }
 }

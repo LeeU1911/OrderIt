@@ -69,4 +69,9 @@ public class BillManagementActivity extends AppCompatActivity {
 
     public void onBtnFinishClick(View view) {
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

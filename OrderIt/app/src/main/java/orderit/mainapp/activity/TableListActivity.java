@@ -72,8 +72,7 @@ public class TableListActivity extends AppCompatActivity implements
         this.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent tableStatusIntent = new Intent(getApplicationContext(), TableStatusActivity.class);
-                tableStatusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                Intent tableStatusIntent = new Intent(TableListActivity.this, TableStatusActivity.class);
 
                 // Pass table ID and Status to Table Status Activity
                 Bundle bundle = new Bundle();
@@ -81,15 +80,7 @@ public class TableListActivity extends AppCompatActivity implements
                 bundle.putInt(TABLE_STATUS, tableItems.get(position).getStatus());
                 tableStatusIntent.putExtra(TABLE_INFO, bundle);
 
-                TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
-                PendingIntent pendingIntent =
-                        builder
-                                // add all of DetailsActivity's parents to the stack,
-                                // followed by DetailsActivity itself
-                                .addNextIntentWithParentStack(tableStatusIntent)
-                                .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.startActivities();
-                finish();
+                startActivity(tableStatusIntent);
             }
         });
 
@@ -124,17 +115,8 @@ public class TableListActivity extends AppCompatActivity implements
         alertDialog.setPositiveButton(R.string.msg_yes,
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent tableLoginIntent = new Intent(getApplicationContext(), LoginActivity.class);
-                        tableLoginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
-                        PendingIntent pendingIntent =
-                                builder
-                                        /** add all of DetailsActivity's parents to the stack, */
-                                        /** followed by DetailsActivity itself */
-                                        .addNextIntentWithParentStack(tableLoginIntent)
-                                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                        builder.startActivities();
-                        finish();
+                        Intent tableLoginIntent = new Intent(TableListActivity.this, LoginActivity.class);
+                        startActivity(tableLoginIntent);
 
                     }
                 });
@@ -162,5 +144,10 @@ public class TableListActivity extends AppCompatActivity implements
         /** Create the adapter and assign to ListView */
         adapter = new TableItemAdapter(this, tableItems);
         this.listView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

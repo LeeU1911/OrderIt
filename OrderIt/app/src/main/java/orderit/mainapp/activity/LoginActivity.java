@@ -114,10 +114,8 @@ public class LoginActivity extends Activity {
             /** Logging successfully */
             if (password.equalsIgnoreCase(_password)) {
                 /** Jump to table list screen */
-                Intent dashboard = new Intent(getApplicationContext(), TableListActivity.class);
-                dashboard.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
                 startActivity(dashboard);
-                /** Close activity */
             } else {
                 /** Check network connection */
                 ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
@@ -219,18 +217,8 @@ public class LoginActivity extends Activity {
                         databaseAccess.InsertUser(user);
                         databaseAccess.close();
                         /** Jump to table list screen */
-                        Intent tableListIntent = new Intent(getApplicationContext(), TableListActivity.class);
-                        tableListIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
-                        PendingIntent pendingIntent =
-                                builder
-                                        /** add all of DetailsActivity's parents to the stack, */
-                                        /** followed by DetailsActivity itself */
-                                        .addNextIntentWithParentStack(tableListIntent)
-                                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-                        builder.startActivities();
-                        /** Close activity */
-                        finish();
+                        Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
+                        startActivity(dashboard);
                     } else {
                         /** Log in failed */
                         loginErrorMsg.setText(R.string.msg_login_error);

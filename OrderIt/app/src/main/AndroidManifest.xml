@@ -21,36 +21,31 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.LoginActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
         <activity
             android:name=".activity.TableListActivity"
-            android:parentActivityName=".activity.LoginActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.LoginActivity" />
         </activity>
+
         <activity
-            android:name=".activity.TableStatusActivity"
-            android:parentActivityName=".activity.TableListActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TableListActivity" />
+            android:name=".activity.TableStatusActivity">
         </activity>
-        <activity android:name=".activity.NewTableOrderActivity"
-            android:parentActivityName=".activity.TableStatusActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TableStatusActivity" /></activity>
-        <activity android:name=".activity.BillManagementActivity"
-            android:parentActivityName=".activity.TableStatusActivity"
+
+        <activity
+            android:name=".activity.NewTableOrderActivity">
+        </activity>
+
+        <activity
+            android:name=".activity.BillManagementActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.TableStatusActivity" />
         </activity>
+
     </application>
 
 </manifest>

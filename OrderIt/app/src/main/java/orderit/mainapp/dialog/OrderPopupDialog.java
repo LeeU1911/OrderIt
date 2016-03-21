@@ -113,8 +113,8 @@ public class OrderPopupDialog extends DialogFragment {
         {
             if(setCount == null) Log.d("AA", "NULL");
             else{
-                AsyncServerCall serverCall = new AsyncServerCall();
-                serverCall.execute(new ArrayList<NameValuePair>());
+//                AsyncServerCall serverCall = new AsyncServerCall();
+//                serverCall.execute(new ArrayList<NameValuePair>());
                 String value = setCount.getText().toString();
                 parentAdapter.onUserChangedDiskCnt(Integer.valueOf(value));
             }

@@ -3,6 +3,7 @@ package orderit.mainapp.activity;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -74,7 +75,7 @@ public class NewTableOrderActivity extends AppCompatActivity {
         makeMenuItemData();
 
         this.expListView = (ExpandableListView) findViewById(R.id.OrderList);
-        this.expListAdapter = new ExpandableListAdapter(this, groupMenuList, mapMenu, mapFilteredMenu, orderItemMap, databaseAccess);
+        this.expListAdapter = new ExpandableListAdapter(this, groupMenuList, mapMenu, mapFilteredMenu, orderItemMap, databaseAccess, orderId);
         this.expListView.setAdapter(this.expListAdapter);
 
         //setGroupIndicatorToRight();
@@ -151,44 +152,52 @@ public class NewTableOrderActivity extends AppCompatActivity {
 //        return true;
 //    }
 
-    @Override
-    public boolean onOptionsItemSelected(android.view.MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                backBtnClick();
-                break;
-            default:
-                break;
-        }
-
-        return true;
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(android.view.MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                backBtnClick();
+//                break;
+//            default:
+//                break;
+//        }
+//
+//        return true;
+//    }
 
     private void backBtnClick() {
-        Intent tableStatusIntent = new Intent(getApplicationContext(), TableStatusActivity.class);
-        tableStatusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        databaseAccess.open();
-        int tableId, tableStatus;
-        tableId = databaseAccess.QueryTableIdByOrderId(orderId);
-        //tableStatus = databaseAccess.QueryTableStatusByTableId(tableId);
-        tableStatus = 0;
-        databaseAccess.close();
-        // Pass table ID and Status to Table Status Activity
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(TableListActivity.TABLE_ID, tableId);
-        bundle.putInt(TableListActivity.TABLE_STATUS, tableStatus);
-        tableStatusIntent.putExtra(TableListActivity.TABLE_INFO, bundle);
-
-        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
-        PendingIntent pendingIntent =
-                builder
-                        // add all of DetailsActivity's parents to the stack,
-                        // followed by DetailsActivity itself
-                        .addNextIntentWithParentStack(tableStatusIntent)
-                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.startActivities();
+//        Intent tableStatusIntent = new Intent(getApplicationContext(), TableStatusActivity.class);
+//        tableStatusIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//        databaseAccess.open();
+//        int tableId, tableStatus;
+//        tableId = databaseAccess.QueryTableIdByOrderId(orderId);
+//        //tableStatus = databaseAccess.QueryTableStatusByTableId(tableId);
+//        tableStatus = 0;
+//        databaseAccess.close();
+//        // Pass table ID and Status to Table Status Activity
+//
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(TableListActivity.TABLE_ID, tableId);
+//        bundle.putInt(TableListActivity.TABLE_STATUS, tableStatus);
+//        tableStatusIntent.putExtra(TableListActivity.TABLE_INFO, bundle);
+//
+//        TaskStackBuilder builder = TaskStackBuilder.create(getApplicationContext());
+//        PendingIntent pendingIntent =
+//                builder
+//                        // add all of DetailsActivity's parents to the stack,
+//                        // followed by DetailsActivity itself
+//                        .addNextIntentWithParentStack(tableStatusIntent)
+//                        .getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+//        builder.startActivities();
+        Intent intent = NavUtils.getParentActivityIntent(this);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        NavUtils.navigateUpTo(this, intent);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

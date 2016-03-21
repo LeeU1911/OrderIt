@@ -1,15 +1,15 @@
 package orderit.mainapp.model;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +37,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     private Map<Integer, List<MenuItem>> mapMenu;
     private Map<Integer, List<MenuItem>> mapFilteredMenu;
     private Map<Integer, OrderItem> orderItemMap;
+    private int orderId;
 
     private Filter                  filter;
 
@@ -51,7 +52,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                                  Map<Integer, List<MenuItem>> mapMenu,
                                  Map<Integer, List<MenuItem>> mapFilteredMenu,
                                  Map<Integer, OrderItem> orderItemMap,
-                                 DatabaseAccess databaseAccess) {
+                                 DatabaseAccess databaseAccess,
+                                 int orderId) {
         this.context = context;
         this.layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.groupMenuList = groupMenuList;
@@ -59,6 +61,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
         this.mapFilteredMenu = mapFilteredMenu;
         this.orderItemMap = orderItemMap;
         this.databaseAccess = databaseAccess;
+        this.orderId = orderId;
     }
 
     public Object getChild(int groupPosition, int childPosition) {
@@ -141,6 +144,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                 TextView item = (TextView) convertView.findViewById(R.id.tvOrderCat);
                 item.setText(menuGroup.getName());
                 item.setTypeface(null, Typeface.BOLD);
+
+                ImageView imageView = (ImageView)convertView.findViewById(R.id.list_image);
+                Drawable res;
+                if(menuGroup.getId() <= 10) {
+                    res = ContextCompat.getDrawable(context, R.drawable.menu_drink);
+                }else if(menuGroup.getId() == 102){
+                    res = ContextCompat.getDrawable(context, R.drawable.menu_recent);
+                }else if(menuGroup.getId() == 104){
+                    res = ContextCompat.getDrawable(context, R.drawable.menu_favorite);
+                } else {
+                    res = ContextCompat.getDrawable(context, R.drawable.menu_food);
+                }
+                imageView.setImageDrawable(res);
             }
 
             TextView txtQuantity = (TextView) convertView.findViewById(R.id.tvOrderCnt);
@@ -173,22 +189,48 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
     public void onUserChangedDiskCnt(int changedValue) {
 
         // TODO add your implementation.
-        if((selGroupPosition >= 0) && (selChildPosition >= 0)) {
+        if((selGroupPosition >= 0) && (selChildPosition >= 0) && (!groupMenuList.get(selGroupPosition).isHeader())) {
             Log.d("TAG", String.format("%s", changedValue));
             MenuItem menuItem = (MenuItem)this.getChild(selGroupPosition, selChildPosition);
             MenuGroup menuGroup = (MenuGroup)this.getGroup(selGroupPosition);
-            if(orderItemMap.get(menuItem.getId()) != null) {
+
+            if(orderItemMap.get(menuItem.getId()) != null) { // Update exist order
                 int curOrderQuantity = orderItemMap.get(menuItem.getId()).getMenuItemQuantity();
-                orderItemMap.get(menuItem.getId()).setMenuItemQuantity(changedValue);
-
-                // Update database
-                databaseAccess.open();
-                databaseAccess.UpdateOrderQuantity(orderItemMap.get(menuItem.getId()).getOrderId(), menuItem.getId(), changedValue);
-                databaseAccess.close();
-
                 int curGrpQuantity = menuGroup.getOrderQuantity();
-                menuGroup.setOrderQuantity(curGrpQuantity + (changedValue - curOrderQuantity));
+                int newGrpQuantity = curGrpQuantity + (changedValue - curOrderQuantity);
+                menuGroup.setOrderQuantity(newGrpQuantity);
+
+                if(newGrpQuantity > 0) {
+                    orderItemMap.get(menuItem.getId()).setMenuItemQuantity(changedValue);
+                    // Update database
+                    databaseAccess.open();
+                    databaseAccess.UpdateOrderQuantity(orderItemMap.get(menuItem.getId()).getOrderId(), menuItem.getId(), changedValue);
+                    databaseAccess.close();
+                } else {
+                    orderItemMap.remove(menuItem.getId());
+                    // Delete row out of database
+                    databaseAccess.open();
+                    databaseAccess.DeleteOrder(orderItemMap.get(menuItem.getId()).getOrderId(), menuItem.getId());
+                    databaseAccess.close();
+                }
+            } else { // Insert new order
+                int curGrpQuantity = menuGroup.getOrderQuantity();
+                menuGroup.setOrderQuantity(curGrpQuantity + changedValue);
+
+                OrderItem orderItem = new OrderItem();
+                orderItem.setId(0);
+                orderItem.setOrderId(orderId);
+                orderItem.setMenuItemId(menuItem.getId());
+                orderItem.setMenuItemQuantity(changedValue);
+
+                orderItemMap.put(menuItem.getId(), orderItem);
+                // Insert new order to database
+                databaseAccess.open();
+                databaseAccess.InsertNewOrder(orderItem);
+                databaseAccess.close();
             }
+
+            // Update adapter
             notifyDataSetChanged();
         }
     }
