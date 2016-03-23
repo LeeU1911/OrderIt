@@ -30,8 +30,9 @@ public class TableStatusActivity extends Activity {
     private int tableStatus;
     private OrderManager orderManager;
 
-    private Map<Integer, OrderItem> orderItemMap;
     private Map<Integer, MenuItem> menuManager;
+
+    private DatabaseAccess databaseAccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +54,9 @@ public class TableStatusActivity extends Activity {
         }
 
         /** Query Order Information of specified Table ID from database */
-        DatabaseAccess databaseAccess = DatabaseAccess.getInstance(this);
+        databaseAccess = DatabaseAccess.getInstance(this);
         databaseAccess.open();
         orderManager = databaseAccess.QueryOrderInfoByTableID(tableId);
-        orderItemMap = databaseAccess.QueryOrderItemByOrderID(orderManager.getId());
         menuManager = databaseAccess.InitMenu();
         databaseAccess.close();
 
@@ -90,8 +90,7 @@ public class TableStatusActivity extends Activity {
             }
         });
 
-        TextView billIndicator = (TextView)findViewById(R.id.tbl_bill_indicator);
-        billIndicator.setText(String.format("$%s", getBill()));
+        displayInformation();
     }
 
     @Override
@@ -107,6 +106,10 @@ public class TableStatusActivity extends Activity {
     private int getBill() {
         int totalExpense = 0;
 
+        databaseAccess.open();
+        Map<Integer, OrderItem> orderItemMap = databaseAccess.QueryOrderItemByOrderID(orderManager.getId());
+        databaseAccess.close();
+
         for(Map.Entry<Integer, OrderItem> entry : orderItemMap.entrySet()) {
             int quantity = entry.getValue().getMenuItemQuantity();
             int price = menuManager.get(entry.getValue().getMenuItemId()).getPrice();
@@ -120,5 +123,22 @@ public class TableStatusActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        displayInformation();
+    }
+
+    private void displayInformation() {
+        TextView billIndicator = (TextView)findViewById(R.id.tbl_bill_indicator);
+        billIndicator.setText(String.format("$%s", getBill()));
+
+        TextView orderStatus = (TextView) findViewById(R.id.tbl_order_indicator);
+        databaseAccess.open();
+        orderStatus.setText(databaseAccess.queryOrderStatusStringByOrderId(orderManager.getId()));
+        databaseAccess.close();
     }
 }

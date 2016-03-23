@@ -6,9 +6,19 @@ import java.io.Serializable;
  * Created by Blackcool on 2/28/16.
  */
 public class BillOrderItem implements Serializable {
+    private int id;
     private String orderName;
-    private String quantity;
-    private String singlePrice;
+    private int quantity;
+    private int singlePrice;
+    private int time;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getOrderName() {
         return orderName;
@@ -18,19 +28,27 @@ public class BillOrderItem implements Serializable {
         this.orderName = orderName;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
-    public String getSinglePrice() {
+    public int getSinglePrice() {
         return singlePrice;
     }
 
-    public void setSinglePrice(String singlePrice) {
+    public void setSinglePrice(int singlePrice) {
         this.singlePrice = singlePrice;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }

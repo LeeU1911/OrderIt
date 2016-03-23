@@ -88,9 +88,9 @@ public class DatabaseAccess {
     private static final int ITEM_CATEGORY_7_ID = 7;
     private static final int ITEM_CATEGORY_8_ID = 8;
 
-    private static final int ORDER_STATUS_NEW = 1;
-    private static final int ORDER_STATUS_ORDER = 2;
-    private static final int ORDER_STATUS_PAID = 3;
+    public static final int ORDER_STATUS_NEW = 1;
+    public static final int ORDER_STATUS_ORDER = 2;
+    public static final int ORDER_STATUS_PAID = 3;
 
     /**;
      * Private constructor to avoid object creation from outside classes.
@@ -182,15 +182,19 @@ public class DatabaseAccess {
     /** Get list of bill order details */
     public List<BillOrderItem> getBillOrderItemListByOrderID(int orderID) {
         List<BillOrderItem> list = new ArrayList<>();
-        String query = "select items.name,order_details.item_quantity,items.price,items.price_unit from order_details" +
-                " left join items on items.id = order_details.item_id and order_details.order_id = " + orderID;
+        String query = "SELECT order_details.item_id,items.name,order_details.item_quantity,items.price,items.average_make_time FROM order_details" +
+                " LEFT JOIN items ON items.id = order_details.item_id WHERE order_details.order_id = " + orderID;
         Cursor cursor = database.rawQuery(query, null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             BillOrderItem billOrderItem = new BillOrderItem();
-            billOrderItem.setOrderName(cursor.getString(0));
-            billOrderItem.setQuantity(cursor.getString(1));
-            billOrderItem.setSinglePrice(cursor.getString(2));
+
+            billOrderItem.setId(cursor.getInt(0));
+            billOrderItem.setOrderName(cursor.getString(1));
+            billOrderItem.setQuantity(cursor.getInt(2));
+            billOrderItem.setSinglePrice(cursor.getInt(3));
+            billOrderItem.setTime(cursor.getInt(4));
+
             list.add(billOrderItem);
             cursor.moveToNext();
         }
@@ -270,6 +274,44 @@ public class DatabaseAccess {
         cursor.close();
 
         return orderManager;
+    }
+
+    public int queryOrderStatusIdByOrderId(int orderId) {
+        int status = -1;
+
+        Cursor cursor = database.rawQuery("SELECT " + ORDERS_COLUMN_STATUS + " FROM " + ORDERS_TABLE +
+                " WHERE " + ORDERS_COLUMN_ID + "=" + orderId, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            status = cursor.getInt(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return status;
+    }
+
+    public String queryOrderStatusStringByOrderId(int orderId) {
+        String status = "";
+
+        Cursor cursor = database.rawQuery("SELECT order_status.name FROM orders" +
+                " LEFT JOIN order_status ON orders.status = order_status.id WHERE orders.id = " + orderId, null);
+        cursor.moveToFirst();
+
+        while (!cursor.isAfterLast()) {
+            status = cursor.getString(0);
+            cursor.moveToNext();
+        }
+        cursor.close();
+
+        return status;
+    }
+
+    public boolean UpdateOrderStatus4SpecifiedOrderId(int orderId, int newStatus) {
+        ContentValues cv = new ContentValues();
+        cv.put(ORDERS_COLUMN_STATUS, newStatus);
+        return database.update(ORDERS_TABLE, cv, ORDERS_COLUMN_ID + "=" + orderId, null) > 0;
     }
 
     public Map<Integer, OrderItem> QueryOrderItemByOrderID(int orderID) {

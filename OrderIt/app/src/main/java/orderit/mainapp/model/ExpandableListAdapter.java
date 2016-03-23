@@ -1,11 +1,13 @@
 package orderit.mainapp.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +22,13 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.json.JSONObject;
+
 import orderit.mainapp.R;
 import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.dialog.OrderPopupDialog;
+import orderit.mainapp.utility.JSONParser;
 
 /**
  * Created by LanTuan on 1/19/16.
@@ -207,11 +213,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
                     databaseAccess.UpdateOrderQuantity(orderItemMap.get(menuItem.getId()).getOrderId(), menuItem.getId(), changedValue);
                     databaseAccess.close();
                 } else {
-                    orderItemMap.remove(menuItem.getId());
                     // Delete row out of database
                     databaseAccess.open();
                     databaseAccess.DeleteOrder(orderItemMap.get(menuItem.getId()).getOrderId(), menuItem.getId());
                     databaseAccess.close();
+
+                    orderItemMap.remove(menuItem.getId());
                 }
             } else { // Insert new order
                 int curGrpQuantity = menuGroup.getOrderQuantity();
@@ -232,6 +239,32 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter{
 
             // Update adapter
             notifyDataSetChanged();
+
+            // Update Order Status
+            databaseAccess.open();
+            if( (databaseAccess.queryOrderStatusIdByOrderId(orderId) == DatabaseAccess.ORDER_STATUS_NEW) && (changedValue > 0) ) {
+                databaseAccess.UpdateOrderStatus4SpecifiedOrderId(orderId, DatabaseAccess.ORDER_STATUS_ORDER);
+            }
+            databaseAccess.close();
+
+            /** Comment out due to AP error **/
+//            // Update to server
+//            AsyncServerCall serverCall = new AsyncServerCall();
+//            serverCall.execute(new ArrayList<NameValuePair>());
+        }
+    }
+
+    class AsyncServerCall extends AsyncTask<List<NameValuePair>, Void, String> {
+
+        @Override
+        protected String doInBackground(List<NameValuePair>... list) {
+            String loginURL = "http://192.168.1.8:5000/v1/order";
+            JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
+            return json.toString();
+        }
+
+        protected void onPostExecute(String result){
+            System.out.println("Item added");
         }
     }
 }

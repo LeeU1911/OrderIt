@@ -113,26 +113,10 @@ public class OrderPopupDialog extends DialogFragment {
         {
             if(setCount == null) Log.d("AA", "NULL");
             else{
-//                AsyncServerCall serverCall = new AsyncServerCall();
-//                serverCall.execute(new ArrayList<NameValuePair>());
                 String value = setCount.getText().toString();
                 parentAdapter.onUserChangedDiskCnt(Integer.valueOf(value));
             }
             dialog.dismiss();
-        }
-
-        class AsyncServerCall extends AsyncTask<List<NameValuePair>, Void, String> {
-
-            @Override
-            protected String doInBackground(List<NameValuePair>... list) {
-                String loginURL = "http://192.168.1.8:5000/v1/order";
-                JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
-                return json.toString();
-            }
-
-            protected void onPostExecute(String result){
-                System.out.println("Item added");
-            }
         }
     }
 }

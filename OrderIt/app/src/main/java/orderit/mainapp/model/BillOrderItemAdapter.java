@@ -39,14 +39,22 @@ public class BillOrderItemAdapter extends ArrayAdapter<BillOrderItem>{
             convertView = this.inflater.inflate(R.layout.bill_order_row, parent, false);
         }
         BillOrderItem billOrderItem = billOrderItemList.get(position);
+
         TextView orderName = (TextView) convertView.findViewById(R.id.tvOrderName);
         orderName.setText(billOrderItem.getOrderName());
 
         TextView quantity = (TextView) convertView.findViewById(R.id.tvQuantity);
-        quantity.setText(billOrderItem.getQuantity());
+        quantity.setText(String.format("x%d", billOrderItem.getQuantity()));
 
         TextView singlePrice = (TextView) convertView.findViewById(R.id.tvSinglePrice);
-        singlePrice.setText(billOrderItem.getSinglePrice());
+        singlePrice.setText(String.format("$ %d", billOrderItem.getSinglePrice()));
+
+        TextView totalPrice = (TextView) convertView.findViewById(R.id.tvTotalPrice);
+        totalPrice.setText(String.format("$ %d", billOrderItem.getSinglePrice() * billOrderItem.getQuantity()));
+
+        TextView time = (TextView) convertView.findViewById(R.id.txTime);
+        time.setText(String.format("%dm", billOrderItem.getTime()));
+
         return convertView;
     }
 }
