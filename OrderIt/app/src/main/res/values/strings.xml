@@ -18,6 +18,7 @@
     <string name="table_name_exp">Table 1</string>
     <string name="table_stat_exp">Ordering</string>
     <string name="order_name_exp">Sapporo</string>
+    <string name="order_time_exp">10m</string>
     <string name="order_quantity_exp">x2</string>
     <string name="order_price_exp">20.000</string>
 

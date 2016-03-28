@@ -52,8 +52,8 @@ public class BillOrderItemAdapter extends ArrayAdapter<BillOrderItem>{
         TextView totalPrice = (TextView) convertView.findViewById(R.id.tvTotalPrice);
         totalPrice.setText(String.format("$ %d", billOrderItem.getSinglePrice() * billOrderItem.getQuantity()));
 
-        TextView time = (TextView) convertView.findViewById(R.id.txTime);
-        time.setText(String.format("%dm", billOrderItem.getTime()));
+        //TextView time = (TextView) convertView.findViewById(R.id.txTime);
+        //time.setText(String.format("%dm", billOrderItem.getTime()));
 
         return convertView;
     }

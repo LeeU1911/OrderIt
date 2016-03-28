@@ -23,14 +23,14 @@ public class BillManagementActivity extends AppCompatActivity {
     private List<BillOrderItem> billOrderItemList;
     private BillOrderItemAdapter adapter;
 
-    private static final String ACTION_BAR_TITTLE = "Bill";
+    //private static final String ACTION_BAR_TITTLE = "Bill";
 
-    private static final int TAX = 17; // 17%
-    private static final int DISCOUNT = 10; // 10%
+    //private static final int TAX = 17; // 17%
+    //private static final int DISCOUNT = 10; // 10%
 
-    private TextView tvSubTotal;
-    private TextView tvTax;
-    private TextView tvDiscount;
+    //private TextView tvSubTotal;
+    //private TextView tvTax;
+    //private TextView tvDiscount;
     private TextView tvTotal;
 
     private int orderId;
@@ -57,17 +57,18 @@ public class BillManagementActivity extends AppCompatActivity {
         createListViewData();
 
         /** Display price */
-        tvSubTotal = (TextView) findViewById(R.id.txtSubTotalPrice);
+        /**tvSubTotal = (TextView) findViewById(R.id.txtSubTotalPrice);
         tvSubTotal.setText(String.format("$ %d", calculateSubTotal()));
 
         tvTax = (TextView) findViewById(R.id.txtTax);
         tvTax.setText(String.format("%d%%", TAX));
 
         tvDiscount = (TextView) findViewById(R.id.txtDiscount);
-        tvDiscount.setText(String.format("%d%%", DISCOUNT));
+        tvDiscount.setText(String.format("%d%%", DISCOUNT));*/
 
         tvTotal = (TextView) findViewById(R.id.txtTotal);
-        tvTotal.setText(String.format("$ %d", calculateTotal(calculateSubTotal(), TAX, DISCOUNT)));
+        tvTotal.setText(String.format("$ %d", calculateSubTotal()));
+        //tvTotal.setText(String.format("$ %d", calculateTotal(calculateSubTotal(), TAX, DISCOUNT)));
     }
 
     private void createListViewData() {
@@ -98,7 +99,7 @@ public class BillManagementActivity extends AppCompatActivity {
 
         return subTotal;
     }
-
+/**
     private int calculateTotal(int subTotal, int tax, int discount) {
         int total = 0;
         int afterTax = subTotal*tax/100;
@@ -107,7 +108,7 @@ public class BillManagementActivity extends AppCompatActivity {
 
         return total;
     }
-
+*/
     @Override
     protected void onDestroy() {
         super.onDestroy();
