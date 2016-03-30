@@ -14,7 +14,7 @@
         android:text="@string/order_name_exp"
         android:textColor="#040404"
         android:textSize="16sp"
-        android:fontFamily="sans-serif"/>
+        android:fontFamily="fonts/Roboto-Regular.ttf"/>
 
     <TextView
         android:id="@+id/tvTotalPrice"
@@ -24,7 +24,7 @@
         android:layout_centerVertical="true"
         android:text="@string/order_price_exp"
         android:textSize="16sp"
-        android:fontFamily="sans-serif"/>
+        android:fontFamily="fonts/Roboto-Regular.ttf"/>
 
     <TextView
         android:id="@+id/tvSinglePrice"
@@ -34,19 +34,7 @@
         android:layout_below="@id/tvTotalPrice"
         android:text="@string/order_price_exp"
         android:textSize="14sp"
-        android:fontFamily="sans-serif"/>
-
-    <!--<TextView
-        android:id="@+id/txTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="15dip"
-        android:layout_alignTop="@+id/tvOrderName"
-        android:layout_toLeftOf="@+id/tvQuantity"
-        android:text="@string/order_time_exp"
-        android:textSize="16sp"
-        android:fontFamily="sans-serif"/>-->
+        android:fontFamily="fonts/Roboto-Regular.ttf"/>
 
     <TextView
         android:id="@+id/tvQuantity"
@@ -58,6 +46,6 @@
         android:layout_toLeftOf="@+id/tvTotalPrice"
         android:text="@string/order_quantity_exp"
         android:textSize="16sp"
-        android:fontFamily="sans-serif"/>
+        android:fontFamily="fonts/Roboto-Regular.ttf"/>
 
 </RelativeLayout>
