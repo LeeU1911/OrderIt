@@ -23,14 +23,6 @@ public class BillManagementActivity extends AppCompatActivity {
     private List<BillOrderItem> billOrderItemList;
     private BillOrderItemAdapter adapter;
 
-    //private static final String ACTION_BAR_TITTLE = "Bill";
-
-    //private static final int TAX = 17; // 17%
-    //private static final int DISCOUNT = 10; // 10%
-
-    //private TextView tvSubTotal;
-    //private TextView tvTax;
-    //private TextView tvDiscount;
     private TextView tvTotal;
 
     private int orderId;
@@ -43,10 +35,11 @@ public class BillManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_bill);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarBill);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.title_activity_manage_bill);
+        }
 
-        // Receive order information from Table Status Activity
+        /** Receive order information from Table Status Activity */
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(TableStatusActivity.ORDER_INFO);
         orderId = bundle.getInt(TableStatusActivity.ORDER_ID);
@@ -57,18 +50,8 @@ public class BillManagementActivity extends AppCompatActivity {
         createListViewData();
 
         /** Display price */
-        /**tvSubTotal = (TextView) findViewById(R.id.txtSubTotalPrice);
-        tvSubTotal.setText(String.format("$ %d", calculateSubTotal()));
-
-        tvTax = (TextView) findViewById(R.id.txtTax);
-        tvTax.setText(String.format("%d%%", TAX));
-
-        tvDiscount = (TextView) findViewById(R.id.txtDiscount);
-        tvDiscount.setText(String.format("%d%%", DISCOUNT));*/
-
         tvTotal = (TextView) findViewById(R.id.txtTotal);
         tvTotal.setText(String.format("$ %d", calculateSubTotal()));
-        //tvTotal.setText(String.format("$ %d", calculateTotal(calculateSubTotal(), TAX, DISCOUNT)));
     }
 
     private void createListViewData() {
@@ -99,16 +82,7 @@ public class BillManagementActivity extends AppCompatActivity {
 
         return subTotal;
     }
-/**
-    private int calculateTotal(int subTotal, int tax, int discount) {
-        int total = 0;
-        int afterTax = subTotal*tax/100;
 
-        total = (subTotal + afterTax) - (subTotal + afterTax)*discount/100;
-
-        return total;
-    }
-*/
     @Override
     protected void onDestroy() {
         super.onDestroy();

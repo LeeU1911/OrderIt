@@ -7,4 +7,5 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorLoginFrame">#000000</color>
     <color name="colorSilver">#C0C0C0</color>
+    <color name="colorActionBar">#4DD0E1</color>
 </resources>
