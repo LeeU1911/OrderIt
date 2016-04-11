@@ -9,24 +9,10 @@
     tools:showIn="@layout/activity_manage_bill"
     android:id="@+id/billManage"
     android:orientation="vertical">
-        <ListView
-            android:id="@+id/OrderList"
-            android:layout_width="match_parent"
-            android:layout_height="288dp"
-            android:divider="#b5b5b5"
-            android:dividerHeight="1dp"
-            android:scrollbars="vertical">
-        </ListView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorSilver">
-        </LinearLayout>
-
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="72dp">
+            android:layout_height="50dp"
+            android:background="@color/colorInfoBar">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,22 +39,16 @@
                 />
         </RelativeLayout>
 
-        <LinearLayout
+        <ListView
+            android:id="@+id/OrderList"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@color/colorSilver">
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btnFinish"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:text="@string/finish_btn"
-            style="@style/NiceButton"
-            android:textSize="20sp"
-            android:fontFamily="fonts/Roboto-Regular.ttf"
-            android:layout_gravity="end"
-            android:onClick="onBtnFinishClick"
-            android:alpha="0.8" />
+            android:layout_height="match_parent"
+            android:divider="#b5b5b5"
+            android:dividerHeight="1dp"
+            android:scrollbars="vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
+        </ListView>
 </LinearLayout>
