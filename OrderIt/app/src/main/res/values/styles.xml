@@ -27,7 +27,7 @@
     </style>
 
     <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:background">@color/colorActionBar</item>
+        <item name="android:background">@color/colorAccent</item>
         <item name="android:textColor">@color/colorPrimaryDark</item>
     </style>`
 </resources>
