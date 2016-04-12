@@ -2,6 +2,7 @@
     <string name="app_name">Order it!</string>
     <string name="title_activity_order">Order Details</string>
     <string name="title_activity_table_list">Tables</string>
+    <string name="title_activity_table_status">Table Status</string>
     <string name="title_activity_manage_bill">Bill</string>
 
     <string name="staff_id">Staff Id</string>

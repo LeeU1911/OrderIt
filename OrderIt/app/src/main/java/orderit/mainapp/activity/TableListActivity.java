@@ -4,8 +4,6 @@
 
 package orderit.mainapp.activity;
 
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -49,10 +47,11 @@ public class TableListActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarTableList);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.title_activity_table_list);
+        }
 
         /** Get table list by ID */
         listView = (ListView) findViewById(R.id.TableList);

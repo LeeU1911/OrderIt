@@ -34,7 +34,8 @@
         </activity>
 
         <activity
-            android:name=".activity.TableStatusActivity">
+            android:name=".activity.TableStatusActivity"
+            android:theme="@style/AppTheme.NoActionBar">>
         </activity>
 
         <activity

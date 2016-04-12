@@ -30,6 +30,10 @@
         android:layout_height="wrap_content"
         android:divider="#b5b5b5"
         android:dividerHeight="1dp"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
     </ListView>
 </LinearLayout>
