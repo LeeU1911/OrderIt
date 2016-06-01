@@ -21,7 +21,7 @@
             android:layout_height="50dip"
             android:layout_gravity="top"
             android:contentDescription="@string/app_name"
-            android:src="@android:drawable/ic_delete" />
+            android:src="@drawable/free_status" />
 
     </LinearLayout>
 

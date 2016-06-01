@@ -1,9 +1,14 @@
 package orderit.mainapp.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,14 +28,6 @@ public class BillManagementActivity extends AppCompatActivity {
     private List<BillOrderItem> billOrderItemList;
     private BillOrderItemAdapter adapter;
 
-    private static final String ACTION_BAR_TITTLE = "Bill";
-
-    private static final int TAX = 17; // 17%
-    private static final int DISCOUNT = 10; // 10%
-
-    private TextView tvSubTotal;
-    private TextView tvTax;
-    private TextView tvDiscount;
     private TextView tvTotal;
 
     private int orderId;
@@ -43,10 +40,11 @@ public class BillManagementActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_bill);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarBill);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.title_activity_manage_bill);
+        }
 
-        // Receive order information from Table Status Activity
+        /** Receive order information from Table Status Activity */
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra(TableStatusActivity.ORDER_INFO);
         orderId = bundle.getInt(TableStatusActivity.ORDER_ID);
@@ -57,17 +55,8 @@ public class BillManagementActivity extends AppCompatActivity {
         createListViewData();
 
         /** Display price */
-        tvSubTotal = (TextView) findViewById(R.id.txtSubTotalPrice);
-        tvSubTotal.setText(String.format("$ %d", calculateSubTotal()));
-
-        tvTax = (TextView) findViewById(R.id.txtTax);
-        tvTax.setText(String.format("%d%%", TAX));
-
-        tvDiscount = (TextView) findViewById(R.id.txtDiscount);
-        tvDiscount.setText(String.format("%d%%", DISCOUNT));
-
         tvTotal = (TextView) findViewById(R.id.txtTotal);
-        tvTotal.setText(String.format("$ %d", calculateTotal(calculateSubTotal(), TAX, DISCOUNT)));
+        tvTotal.setText(String.format("$ %d", calculateSubTotal()));
     }
 
     private void createListViewData() {
@@ -81,12 +70,26 @@ public class BillManagementActivity extends AppCompatActivity {
         this.orderList.setAdapter(adapter);
     }
 
-    public void onBtnFinishClick(View view) {
-        databaseAccess.open();
-        databaseAccess.UpdateOrderStatus4SpecifiedOrderId(orderId, DatabaseAccess.ORDER_STATUS_PAID);
-        databaseAccess.close();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_action_bar_bill_manage, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_print:
+                printBtnClick();
+                break;
+            default:
+                break;
+        }
 
-        this.finish();
+        return true;
+    }
+
+    public void printBtnClick(){
     }
 
     private int calculateSubTotal() {
@@ -97,15 +100,6 @@ public class BillManagementActivity extends AppCompatActivity {
         }
 
         return subTotal;
-    }
-
-    private int calculateTotal(int subTotal, int tax, int discount) {
-        int total = 0;
-        int afterTax = subTotal*tax/100;
-
-        total = (subTotal + afterTax) - (subTotal + afterTax)*discount/100;
-
-        return total;
     }
 
     @Override

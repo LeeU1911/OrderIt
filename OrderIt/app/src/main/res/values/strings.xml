@@ -2,6 +2,9 @@
     <string name="app_name">Order it!</string>
     <string name="title_activity_order">Order Details</string>
     <string name="title_activity_table_list">Tables</string>
+    <string name="title_activity_table_status">Table Status</string>
+    <string name="title_activity_manage_bill">Bill</string>
+
     <string name="staff_id">Staff Id</string>
     <string name="order_id">Order Id</string>
     <string name="table_number">Table #</string>
@@ -18,6 +21,7 @@
     <string name="table_name_exp">Table 1</string>
     <string name="table_stat_exp">Ordering</string>
     <string name="order_name_exp">Sapporo</string>
+    <string name="order_time_exp">10m</string>
     <string name="order_quantity_exp">x2</string>
     <string name="order_price_exp">20.000</string>
 

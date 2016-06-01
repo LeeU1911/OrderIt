@@ -5,7 +5,7 @@
         android:radius="10dp" />
     <stroke
         android:width="8dp"
-        android:color="@color/colorSilver" />
+        android:color="@color/colorInfoBar" />
     <solid
         android:color="@color/colorWhite"/>
     <padding

@@ -1,12 +1,9 @@
 package orderit.mainapp.activity;
 
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
-import android.os.PersistableBundle;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,11 +14,9 @@ import orderit.mainapp.database.DatabaseAccess;
 import orderit.mainapp.model.MenuItem;
 import orderit.mainapp.model.OrderItem;
 import orderit.mainapp.model.OrderManager;
-import android.app.Activity;
 
-public class TableStatusActivity extends Activity {
+public class TableStatusActivity extends AppCompatActivity {
 
-    public static final String ACTION_BAR_TITTLE = "Table Status";
 
     public final static String ORDER_INFO = "orderInfo";
     public final static String ORDER_ID = "orderId";
@@ -38,6 +33,11 @@ public class TableStatusActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_table_status);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarTableStatus);
+        setSupportActionBar(toolbar);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.title_activity_table_status);
+        }
 
         // Check whether we're recreating a previously destroyed instance
         if (savedInstanceState != null) {
