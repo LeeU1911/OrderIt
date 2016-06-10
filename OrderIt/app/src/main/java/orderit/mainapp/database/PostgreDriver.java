@@ -5,9 +5,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import android.content.ContentValues;
+import android.util.Log;
 
 public class PostgreDriver {
-    private static String url = "jdbc:postgresql://dsiedwaaywinyo:42TlG1tdtoxVYhKQDRX15mNaNs@ec2-54-163-239-28.compute-1.amazonaws.com:5432/d7mdp524vlsdf6";
+    private static String url = "jdbc:postgresql://ec2-54-163-239-28.compute-1.amazonaws.com:5432/d7mdp524vlsdf6?sslmode=require";
     private static String user = "dsiedwaaywinyo";
     private static String password = "42TlG1tdtoxVYhKQDRX15mNaNs";
 
@@ -19,7 +20,7 @@ public class PostgreDriver {
             conn = DriverManager.getConnection(url,user,password);
         }
         catch (Exception e) {
-
+            System.out.print(e.getMessage());
         }
         return conn;
     }
