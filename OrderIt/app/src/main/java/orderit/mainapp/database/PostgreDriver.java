@@ -16,8 +16,8 @@ public class PostgreDriver {
 
     public Connection getConnection() {
         try {
-            Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection(url,user,password);
+            DriverManager.registerDriver(new org.postgresql.Driver());
+            conn = DriverManager.getConnection(url, user, password);
         }
         catch (Exception e) {
             System.out.print(e.getMessage());
@@ -41,7 +41,9 @@ public class PostgreDriver {
 
     public void close(){
         try {
-            conn.close();
+            if(conn != null) {
+                conn.close();
+            }
         }
         catch (Exception e){
 
