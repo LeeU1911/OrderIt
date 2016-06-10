@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Context path="/earg" docBase="earg">
+	<Resource 
+		name="jdbc/EargDB" 
+		auth="Container" 
+		type="javax.sql.DataSource"
+		maxActive="100" 
+		maxIdle="30" 
+		maxWait="10000"
+		username="sa" 
+		driverClassName="org.hsqldb.jdbcDriver"
+    url="jdbc:hsqldb:."/>
+    
+    <!-- Default set of monitored resources -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+</Context>
+<!-- <Context path="/jjpa" docBase="jjpa"
+        debug="5" reloadable="true" crossContext="true">
+
+  <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="30" maxWait="10000"
+               username="sa" driverClassName="org.hsqldb.jdbcDriver"
+               url="jdbc:hsqldb:."/>
+ 
+</Context>
+ -->
