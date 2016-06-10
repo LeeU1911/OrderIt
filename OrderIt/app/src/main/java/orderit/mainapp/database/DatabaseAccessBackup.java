@@ -6,6 +6,9 @@ package orderit.mainapp.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +16,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.sql.ResultSet;
 
 import orderit.mainapp.model.BillOrderItem;
 import orderit.mainapp.model.MenuItem;
@@ -22,10 +24,10 @@ import orderit.mainapp.model.OrderItem;
 import orderit.mainapp.model.OrderManager;
 import orderit.mainapp.model.User;
 import orderit.mainapp.model.TableItem;
-import orderit.mainapp.database.PostgreDriver;
 
-public class DatabaseAccess {
-    private PostgreDriver database;
+public class DatabaseAccessBackup {
+    private SQLiteOpenHelper openHelper;
+    private SQLiteDatabase database;
     private static DatabaseAccess instance;
 
     /** "users" table */
@@ -90,6 +92,16 @@ public class DatabaseAccess {
     public static final int ORDER_STATUS_ORDER = 2;
     public static final int ORDER_STATUS_PAID = 3;
 
+    /**;
+     * Private constructor to avoid object creation from outside classes.
+     *
+     * @param context
+     */
+
+   private DatabaseAccess(Context context) {
+        this.openHelper = new DatabaseOpenHelper(context);
+    }
+
     /** Return a singleton instance of DatabaseAccess */
     public static DatabaseAccess getInstance(Context context) {
         if (instance == null) {
@@ -100,7 +112,7 @@ public class DatabaseAccess {
 
     /** Open the database connection */
     public void open() {
-        this.database = new PostgreDriver();
+        this.database = openHelper.getWritableDatabase();
     }
 
     /** Close the database connection */
@@ -117,23 +129,20 @@ public class DatabaseAccess {
      */
     public List<TableItem> InitTableItems() {
         List<TableItem> list = new ArrayList<>();
-        try {
-            ResultSet rs = database.rawQuery("SELECT * FROM tables", null);
-            while (rs.next()) {
-                TableItem tableItem = new TableItem();
+        Cursor cursor = database.rawQuery("SELECT * FROM tables", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            TableItem tableItem = new TableItem();
 
-                tableItem.setId(rs.getInt(0));
-                tableItem.setBusinessId(rs.getInt(1));
-                tableItem.setName(rs.getString(2));
-                tableItem.setStatus(rs.getInt(3));
+            tableItem.setId(cursor.getInt(0));
+            tableItem.setBusinessId(cursor.getInt(1));
+            tableItem.setName(cursor.getString(2));
+            tableItem.setStatus(cursor.getInt(3));
 
-                list.add(tableItem);
-            }
-            rs.close();
+            list.add(tableItem);
+            cursor.moveToNext();
         }
-        catch(Exception e){
-
-        }
+        cursor.close();
         return list;
     }
 
@@ -141,19 +150,19 @@ public class DatabaseAccess {
     public String SearchPassword(String userName)
     {
         String query = "Select " + USERS_COLUMN_USERNAME + ", " + USERS_COLUMN_PASSWORD + " from " + USERS_TABLE;
-        ResultSet rs = database.rawQuery(query, null);
+        Cursor cursor = database.rawQuery(query, null);
         String _userName, _password = "12345677890-qrwereytryuuiuiyuisdfsdfggfhgjhkljklkl;czxcxzcvcbcvnvbmnbm,,<><><:";
-        try {
-            while (rs.next()) {
-                _userName = rs.getString(0);
-                if (userName.equalsIgnoreCase(_userName)) {
-                    _password = rs.getString(1);
+        if(cursor.moveToFirst())
+        {
+            do {
+                _userName = cursor.getString(0);
+                if(userName.equalsIgnoreCase(_userName))
+                {
+                    _password = cursor.getString(1);
                     break;
                 }
             }
-        }
-        catch(Exception e){
-
+            while (cursor.moveToNext());
         }
         return _password;
     }
@@ -175,24 +184,21 @@ public class DatabaseAccess {
         List<BillOrderItem> list = new ArrayList<>();
         String query = "SELECT order_details.item_id,items.name,order_details.item_quantity,items.price,items.average_make_time FROM order_details" +
                 " LEFT JOIN items ON items.id = order_details.item_id WHERE order_details.order_id = " + orderID;
-        ResultSet rs = database.rawQuery(query, null);
-        try {
-            while (rs.next()) {
-                BillOrderItem billOrderItem = new BillOrderItem();
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            BillOrderItem billOrderItem = new BillOrderItem();
 
-                billOrderItem.setId(rs.getInt(0));
-                billOrderItem.setOrderName(rs.getString(1));
-                billOrderItem.setQuantity(rs.getInt(2));
-                billOrderItem.setSinglePrice(rs.getInt(3));
-                billOrderItem.setTime(rs.getInt(4));
+            billOrderItem.setId(cursor.getInt(0));
+            billOrderItem.setOrderName(cursor.getString(1));
+            billOrderItem.setQuantity(cursor.getInt(2));
+            billOrderItem.setSinglePrice(cursor.getInt(3));
+            billOrderItem.setTime(cursor.getInt(4));
 
-                list.add(billOrderItem);
-            }
-            rs.close();
+            list.add(billOrderItem);
+            cursor.moveToNext();
         }
-        catch(Exception e){
-
-        }
+        cursor.close();
         return list;
     }
 
@@ -204,79 +210,76 @@ public class DatabaseAccess {
     public Map<Integer, MenuItem> InitMenu() {
         Map<Integer, MenuItem> menuManager = new LinkedHashMap<Integer, MenuItem>();
 
-        ResultSet rs = database.rawQuery("SELECT * FROM items", null);
-        try {
-            while (rs.next()) {
-                // Create new item
-                MenuItem menuItem = new MenuItem();
+        Cursor cursor = database.rawQuery("SELECT * FROM items", null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            // Create new item
+            MenuItem menuItem = new MenuItem();
 
-                menuItem.setId(rs.getInt(0));
-                menuItem.setName(rs.getString(1));
-                menuItem.setPrice(rs.getInt(2));
-                menuItem.setPriceUnit(rs.getString(3));
-                menuItem.setAveMakeTime(rs.getInt(4));
-                menuItem.setAveMakeTimeUnit(rs.getString(5));
-                menuItem.setCategoryId(rs.getInt(8));
+            menuItem.setId(cursor.getInt(0));
+            menuItem.setName(cursor.getString(1));
+            menuItem.setPrice(cursor.getInt(2));
+            menuItem.setPriceUnit(cursor.getString(3));
+            menuItem.setAveMakeTime(cursor.getInt(4));
+            menuItem.setAveMakeTimeUnit(cursor.getString(5));
+            menuItem.setCategoryId(cursor.getInt(8));
 
-                menuManager.put(menuItem.getId(), menuItem);
-            }
-            rs.close();
+            menuManager.put(menuItem.getId(), menuItem);
+            cursor.moveToNext();
         }
-        catch(Exception e){
+        cursor.close();
 
-        }
         return menuManager;
     }
 
     public OrderManager QueryOrderInfoByTableID(int tableID) {
         OrderManager orderManager = new OrderManager();
 
-        ResultSet rs = database.rawQuery("SELECT * FROM " + ORDERS_TABLE +
+        Cursor cursor = database.rawQuery("SELECT * FROM " + ORDERS_TABLE +
                 " WHERE " + ORDERS_COLUMN_TABLEID + "=" + tableID + " AND " + ORDERS_COLUMN_STATUS + "<" + ORDER_STATUS_PAID, null);
 
-        try {
-            if (rs.getRow() > 0) {
-                while (rs.next()) {
-                    orderManager.setId(rs.getInt(0));
-                    orderManager.setUserId(rs.getInt(1));
-                    orderManager.setTableId(rs.getInt(2));
-                    orderManager.setStatus(rs.getInt(3));
-                }
-            } else {
-                orderManager.setUserId(1); // Temporarily assign
-                orderManager.setTableId(tableID);
-                orderManager.setStatus(ORDER_STATUS_NEW);
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                orderManager.setId(cursor.getInt(0));
+                orderManager.setUserId(cursor.getInt(1));
+                orderManager.setTableId(cursor.getInt(2));
+                orderManager.setStatus(cursor.getInt(3));
 
-                // Insert new order information to database
-                ContentValues cv = new ContentValues(5);
-
-                cv.put(ORDERS_COLUMN_USERID, 1); // Temporarily assign
-                cv.put(ORDERS_COLUMN_TABLEID, tableID);
-                cv.put(ORDERS_COLUMN_STATUS, ORDER_STATUS_NEW);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                cv.put(ORDERS_COLUMN_CREATEDATE, dateFormat.format(new Date())); //Insert 'now' as the date
-                cv.put(ORDERS_COLUMN_MODIFIEDDATE, dateFormat.format(new Date())); //Insert 'now' as the date
-
-                long insertId = database.insert(ORDERS_TABLE, null, cv);
-
-                if (insertId != -1) {
-                    orderManager.setId(safeLongToInt(insertId));
-                }
+                cursor.moveToNext();
             }
+        } else {
+            orderManager.setUserId(1); // Temporarily assign
+            orderManager.setTableId(tableID);
+            orderManager.setStatus(ORDER_STATUS_NEW);
 
-            rs.close();
-        }
-        catch(Exception e){
+            // Insert new order information to database
+            ContentValues cv = new ContentValues(5);
 
+            cv.put(ORDERS_COLUMN_USERID, 1); // Temporarily assign
+            cv.put(ORDERS_COLUMN_TABLEID, tableID);
+            cv.put(ORDERS_COLUMN_STATUS, ORDER_STATUS_NEW);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            cv.put(ORDERS_COLUMN_CREATEDATE, dateFormat.format(new Date())); //Insert 'now' as the date
+            cv.put(ORDERS_COLUMN_MODIFIEDDATE, dateFormat.format(new Date())); //Insert 'now' as the date
+
+            long insertId = database.insert(ORDERS_TABLE, null, cv);
+
+            if(insertId != -1) {
+                orderManager.setId(safeLongToInt(insertId));
+            }
         }
+
+        cursor.close();
+
         return orderManager;
     }
 
     public int queryOrderStatusIdByOrderId(int orderId) {
         int status = -1;
 
-        ResultSet rs = database.rawQuery("SELECT " + ORDERS_COLUMN_STATUS + " FROM " + ORDERS_TABLE +
+        Cursor cursor = database.rawQuery("SELECT " + ORDERS_COLUMN_STATUS + " FROM " + ORDERS_TABLE +
                 " WHERE " + ORDERS_COLUMN_ID + "=" + orderId, null);
         cursor.moveToFirst();
 
