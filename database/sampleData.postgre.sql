@@ -14,7 +14,7 @@ INSERT INTO tables (business_id, name, created, modified) VALUES (1, 'table 8', 
 INSERT INTO tables (business_id, name, created, modified) VALUES (1, 'table 9', '2015-12-21 21:17:00.000', '2015-12-21 21:17:00.000');
 INSERT INTO tables (business_id, name, created, modified) VALUES (1, 'table 10', '2015-12-21 21:17:00.000', '2015-12-21 21:17:00.000');
 
-INSERT INTO users(username, password, business_id, role_id, created, modified) VALUES ('staff1', 'password', 1, 1, '2015-12-21 21:17:00.000', '2015-12-21 21:17:00.000');
+INSERT INTO users(username, password, email, business_id, role_id, created, modified) VALUES ('staff1', 'password', 'staff@business.com', 1, 1, '2015-12-21 21:17:00.000', '2015-12-21 21:17:00.000');
 
 
 INSERT INTO categories (name, created, modified) VALUES ('Trà ', '2016-03-03 21:17:00.000', '2016-03-03 21:17:00.000');

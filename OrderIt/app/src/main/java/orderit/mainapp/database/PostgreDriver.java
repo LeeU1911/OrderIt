@@ -3,7 +3,10 @@ package orderit.mainapp.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Set;
+
 import android.content.ContentValues;
 import android.util.Log;
 
@@ -55,10 +58,42 @@ public class PostgreDriver {
     }
 
     public int update(String table, ContentValues values, String whereClause, String[] whereArgs) {
-        return 0;
+        Set<String> keys = values.keySet();
+        StringBuffer update = new StringBuffer();
+        boolean end = false;
+        for(String key: keys) {
+            update.append(key);
+            update.append("=");
+            update.append(values.get(key));
+            if (keys.size() == 1) {
+                continue;
+            }else {
+                update.append(", ");
+            }
+        }
+        update.delete(update.length() - 2, update.length());
+        String query = "Update " + table + " set " + update.toString() + " where " + whereClause;
+        Statement st = null;
+        try {
+            st = conn.createStatement();
+            st.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
     }
 
     public int delete(String table, String whereClause, String[] whereArgs){
-        return 0;
+        String query = "Delete from " + table + " where " + whereClause;
+        Statement st = null;
+        try {
+            st = conn.createStatement();
+            st.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+        return 1;
     }
 }

@@ -2,6 +2,7 @@ CREATE TABLE users (
 	id serial NOT NULL,
 	username text,
 	password varchar,
+	email varchar,
 	business_id integer,
 	role_id integer,
 	created timestamp,
