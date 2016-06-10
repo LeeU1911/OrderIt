@@ -44,6 +44,8 @@ import orderit.mainapp.R;
 import orderit.mainapp.application.AppProcess;
 
 public class LoginActivity extends Activity {
+    private static final String SUCCESS = "SUCCESS";
+    private static final String FAILED = "FAILED";
     Button btnLogin;
     EditText inputUsername;
     EditText inputPassword;
@@ -100,23 +102,25 @@ public class LoginActivity extends Activity {
         loginErrorMsg = (TextView) findViewById(R.id.lblLoginErrMsg);
 
         EditText txtUserName = (EditText)findViewById(R.id.txtUserName);
-        String userName = txtUserName.getText().toString();
+        //String userName = txtUserName.getText().toString();
         EditText txtPassword =(EditText)findViewById(R.id.txtPassword);
-        String password = txtPassword.getText().toString();
+        //String password = txtPassword.getText().toString();
+        String userName = "staff1";
+        String password = "password";
         if(userName == null || userName.equals("") || password == null || password.equals(""))
         {
             loginErrorMsg.setText(R.string.msg_login_error);
         }
         else {
-            databaseAccess.open();
-            String _password = databaseAccess.SearchPassword(userName);
-            databaseAccess.close();
-            /** Logging successfully */
-            if (password.equalsIgnoreCase(_password)) {
-                /** Jump to table list screen */
-                Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
-                startActivity(dashboard);
-            }
+            //databaseAccess.open();
+            //String _password = databaseAccess.SearchPassword(userName);
+            //databaseAccess.close();
+            ///** Logging successfully */
+            //if (password.equalsIgnoreCase(_password)) {
+            //    /** Jump to table list screen */
+            //    Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
+            //    startActivity(dashboard);
+            //}
             //} else {
             //    /** Check network connection */
             //    ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
@@ -127,6 +131,7 @@ public class LoginActivity extends Activity {
             //    /** Not found on local database , find on server */
             //        loginUserOnServer(userName, password);
             //}
+            loginUserOnServer(userName, password);
         }
         /** Unable to click */
         btnLogin.setClickable(true);
@@ -163,7 +168,7 @@ public class LoginActivity extends Activity {
     }
 
     private void loginUserOnServer(String username, String password){
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        /**List<NameValuePair> params = new ArrayList<NameValuePair>();
 
         try {
             username = new GZipIOStream().compressString(username);
@@ -172,6 +177,10 @@ public class LoginActivity extends Activity {
         catch (IOException e) {
         }
 
+        params.add(new BasicNameValuePair("username", username));
+        params.add(new BasicNameValuePair("password", password));
+         */
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("username", username));
         params.add(new BasicNameValuePair("password", password));
         AsyncServerCall asyncServerCall = new AsyncServerCall();
@@ -188,15 +197,28 @@ public class LoginActivity extends Activity {
 
         @Override
         protected String doInBackground(List<NameValuePair>... list) {
+            /**
             String loginURL = "http://orderit-server.herokuapp.com/";
             JSONObject json = new JSONParser().getJSONFromUrl(loginURL, list[0]);
             System.out.println(json);
-            /** return JSON object */
             return json.toString();
+            */
+            databaseAccess.open();
+            String _password = databaseAccess.SearchPassword(list[0].get(0).getValue());
+            databaseAccess.close();
+            if (list[0].get(1).getValue().equalsIgnoreCase(_password)) {
+                /** Jump to table list screen */
+                Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
+                startActivity(dashboard);
+                return SUCCESS;
+            }
+            else {
+                return FAILED;
+            }
         }
 
         protected void onPostExecute(String result){
-            JSONObject json = null;
+            /**JSONObject json = null;
             try {
                 json = new JSONObject(result);
             } catch (JSONException e) {
@@ -206,7 +228,6 @@ public class LoginActivity extends Activity {
                 if (json.getString(KEY_SUCCESS) != null) {
                     String res = json.getString(KEY_SUCCESS);
                     if (res.equalsIgnoreCase("success")) {
-                        /** Save the user information to local database */
                         User user = new User();
                         inputPassword = (EditText) findViewById(R.id.txtPassword);
                         inputUsername = (EditText) findViewById(R.id.txtUserName);
@@ -217,15 +238,18 @@ public class LoginActivity extends Activity {
                         databaseAccess.open();
                         databaseAccess.InsertUser(user);
                         databaseAccess.close();
-                        /** Jump to table list screen */
                         Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
                         startActivity(dashboard);
                     } else {
-                        /** Log in failed */
                         loginErrorMsg.setText(R.string.msg_login_error);
                     }
                 }
             } catch (JSONException e) {
+            }*/
+            if (result.equalsIgnoreCase(SUCCESS)) {
+                /** Jump to table list screen */
+                Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
+                startActivity(dashboard);
             }
         }
     }

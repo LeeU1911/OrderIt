@@ -28,7 +28,7 @@ import orderit.mainapp.model.TableItem;
 public class DatabaseAccessBackup {
     private SQLiteOpenHelper openHelper;
     private SQLiteDatabase database;
-    private static DatabaseAccess instance;
+    private static DatabaseAccessBackup instance;
 
     /** "users" table */
     private static final String USERS_TABLE = "users";
@@ -98,14 +98,14 @@ public class DatabaseAccessBackup {
      * @param context
      */
 
-   private DatabaseAccess(Context context) {
+   private DatabaseAccessBackup(Context context) {
         this.openHelper = new DatabaseOpenHelper(context);
     }
 
-    /** Return a singleton instance of DatabaseAccess */
-    public static DatabaseAccess getInstance(Context context) {
+    /** Return a singleton instance of DatabaseAccessBackup */
+    public static DatabaseAccessBackup getInstance(Context context) {
         if (instance == null) {
-            instance = new DatabaseAccess();
+            instance = new DatabaseAccessBackup(context);
         }
         return instance;
     }

@@ -278,30 +278,32 @@ public class DatabaseAccess {
 
         ResultSet rs = database.rawQuery("SELECT " + ORDERS_COLUMN_STATUS + " FROM " + ORDERS_TABLE +
                 " WHERE " + ORDERS_COLUMN_ID + "=" + orderId, null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()) {
-            status = cursor.getInt(0);
-            cursor.moveToNext();
+        try {
+            while (rs.next()) {
+                status = rs.getInt(0);
+            }
+            rs.close();
         }
-        cursor.close();
+        catch(Exception e){
 
+        }
         return status;
     }
 
     public String queryOrderStatusStringByOrderId(int orderId) {
         String status = "";
 
-        Cursor cursor = database.rawQuery("SELECT order_status.name FROM orders" +
+        ResultSet rs = database.rawQuery("SELECT order_status.name FROM orders" +
                 " LEFT JOIN order_status ON orders.status = order_status.id WHERE orders.id = " + orderId, null);
-        cursor.moveToFirst();
-
-        while (!cursor.isAfterLast()) {
-            status = cursor.getString(0);
-            cursor.moveToNext();
+        try {
+            while (rs.next()) {
+                status = rs.getString(0);
+            }
+            rs.close();
         }
-        cursor.close();
+        catch(Exception e){
 
+        }
         return status;
     }
 
@@ -314,40 +316,44 @@ public class DatabaseAccess {
     public Map<Integer, OrderItem> QueryOrderItemByOrderID(int orderID) {
         Map<Integer, OrderItem> orderItemMap = new LinkedHashMap<Integer, OrderItem>();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM order_details where order_id="+orderID+"", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            OrderItem orderItem = new OrderItem();
+        ResultSet rs = database.rawQuery("SELECT * FROM order_details where order_id="+orderID+"", null);
+        try {
+            while (rs.next()) {
+                OrderItem orderItem = new OrderItem();
 
-            orderItem.setId(cursor.getInt(0));
-            orderItem.setOrderId(cursor.getInt(1));
-            orderItem.setMenuItemId(cursor.getInt(2));
-            orderItem.setMenuItemQuantity(cursor.getInt(3));
+                orderItem.setId(rs.getInt(0));
+                orderItem.setOrderId(rs.getInt(1));
+                orderItem.setMenuItemId(rs.getInt(2));
+                orderItem.setMenuItemQuantity(rs.getInt(3));
 
-            orderItemMap.put(orderItem.getMenuItemId(), orderItem);
-            cursor.moveToNext();
+                orderItemMap.put(orderItem.getMenuItemId(), orderItem);
+            }
+            rs.close();
         }
-        cursor.close();
+        catch(Exception e){
 
+        }
         return orderItemMap;
     }
 
     public List<MenuGroup> QueryGroupMenu() {
         List<MenuGroup> list = new ArrayList<MenuGroup>();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM categories", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            MenuGroup menuGroup = new MenuGroup();
+        ResultSet rs = database.rawQuery("SELECT * FROM categories", null);
+        try {
+            while (rs.next()) {
+                MenuGroup menuGroup = new MenuGroup();
 
-            menuGroup.setId(cursor.getInt(0));
-            menuGroup.setName(cursor.getString(1));
+                menuGroup.setId(rs.getInt(0));
+                menuGroup.setName(rs.getString(1));
 
-            list.add(menuGroup);
-            cursor.moveToNext();
+                list.add(menuGroup);
+            }
+            rs.close();
         }
-        cursor.close();
+        catch(Exception e){
 
+        }
         return list;
     }
 
@@ -360,29 +366,31 @@ public class DatabaseAccess {
 
             int totalOrderQuantity = 0;
 
-            Cursor cursor = database.rawQuery("SELECT * FROM items where category_id="+menuGroup.getId()+"", null);
-            cursor.moveToFirst();
-            while (!cursor.isAfterLast()) {
-                // Create new item
-                MenuItem menuItem = new MenuItem();
+            ResultSet rs = database.rawQuery("SELECT * FROM items where category_id="+menuGroup.getId()+"", null);
+            try {
+                while (rs.next()) {
+                    // Create new item
+                    MenuItem menuItem = new MenuItem();
 
-                menuItem.setId(cursor.getInt(0));
-                menuItem.setName(cursor.getString(1));
-                menuItem.setPrice(cursor.getInt(2));
-                menuItem.setPriceUnit(cursor.getString(3));
-                menuItem.setAveMakeTime(cursor.getInt(4));
-                menuItem.setAveMakeTimeUnit(cursor.getString(5));
-                menuItem.setCategoryId(cursor.getInt(8));
+                    menuItem.setId(rs.getInt(0));
+                    menuItem.setName(rs.getString(1));
+                    menuItem.setPrice(rs.getInt(2));
+                    menuItem.setPriceUnit(rs.getString(3));
+                    menuItem.setAveMakeTime(rs.getInt(4));
+                    menuItem.setAveMakeTimeUnit(rs.getString(5));
+                    menuItem.setCategoryId(rs.getInt(8));
 
-                if(orderItemMap.get(menuItem.getId()) != null) {
-                    totalOrderQuantity += orderItemMap.get(menuItem.getId()).getMenuItemQuantity();
+                    if (orderItemMap.get(menuItem.getId()) != null) {
+                        totalOrderQuantity += orderItemMap.get(menuItem.getId()).getMenuItemQuantity();
+                    }
+
+                    menuItemList.add(menuItem);
                 }
-
-                menuItemList.add(menuItem);
-                cursor.moveToNext();
+                rs.close();
             }
-            cursor.close();
+            catch(Exception e){
 
+            }
             menuGroup.setOrderQuantity(totalOrderQuantity);
             menuMap.put(menuGroup.getId(), menuItemList);
         }
@@ -393,28 +401,32 @@ public class DatabaseAccess {
     public int QueryTableIdByOrderId(int OrderId) {
         int tableId = 0;
 
-        Cursor cursor = database.rawQuery("SELECT table_id FROM orders where id="+OrderId+"", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            tableId = cursor.getInt(0);
-            cursor.moveToNext();
+        ResultSet rs = database.rawQuery("SELECT table_id FROM orders where id="+OrderId+"", null);
+        try {
+            while (rs.next()) {
+                tableId = rs.getInt(0);
+            }
+            rs.close();
         }
-        cursor.close();
+        catch(Exception e){
 
+        }
         return tableId;
     }
 
     public int QueryTableStatusByTableId(int TableId) {
         int tableStatus = 0;
 
-        Cursor cursor = database.rawQuery("SELECT status FROM tables where id="+TableId+"", null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            tableStatus = cursor.getInt(0);
-            cursor.moveToNext();
+        ResultSet rs = database.rawQuery("SELECT status FROM tables where id="+TableId+"", null);
+        try {
+            while (rs.next()) {
+                tableStatus = rs.getInt(0);
+            }
+            rs.close();
         }
-        cursor.close();
+        catch(Exception e){
 
+        }
         return tableStatus;
     }
 
