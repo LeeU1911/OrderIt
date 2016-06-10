@@ -116,16 +116,17 @@ public class LoginActivity extends Activity {
                 /** Jump to table list screen */
                 Intent dashboard = new Intent(LoginActivity.this, TableListActivity.class);
                 startActivity(dashboard);
-            } else {
-                /** Check network connection */
-                ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
-                if (cd.isConnectingToInternet() == false) {
-                    loginErrorMsg.setText(R.string.msg_login_error);
-                    //startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
-                } else
-                /** Not found on local database , find on server */
-                    loginUserOnServer(userName, password);
             }
+            //} else {
+            //    /** Check network connection */
+            //    ConnectionDetector cd = new ConnectionDetector(getApplicationContext());
+            //    if (cd.isConnectingToInternet() == false) {
+            //        loginErrorMsg.setText(R.string.msg_login_error);
+            //        //startActivity(new Intent(android.provider.Settings.ACTION_WIRELESS_SETTINGS));
+            //    } else
+            //    /** Not found on local database , find on server */
+            //        loginUserOnServer(userName, password);
+            //}
         }
         /** Unable to click */
         btnLogin.setClickable(true);

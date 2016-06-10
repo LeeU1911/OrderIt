@@ -3,7 +3,6 @@
  */
 
 package orderit.mainapp.database;
-
 import android.content.Context;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
