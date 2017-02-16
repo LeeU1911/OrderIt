@@ -15,4 +15,6 @@
   <string name="label_input_pond_area">Area</string>
   <string name="ok">OK</string>
   <string name="cancel">Cancel</string>
+  <string name="register_btn">Register</string>
+  <string name="login_btn">Login</string>
 </resources>
