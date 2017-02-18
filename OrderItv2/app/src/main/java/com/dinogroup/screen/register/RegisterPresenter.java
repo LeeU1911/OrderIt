@@ -106,6 +106,7 @@ class RegisterPresenter extends BaseViewPresenter<RegisterView> {
         Set<ConstraintViolation<UserWithPassword>> errors = validator.validate(user);
 
         if (errors.isEmpty()) {
+            registerWithApi(user);
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -116,9 +117,8 @@ class RegisterPresenter extends BaseViewPresenter<RegisterView> {
                             // the auth state listener will be notified and logic to handle the
                             // signed in user can be handled in the listener.
                             if (!task.isSuccessful()) {
-                                Toast.makeText(getView().getContext(), "Account creation failed.",
-                                        Toast.LENGTH_SHORT).show();
                                 Log.d(TAG, "createUserWithEmail",task.getException());
+                                getView().onRegistrationError(task.getException());
                             } else {
                                 Toast.makeText(getView().getContext(), "Account created.",
                                         Toast.LENGTH_SHORT).show();
