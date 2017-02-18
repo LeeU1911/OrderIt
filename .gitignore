@@ -5,3 +5,8 @@ OrderIt/app/build.gradle
 /kitchen-module/.idea/
 /kitchen-module/bin/
 /kitchen-module/npm-debug.log
+/OrderIt/.idea/
+/OrderIt/.gradle/
+/OrderIt/OrderIt.iml
+/OrderIt/local.properties
+/OrderIt/gradle/
