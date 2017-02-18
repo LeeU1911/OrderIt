@@ -1,0 +1,89 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
+
+body {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  line-height: 1.5;
+  padding: 0;
+  margin: 0;
+  background: white;
+  color: #566b78;
+  -webkit-font-smoothing: antialiased
+}
+
+main {
+  margin: 0 auto;
+  max-width: 50em;
+  padding: 0.5em;
+}
+h2, h3 {
+  margin-top: 1em;
+  padding-top: 1em;
+}
+h1,
+h2,
+h3,
+strong {
+  color: #333;
+}
+
+a {
+  color: rgb(27, 90, 19);
+}
+
+header {
+  background-color: #263d36;
+  background-image: url("header.jpg");
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  line-height: 1.2;
+  padding: 10vw 2em;
+  text-align: center;
+  max-width: none;
+}
+
+header img {
+  display: inline-block;
+  height: 120px;
+  vertical-align: top;
+  width: 120px;
+}
+
+header a {
+  border: 1px solid rgb(27, 90, 19);
+  border-radius: 290486px;
+  color: white;
+  font-size: 0.6em;
+  letter-spacing: 0.2em;
+  padding: 1em 2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: none 200ms ease-out;
+  transition-property: color, background;
+}
+
+header h1 {
+  border-radius: 20px;
+  color: white;
+  letter-spacing: 0.2em;
+  padding: 0.5em;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 2.5em;
+  font-weight: 500;
+  background: rgba(27, 90, 19, 0.5);
+}
+
+header a:hover {
+  background: rgb(27, 90, 19);
+  color: white;
+}
+
+.list > li {
+	margin: 10px auto;
+}
+
+.list > li p {
+	font-size: 0.8em;
+	font-style: italic;
+}
