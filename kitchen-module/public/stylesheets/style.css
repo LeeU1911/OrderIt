@@ -50,7 +50,7 @@ a {
 
 header {
   background-color: #F7B32D;
-  background-image: url("header.jpg");
+  /*background-image: url("header.jpg");*/
   background-position: center top;
   background-repeat: no-repeat;
   background-size: cover;
