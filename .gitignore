@@ -10,3 +10,6 @@ OrderIt/app/build.gradle
 /OrderIt/OrderIt.iml
 /OrderIt/local.properties
 /OrderIt/gradle/
+/OrderIt/app/build/
+/OrderIt/build/
+/OrderIt/app/app.iml
