@@ -1,3 +1,7 @@
 OrderIt/.idea/gradle.xml
 OrderIt/app/build.gradle
-kitchen-module/node_modules
+/kitchen-module/node_modules/
+/.idea/
+/kitchen-module/.idea/
+/kitchen-module/bin/
+/kitchen-module/npm-debug.log
