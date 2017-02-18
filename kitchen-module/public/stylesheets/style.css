@@ -1,5 +1,15 @@
 @import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500';
 
+html * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 body {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   line-height: 1.5;
@@ -8,6 +18,14 @@ body {
   background: white;
   color: #566b78;
   -webkit-font-smoothing: antialiased
+}
+a {
+  color: #2f889a;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
 }
 
 main {
