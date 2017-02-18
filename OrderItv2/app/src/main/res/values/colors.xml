@@ -6,8 +6,8 @@
   <item name="link_blue" type="color">#1D599E</item>
 
   <item name="primary" type="color">#F7B32D</item>
-  <item name="primary_light" type="color">#C89025</item>
-  <item name="primary_dark" type="color">#f8ad19</item>
+  <item name="primary_light" type="color">#f7d083</item>
+  <item name="primary_dark" type="color">#bf8107</item>
 
   <item name="accent" type="color">#03a9f4</item>
   <item name="accent_light" type="color">#81D4FA</item>

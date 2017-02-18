@@ -72,8 +72,8 @@ xsigin/signup popup
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #d2d8d8;
-  color: #809191;
+  background: #bf8107;
+  color: lightgray;
 }
 .cd-user-modal-container .cd-switcher a.selected {
   background: #FFF;
@@ -171,10 +171,11 @@ xsigin/signup popup
 .cd-form input[type=submit] {
   padding: 16px 0;
   cursor: pointer;
-  background: #2f889a;
+  background: #F7B32D;
   color: #FFF;
   font-weight: bold;
-  border: none;
+  border: 1px solid rgb(27, 90, 19);
+  border-radius: 290486px;
   -webkit-appearance: none;
   -moz-appearance: none;
   -ms-appearance: none;
@@ -182,7 +183,7 @@ xsigin/signup popup
   appearance: none;
 }
 .no-touch .cd-form input[type=submit]:hover, .no-touch .cd-form input[type=submit]:focus {
-  background: #3599ae;
+  background: #f7d083;
   outline: none;
 }
 .cd-form .hide-password {
