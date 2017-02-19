@@ -36,18 +36,18 @@
             </ul>
 
             <div id="cd-login"> <!-- log in form -->
-                <form class="cd-form">
+                <form class="cd-form" name="loginForm" novalidate>
                     <p class="fieldset">
                         <label class="image-replace cd-email" for="signin-email">E-mail</label>
                         <input class="full-width has-padding has-border" id="signin-email" type="email"
-                               placeholder="E-mail">
+                               placeholder="E-mail" ng-model="loginUserWithEmailAndPassword.email">
                         <span class="cd-error-message">Error message here!</span>
                     </p>
 
                     <p class="fieldset">
                         <label class="image-replace cd-password" for="signin-password">Password</label>
                         <input class="full-width has-padding has-border" id="signin-password" type="password"
-                               placeholder="Password">
+                               placeholder="Password" ng-model="loginUserWithEmailAndPassword.password">
                         <a href="#0" class="hide-password">Show</a>
                         <span class="cd-error-message">Error message here!</span>
                     </p>
@@ -58,7 +58,7 @@
                     </p>
 
                     <p class="fieldset">
-                        <input class="full-width" type="submit" value="Login">
+                        <input class="full-width" type="submit" value="Login" ng-click="login()">
                     </p>
                 </form>
 
@@ -67,27 +67,35 @@
             </div> <!-- cd-login -->
 
             <div id="cd-signup"> <!-- sign up form -->
-                <form class="cd-form">
+                <form class="cd-form" name="registerForm" novalidate>
                     <p class="fieldset">
                         <label class="image-replace cd-username" for="signup-username">Username</label>
                         <input class="full-width has-padding has-border" id="signup-username" type="text"
-                               placeholder="Username">
-                        <span class="cd-error-message">Error message here!</span>
+                               placeholder="Username" ng-model="userWithEmailAndPassword.username">
                     </p>
 
                     <p class="fieldset">
                         <label class="image-replace cd-email" for="signup-email">E-mail</label>
-                        <input class="full-width has-padding has-border" id="signup-email" type="email"
-                               placeholder="E-mail">
-                        <span class="cd-error-message">Error message here!</span>
+                        <input class="full-width has-padding has-border" id="signup-email" type="email" name="email"
+                               placeholder="E-mail" ng-model="userWithEmailAndPassword.email"
+                               ng-class="{ 'has-error': registerForm.email.$touched && registerForm.email.$invalid}"
+                               required>
+                        <div class="help-block" ng-messages="registerForm.email.$error" ng-show="registerForm.email.$touched">
+                            <div ng-messages-include="/html/messages.html"></div>
+                        </div>
                     </p>
 
                     <p class="fieldset">
                         <label class="image-replace cd-password" for="signup-password">Password</label>
-                        <input class="full-width has-padding has-border" id="signup-password" type="password"
-                               placeholder="Password">
+                        <input class="full-width has-padding has-border" id="signup-password" type="password" name="password"
+                               placeholder="Password" ng-model="userWithEmailAndPassword.password"
+                               ng-class="{ 'has-error': registerForm.password.$touched && registerForm.password.$invalid}"
+                               ng-minlength="6"
+                               required>
                         <a href="#0" class="hide-password">Show</a>
-                        <span class="cd-error-message">Error message here!</span>
+                        <div class="help-block" ng-messages="registerForm.password.$error" ng-show="registerForm.password.$touched">
+                            <div ng-messages-include="/html/messages.html"></div>
+                        </div>
                     </p>
 
                     <p class="fieldset">
@@ -96,7 +104,7 @@
                     </p>
 
                     <p class="fieldset">
-                        <input class="full-width has-padding" type="submit" value="Create account">
+                        <input class="full-width has-padding" type="submit" value="Create account" ng-click="register(registerForm.$valid)">
                     </p>
                 </form>
 
@@ -130,7 +138,11 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="/javascripts/login.js"></script> <!-- Gem jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular.min.js"></script>
-<script src="/javascripts/myApp.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-resource.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-messages.min.js"></script>
+<script src="/javascripts/my-app.js"></script>
+<script src="/javascripts/my-service.js"></script>
+<script src="/javascripts/my-controller.js"></script>
 </body>
 </html>
 				

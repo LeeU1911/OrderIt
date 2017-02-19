@@ -47,10 +47,8 @@ router.post('/login', function (req, res, next) {
         // ...
     });
 });
-router.get('/register', function (req, res) {
-    res.render('register');
-});
-router.post('/register', function (req, res, next) {
+
+router.post('/register', function (req, res) {
     console.log("Register a new user");
     var email = req.body.email;
     var password = req.body.password;
