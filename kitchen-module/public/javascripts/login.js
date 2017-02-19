@@ -10,10 +10,10 @@ jQuery(document).ready(function($){
 		backToLoginLink = formForgotPassword.find('.cd-form-bottom-message a'),
 		mainNav = $('.main');
 
-	//open modal
-	mainNav.on('click', function(event){
-		$(event.target).is(mainNav) && mainNav.children('ul').toggleClass('is-visible');
-	});
+	//open modal - move to angularjs way using loginFormVisible var
+	// mainNav.on('click', function(event){
+	// 	$(event.target).is(mainNav) && mainNav.children('ul').toggleClass('is-visible');
+	// });
 
 	//open sign-up form
 	mainNav.on('click', '.cd-signup', signup_selected);

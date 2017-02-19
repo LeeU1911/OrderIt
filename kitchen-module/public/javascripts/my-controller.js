@@ -9,7 +9,9 @@ myApp.controller("myController",['$scope', 'MyService', function($scope, MyServi
     $scope.register = function (isValid) {
         if(isValid && $scope.userWithEmailAndPassword) {
             MyService.register($scope.userWithEmailAndPassword, function (res) {
-                console.log(res);
+                if(res.success) {
+                    $scope.loginFormVisible = false;
+                }
             }, function (err) {
                 console.log(err);
             });
