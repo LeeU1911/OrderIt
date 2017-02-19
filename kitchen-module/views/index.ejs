@@ -39,17 +39,26 @@
                 <form class="cd-form" name="loginForm" novalidate>
                     <p class="fieldset">
                         <label class="image-replace cd-email" for="signin-email">E-mail</label>
-                        <input class="full-width has-padding has-border" id="signin-email" type="email"
-                               placeholder="E-mail" ng-model="loginUserWithEmailAndPassword.email">
-                        <span class="cd-error-message">Error message here!</span>
+                        <input class="full-width has-padding has-border" id="signin-email" type="email" name="email"
+                               placeholder="E-mail" ng-model="loginUserWithEmailAndPassword.email"
+                               ng-class="{ 'has-error': loginForm.email.$touched && loginForm.email.$invalid}"
+                               required>
+                        <div class="help-block" ng-messages="loginForm.email.$error" ng-show="loginForm.email.$touched">
+                            <div ng-messages-include="/html/messages.html"></div>
+                        </div>
                     </p>
 
                     <p class="fieldset">
                         <label class="image-replace cd-password" for="signin-password">Password</label>
-                        <input class="full-width has-padding has-border" id="signin-password" type="password"
-                               placeholder="Password" ng-model="loginUserWithEmailAndPassword.password">
+                        <input class="full-width has-padding has-border" id="signin-password" type="password" name="password"
+                               placeholder="Password" ng-model="loginUserWithEmailAndPassword.password"
+                               ng-class="{ 'has-error': loginForm.password.$touched && loginForm.password.$invalid}"
+                               ng-minlength="6"
+                               required>
                         <a href="#0" class="hide-password">Show</a>
-                        <span class="cd-error-message">Error message here!</span>
+                        <div class="help-block" ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched">
+                            <div ng-messages-include="/html/messages.html"></div>
+                        </div>
                     </p>
 
                     <p class="fieldset">
