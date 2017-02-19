@@ -22,29 +22,24 @@ router.use(function (req, res, next) {
     next();
 });
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
+/* GET login page. */
+router.get('/', function (req, res) {
     res.render('index', {title: 'Order-It Kitchen'});
 });
 
-router.post('/login', function (req, res, next) {
-    var provider = new firebase.auth.GoogleAuthProvider();
-
-    firebase.auth().signInWithPopup(provider).then(function (result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        // ...
+router.post('/login', function (req, res) {
+    console.log("Logging in");
+    var email = req.body.email;
+    var password = req.body.password;
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function (result) {
+        res.json({success: true});
+        console.log("User signed in successfully!");
     }).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // The email of the user's account used.
-        var email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        var credential = error.credential;
-        // ...
+        res.status(400);
+        res.json({error: {status: 400, stack: errorCode}, message: errorMessage});
     });
 });
 
@@ -55,6 +50,7 @@ router.post('/register', function (req, res) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
         .then(function (result) {
             res.json({success: true});
+            console.log("User registered successfully!");
         })
         .catch(function (error) {
             // Handle Errors here.

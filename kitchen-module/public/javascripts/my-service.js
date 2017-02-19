@@ -3,7 +3,7 @@ myApp.factory('MyService', function ($resource) {
     }, {
         login: {
             url: '/login',
-            method: 'GET'
+            method: 'POST'
         },
         register: {
             url: '/register',

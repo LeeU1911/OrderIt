@@ -67,7 +67,7 @@
                     </p>
 
                     <p class="fieldset">
-                        <input class="full-width" type="submit" value="Login" ng-click="login()">
+                        <input class="full-width" type="submit" value="Login" ng-click="login(loginForm.$valid)" submit-once="Logging in...">
                     </p>
                 </form>
 
@@ -113,7 +113,9 @@
                     </p>
 
                     <p class="fieldset">
-                        <input class="full-width has-padding" type="submit" value="Create account" ng-click="register(registerForm.$valid)">
+                        <input class="full-width has-padding" type="submit" value="Create account" ng-click="register(registerForm.$valid)"
+                        submit-once="Registering...">
+
                     </p>
                 </form>
 
@@ -124,16 +126,20 @@
                 <p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link
                     to create a new password.</p>
 
-                <form class="cd-form">
+                <form class="cd-form" name="resetPasswordForm">
                     <p class="fieldset">
                         <label class="image-replace cd-email" for="reset-email">E-mail</label>
-                        <input class="full-width has-padding has-border" id="reset-email" type="email"
-                               placeholder="E-mail">
-                        <span class="cd-error-message">Error message here!</span>
+                        <input class="full-width has-padding has-border" id="reset-email" type="email" name="email"
+                               placeholder="E-mail"
+                               ng-class="{ 'has-error': resetPasswordForm.email.$touched && resetPasswordForm.email.$invalid}"
+                               required>
+                    <div class="help-block" ng-messages="resetPasswordForm.email.$error" ng-show="resetPasswordForm.email.$touched">
+                        <div ng-messages-include="/html/messages.html"></div>
+                    </div>
                     </p>
 
                     <p class="fieldset">
-                        <input class="full-width has-padding" type="submit" value="Reset password">
+                        <input class="full-width has-padding" type="submit" value="Reset password" submit-once="Resetting password...">
                     </p>
                 </form>
 
@@ -147,10 +153,12 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="/javascripts/login.js"></script> <!-- Gem jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular.min.js"></script>
+<script src="/javascripts/lib/angular-ui-router.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-resource.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.1/angular-messages.min.js"></script>
 <script src="/javascripts/my-app.js"></script>
 <script src="/javascripts/my-service.js"></script>
+<script src="/javascripts/submit-once.js"></script>
 <script src="/javascripts/my-controller.js"></script>
 </body>
 </html>

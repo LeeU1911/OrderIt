@@ -182,7 +182,23 @@ xsigin/signup popup
   -o-appearance: none;
   appearance: none;
 }
-.no-touch .cd-form input[type=submit]:hover, .no-touch .cd-form input[type=submit]:focus {
+
+.cd-form input[type=submit]:disabled {
+    padding: 16px 0;
+    cursor: not-allowed;
+    background: gray;
+    color: #FFF;
+    font-weight: bold;
+    border: 1px solid gray;
+    border-radius: 290486px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+}
+
+.no-touch .cd-form input[type=submit]:not([disabled]):hover, .no-touch .cd-form input[type=submit]:focus {
   background: #f7d083;
   outline: none;
 }
