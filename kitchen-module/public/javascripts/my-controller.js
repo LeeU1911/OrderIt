@@ -3,7 +3,7 @@ myApp.controller("myController",['$scope', 'MyService', '$location', function($s
     $scope.loginUserWithEmailAndPassword = {};
 
     $scope.login = function(isValid){
-        if(isValid && $scope.loginUserWithEmailAndPassword) {
+        if(isValid && $scope.loginUserWithEmailAndPassword.email && $scope.loginUserWithEmailAndPassword.password) {
             $scope.authenticating = true;
             MyService.login($scope.loginUserWithEmailAndPassword, function (res) {
                 $scope.authenticating = false;
@@ -19,7 +19,7 @@ myApp.controller("myController",['$scope', 'MyService', '$location', function($s
     };
 
     $scope.register = function (isValid) {
-        if(isValid && $scope.userWithEmailAndPassword) {
+        if(isValid && $scope.userWithEmailAndPassword.email && $scope.userWithEmailAndPassword.password) {
             MyService.register($scope.userWithEmailAndPassword, function (res) {
                 if(res.success) {
                     $scope.loginFormVisible = false;
