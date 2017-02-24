@@ -1,0 +1,127 @@
+<p class="button">
+    <a class="cd-signup" href="#0" ng-click="loginFormVisible = true;">Register</a>
+</p>
+<p class="button">
+    <a class="cd-signin" href="#0" ng-click="loginFormVisible = true;">Login</a>
+</p>
+
+<div class="cd-user-modal" ng-class="{'is-visible': loginFormVisible}"> <!-- this is the entire modal form, including the background -->
+    <div class="cd-user-modal-container"> <!-- this is the container wrapper -->
+        <ul class="cd-switcher">
+            <li><a href="#0">Sign in</a></li>
+            <li><a href="#0">New account</a></li>
+        </ul>
+
+        <div id="cd-login"> <!-- log in form -->
+            <form class="cd-form" name="loginForm" novalidate>
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="signin-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="signin-email" type="email" name="email"
+                           placeholder="E-mail" ng-model="loginUserWithEmailAndPassword.email"
+                           ng-class="{ 'has-error': loginForm.email.$touched && loginForm.email.$invalid}"
+                           required>
+                <div class="help-block" ng-messages="loginForm.email.$error" ng-show="loginForm.email.$touched">
+                    <div ng-messages-include="/html/messages.html"></div>
+                </div>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-password" for="signin-password">Password</label>
+                    <input class="full-width has-padding has-border" id="signin-password" type="password" name="password"
+                           placeholder="Password" ng-model="loginUserWithEmailAndPassword.password"
+                           ng-class="{ 'has-error': loginForm.password.$touched && loginForm.password.$invalid}"
+                           ng-minlength="6"
+                           required>
+                    <a href="#0" class="hide-password">Show</a>
+                <div class="help-block" ng-messages="loginForm.password.$error" ng-show="loginForm.password.$touched">
+                    <div ng-messages-include="/html/messages.html"></div>
+                </div>
+                </p>
+
+                <p class="fieldset">
+                    <input type="checkbox" id="remember-me" checked>
+                    <label for="remember-me">Remember me</label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width" type="submit" value="Login" ng-click="login(loginForm.$valid)" submit-once="Logging in...">
+                </p>
+            </form>
+
+            <p class="cd-form-bottom-message"><a href="#0">Forgot your password?</a></p>
+            <!-- <a href="#0" class="cd-close-form">Close</a> -->
+        </div> <!-- cd-login -->
+
+        <div id="cd-signup"> <!-- sign up form -->
+            <form class="cd-form" name="registerForm" novalidate>
+                <p class="fieldset">
+                    <label class="image-replace cd-username" for="signup-username">Username</label>
+                    <input class="full-width has-padding has-border" id="signup-username" type="text"
+                           placeholder="Username" ng-model="userWithEmailAndPassword.username">
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="signup-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="signup-email" type="email" name="email"
+                           placeholder="E-mail" ng-model="userWithEmailAndPassword.email"
+                           ng-class="{ 'has-error': registerForm.email.$touched && registerForm.email.$invalid}"
+                           required>
+                <div class="help-block" ng-messages="registerForm.email.$error" ng-show="registerForm.email.$touched">
+                    <div ng-messages-include="/html/messages.html"></div>
+                </div>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-password" for="signup-password">Password</label>
+                    <input class="full-width has-padding has-border" id="signup-password" type="password" name="password"
+                           placeholder="Password" ng-model="userWithEmailAndPassword.password"
+                           ng-class="{ 'has-error': registerForm.password.$touched && registerForm.password.$invalid}"
+                           ng-minlength="6"
+                           required>
+                    <a href="#0" class="hide-password">Show</a>
+                <div class="help-block" ng-messages="registerForm.password.$error" ng-show="registerForm.password.$touched">
+                    <div ng-messages-include="/html/messages.html"></div>
+                </div>
+                </p>
+
+                <p class="fieldset">
+                    <input type="checkbox" id="accept-terms">
+                    <label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width has-padding" type="submit" value="Create account" ng-click="register(registerForm.$valid)"
+                           submit-once="Registering...">
+
+                </p>
+            </form>
+
+            <!-- <a href="#0" class="cd-close-form">Close</a> -->
+        </div> <!-- cd-signup -->
+
+        <div id="cd-reset-password"> <!-- reset password form -->
+            <p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link
+                to create a new password.</p>
+
+            <form class="cd-form" name="resetPasswordForm">
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="reset-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="reset-email" type="email" name="email"
+                           placeholder="E-mail"
+                           ng-class="{ 'has-error': resetPasswordForm.email.$touched && resetPasswordForm.email.$invalid}"
+                           required>
+                <div class="help-block" ng-messages="resetPasswordForm.email.$error" ng-show="resetPasswordForm.email.$touched">
+                    <div ng-messages-include="/html/messages.html"></div>
+                </div>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width has-padding" type="submit" value="Reset password" submit-once="Resetting password...">
+                </p>
+            </form>
+
+            <p class="cd-form-bottom-message"><a href="#0">Back to log-in</a></p>
+        </div> <!-- cd-reset-password -->
+        <a href="#0" class="cd-close-form">Close</a>
+    </div> <!-- cd-user-modal-container -->
+</div> <!-- cd-user-modal -->

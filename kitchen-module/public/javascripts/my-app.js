@@ -6,5 +6,11 @@ var myApp = angular.module("myApp",['ngResource', 'ngMessages', 'ui.router']).co
             templateUrl: "/javascripts/angular-views/home.html"
         };
 
-        $stateProvider.state(homeState);
+        var loginState = {
+            name: 'login',
+            url: '/login',
+            templateUrl: "/javascripts/angular-views/login.html"
+        };
+
+        $stateProvider.state(loginState).state(homeState);
     }]);
