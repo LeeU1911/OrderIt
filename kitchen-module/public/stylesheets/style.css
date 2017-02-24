@@ -30,7 +30,7 @@ img {
 
 main {
   margin: 0 auto;
-  max-width: 50em;
+  max-width: 38em;
   padding: 0.5em;
 }
 h2, h3 {
@@ -84,7 +84,7 @@ header a, .button a {
   background-color: #F7B32D;
   font-size: 1.2em;
   float: left;
-  margin: 1em;
+  margin: 3em;
 }
 
 header h1 {
