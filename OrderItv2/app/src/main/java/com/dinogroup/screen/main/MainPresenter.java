@@ -39,7 +39,7 @@ public class MainPresenter extends FlowOwner<Blueprint, MainView> {
 	}
 
 	@Override public void dropView(MainView view) {
-		LOG.debug("Unregistering with otto");
+		LOG.debug("Un-registering with otto");
 		bus.unregister(this);
 
 		super.dropView(view);

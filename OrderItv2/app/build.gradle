@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
         classpath 'org.robolectric:robolectric-gradle-plugin:1.0.0'
         classpath 'com.google.gms:google-services:3.0.0'
     }
@@ -19,12 +19,12 @@ repositories {
 
 apply plugin: 'com.android.application'
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion '25.0.2'
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 24
+        targetSdkVersion 25
     }
     productFlavors {
         env_test {
@@ -145,18 +145,19 @@ dependencies {
         exclude module: 'wagon-provider-api'
     }
     compile 'org.hibernate:hibernate-validator:4.3.2.Final'
+
     compile 'org.hibernate:hibernate-validator:4.3.2.Final'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
+    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:design:25.3.0'
+    compile 'com.android.support:cardview-v7:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:support-v4:25.3.0'
     compile 'joda-time:joda-time:2.4'
     compile 'org.joda:joda-money:0.9.1'
     compile 'org.joda:joda-convert:1.7'
     compile 'com.atomicleopard:expressive:0.9.5'
-    compile 'com.google.guava:guava:18.0'
-    compile 'com.google.code.gson:gson:2.3'
+    compile 'com.google.guava:guava:20.0'
+    compile 'com.google.code.gson:gson:2.7'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile 'commons-io:commons-io:2.4'
     compile 'com.squareup:otto:1.3.5'
@@ -173,15 +174,14 @@ dependencies {
     compile 'com.cocosw:bottomsheet:0.6@aar'
     compile 'com.google.firebase:firebase-auth:10.0.1'
     compile 'com.google.firebase:firebase-database:10.0.1'
-    androidTestCompile 'com.android.support:support-v4:24.2.1'
-    androidTestCompile 'com.android.support:appcompat-v7:24.2.1'
-    androidTestCompile 'com.android.support:support-annotations:24.2.1'
+    androidTestCompile 'com.android.support:support-v4:25.3.0'
+    androidTestCompile 'com.android.support:appcompat-v7:25.3.0'
+    androidTestCompile 'com.android.support:support-annotations:25.3.0'
     androidTestCompile 'org.mockito:mockito-core:1.9.5'
     androidTestCompile 'com.squareup.assertj:assertj-android:1.0.0'
     androidTestCompile 'com.squareup.assertj:assertj-android-support-v4:1.0.0'
     androidTestCompile 'com.squareup.assertj:assertj-android-appcompat-v7:1.0.0'
     androidTestCompile 'nl.jqno.equalsverifier:equalsverifier:1.5'
-
 }
 
 

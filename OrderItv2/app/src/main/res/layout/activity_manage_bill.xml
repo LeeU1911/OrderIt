@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dinogroup.screen.bill.BillView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <include layout="@layout/content_manage_bill" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</com.dinogroup.screen.bill.BillView>

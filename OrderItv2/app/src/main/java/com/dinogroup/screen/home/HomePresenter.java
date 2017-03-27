@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.dinogroup.R;
 import com.dinogroup.actionbar.ActionBarConfig;
 import com.dinogroup.actionbar.ActionBarOwner;
+import com.dinogroup.model.TableItem;
+import com.dinogroup.model.TableItemAdapter;
+import com.dinogroup.screen.status.StatusScreen;
 import com.dinogroup.util.logging.Logger;
 import com.dinogroup.util.mortar.BaseViewPresenter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,15 +21,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
+import butterknife.InjectView;
 import flow.Flow;
 
 /**
  * Created by EVL1HC on 1/18/2017.
  */
 
-public class HomePresenter extends BaseViewPresenter<HomeView> {
+public class HomePresenter extends BaseViewPresenter<HomeView>{
 
     private static final Logger LOG = Logger.getLogger(HomePresenter.class);
     private final String TAG = "HomePresenter";
@@ -69,17 +77,89 @@ public class HomePresenter extends BaseViewPresenter<HomeView> {
         HomeView view = getView();
         if (view != null) {
             configureActionBar();
+            getTableData();
+            view.addTableItemListener();
         }
-
     }
 
     private void configureActionBar() {
         ActionBarConfig config = new ActionBarConfig.Builder()
-                .title("Home")
+                .title("Tables")
                 .visible(true)
                 .enableHomeAsUp(false)
                 .build();
         actionBarOwner.setConfig(config);
     }
 
+    private void getTableData() {
+        // Get database reference
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("biz/1/tables");
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                TableItem table = dataSnapshot.getValue(TableItem.class);
+                if (table != null) {
+                    Log.d(TAG, "Table name is: " + table.getName());
+                    //display list of ponds
+                    getView().updateTableList(table);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
+                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
+                Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                LOG.error(TAG, "Failed to read value.", databaseError.toException());
+                Toast.makeText(getView().getContext(), "Failed to load data.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+        databaseReference.addChildEventListener(childEventListener);
+    }
+
+    public void addTable(String businessID, String tableID, String tableName, String tableStatus) {
+        HomeView view = getView();
+        int nTableStatus = 0;
+        try {
+            nTableStatus = Integer.parseInt(tableStatus);
+        } catch (NumberFormatException e) {
+            view.onNumberInputError(e);
+            return;
+        }
+        TableItem tableItem = new TableItem(businessID, tableID, tableName, nTableStatus);
+        // Get database reference
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("biz/1/tables");
+
+        tableID = databaseReference.push().getKey();
+        tableItem.setId(tableID);
+        databaseReference.child(tableID).setValue(tableItem);
+
+    }
+
+    public void StatusScreenNavigation(String tableID) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("biz").child("1").child("processingTable1").setValue(tableID);
+
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("biz/1/processingTable");
+//        databaseReference.removeValue();
+//        databaseReference.push().setValue(tableID);
+
+        flow.goTo(new StatusScreen());
+    }
 }

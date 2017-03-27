@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <EditText
+        android:id="@+id/editTextBuzID"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="BusinessID"/>
+
+    <EditText
+        android:id="@+id/editTextTableID"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:inputType="numberDecimal"
+        android:hint="TableID"/>
+
+    <EditText
+        android:id="@+id/editTextTableName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="TableName"/>
+
+    <EditText
+        android:id="@+id/editTextTableStat"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="TableStatus"/>
+</LinearLayout>

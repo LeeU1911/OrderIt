@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.dinogroup.screen.status.StatusView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/list_item_tbl_stt_default"
+            android:id="@+id/status_row">
+            <ImageView
+                android:id="@+id/tbl_stt_img"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="top"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/busy_status"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/status_img_margin"/>
+
+
+            <!--Table Name-->
+            <TextView
+                android:id="@+id/tbl_stt_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_stt_heading_txt"
+                android:textColor="#040404"
+                android:textSize="@dimen/tbl_stt_heading"
+                android:typeface="sans"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tbl_stt_img" />
+            <!-- Table Status -->
+            <TextView
+                android:id="@+id/tbl_stt_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_stt_indicator_txt"
+                android:textColor="#909090"
+                android:textSize="20sp"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/list_item_tbl_stt_default"
+            android:id="@+id/reservation_row">
+            <ImageView
+                android:id="@+id/tbl_reserve_img"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="top"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/reserve_status"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/status_img_margin"/>
+
+
+            <!--Table Name-->
+            <TextView
+                android:id="@+id/tbl_reserve_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_reserve_heading_txt"
+                android:textColor="#040404"
+                android:textSize="@dimen/tbl_stt_heading"
+                android:typeface="sans"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tbl_reserve_img"/>
+
+            <ToggleButton
+                android:id="@+id/toggleButton1"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/toggle_selector"
+                android:checked="false"
+                android:text=""
+                android:textOff=""
+                android:textOn=""
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/activity_vertical_margin"/>
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/list_item_tbl_stt"
+            android:id="@+id/order_row">
+            <ImageView
+                android:id="@+id/tbl_order_img"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="top"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/free_status"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/status_img_margin"/>
+
+
+            <!--Table Name-->
+            <TextView
+                android:id="@+id/tbl_order_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_order_heading_txt"
+                android:textColor="#040404"
+                android:textSize="@dimen/tbl_stt_heading"
+                android:typeface="sans"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tbl_order_img"/>
+            <!-- Rightend Arrow -->
+            <ImageView
+                android:id="@+id/tbl_order_right_arrow"
+                android:contentDescription="@string/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/arrow"
+                android:layout_centerVertical="true"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin" />
+            <!-- Table Status -->
+            <TextView
+                android:id="@+id/tbl_order_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_order_indicator_txt"
+                android:textColor="#909090"
+                android:textSize="20sp"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="horizontal" android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/list_item_tbl_stt"
+            android:id="@+id/bill_row">
+            <ImageView
+                android:id="@+id/tbl_bill_img"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_gravity="top"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/free_status"
+                android:layout_centerVertical="true"
+                android:layout_margin="@dimen/status_img_margin"/>
+
+
+            <!--Table Name-->
+            <TextView
+                android:id="@+id/tbl_bill_heading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_bill_heading_txt"
+                android:textColor="#040404"
+                android:textSize="@dimen/tbl_stt_heading"
+                android:typeface="sans"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tbl_bill_img"/>
+            <!-- Rightend Arrow -->
+            <ImageView
+                android:id="@+id/tbl_bill_right_arrow"
+                android:contentDescription="@string/app_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/arrow"
+                android:layout_centerVertical="true"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin" />
+            <!-- Table Status -->
+            <TextView
+                android:id="@+id/tbl_bill_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tbl_bill_indicator_txt"
+                android:textColor="#909090"
+                android:textSize="20sp"
+                android:layout_margin="@dimen/activity_vertical_margin"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@id/tbl_bill_right_arrow"/>
+            </RelativeLayout>
+    </LinearLayout>
+</com.dinogroup.screen.status.StatusView>

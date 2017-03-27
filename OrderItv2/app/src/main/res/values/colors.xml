@@ -6,8 +6,8 @@
   <item name="link_blue" type="color">#1D599E</item>
 
   <item name="primary" type="color">#F7B32D</item>
-  <item name="primary_light" type="color">#f7d083</item>
-  <item name="primary_dark" type="color">#bf8107</item>
+  <item name="primary_light" type="color">#C89025</item>
+  <item name="primary_dark" type="color">#f8ad19</item>
 
   <item name="accent" type="color">#03a9f4</item>
   <item name="accent_light" type="color">#81D4FA</item>
@@ -23,4 +23,10 @@
   <color name="windowBackground">#FFFFFF</color>
   <color name="navigationBarColor">#000000</color>
   <color name="colorAccent">#c8e8ff</color>
+
+  <color name="colorOfLoginBackground">#C89025</color>
+  <color name="colorWhite">#FFFFFF</color>
+  <color name="colorLoginFrame">#000000</color>
+  <color name="colorInfoBar">#E0E0E0</color>
+  <color name="colorActionBar">#1DE9B6</color>
 </resources>

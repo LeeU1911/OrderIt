@@ -17,4 +17,34 @@
   <string name="cancel">Cancel</string>
   <string name="register_btn">Register</string>
   <string name="login_btn">Login</string>
+  <string name="txt_search_hint">Search</string>
+
+  <string name="table_name_exp">Table 1</string>
+  <string name="table_stat_exp">Ordering</string>
+  <string name="order_name_exp">Sapporo</string>
+  <string name="order_time_exp">10m</string>
+  <string name="order_quantity_exp">x2</string>
+  <string name="order_price_exp">20.000</string>
+
+  <string name="table_status_available">Available</string>
+  <string name="table_status_not_available">Not Available</string>
+  <string name="table_status_starter">Starter</string>
+  <string name="table_status_main">Mains</string>
+  <string name="table_status_dessert">Dessert</string>
+  <string name="table_status_drink">Drinks</string>
+
+  <string name="order_category_starter">Starter</string>
+  <string name="order_category_main">Mains</string>
+  <string name="order_category_dessert">Dessert</string>
+  <string name="order_category_drink">Drinks</string>
+  <string name="order_category_recent">Recent</string>
+  <string name="order_category_favorite">Top Ranking</string>
+
+  <string name="tbl_stt_heading_txt">Status</string>
+  <string name="tbl_stt_indicator_txt">Occupied</string>
+  <string name="tbl_order_heading_txt">Order</string>
+  <string name="tbl_order_indicator_txt">Not Started</string>
+  <string name="tbl_bill_indicator_txt">$0</string>
+  <string name="tbl_bill_heading_txt">Bill</string>
+  <string name="tbl_reserve_heading_txt">Reservation</string>
 </resources>

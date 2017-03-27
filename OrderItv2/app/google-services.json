@@ -1,27 +1,35 @@
 {
   "project_info": {
-    "project_number": "784106592734",
-    "firebase_url": "https://orderit-3e188.firebaseio.com",
-    "project_id": "orderit-3e188",
-    "storage_bucket": "orderit-3e188.appspot.com"
+    "project_number": "1051069764903",
+    "firebase_url": "https://orderitv2.firebaseio.com",
+    "project_id": "orderitv2",
+    "storage_bucket": "orderitv2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:784106592734:android:402d2d75c69a84b3",
+        "mobilesdk_app_id": "1:1051069764903:android:abab571030557933",
         "android_client_info": {
-          "package_name": "com.dinogroup"
+          "package_name": "com.dinogroup.test"
         }
       },
       "oauth_client": [
         {
-          "client_id": "784106592734-r8054rtor56b564chbd4ganafrodh76a.apps.googleusercontent.com",
+          "client_id": "1051069764903-9pgpa877g2fmco10oj89r89imii25vu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dinogroup.test",
+            "certificate_hash": "4cd1a1ee52fea197163282154da7bbdc919c31a9"
+          }
+        },
+        {
+          "client_id": "1051069764903-7bao5l0917071ffol6mv5bjh0dslf7fl.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyChoqY_LbAwcFz4HVq05iEQ1WhHVBULqyc"
+          "current_key": "AIzaSyCUp37D8u0iqiYUSdb-VrBbyMoS81-1BlI"
         }
       ],
       "services": {
@@ -29,8 +37,57 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051069764903-7bao5l0917071ffol6mv5bjh0dslf7fl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051069764903:android:402d2d75c69a84b3",
+        "android_client_info": {
+          "package_name": "com.dinogroup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051069764903-2g6uje034i7t7pgeui7n1kjcfn53qb9a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dinogroup",
+            "certificate_hash": "4cd1a1ee52fea197163282154da7bbdc919c31a9"
+          }
+        },
+        {
+          "client_id": "1051069764903-7bao5l0917071ffol6mv5bjh0dslf7fl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUp37D8u0iqiYUSdb-VrBbyMoS81-1BlI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051069764903-7bao5l0917071ffol6mv5bjh0dslf7fl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
