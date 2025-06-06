@@ -13,3 +13,5 @@ OrderIt/app/build.gradle
 /OrderIt/app/build/
 /OrderIt/build/
 /OrderIt/app/app.iml
+
+kitchen-module/.env
