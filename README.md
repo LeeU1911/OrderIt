@@ -15,7 +15,7 @@ At OrderIt, we aims to streamline ordering process for business owners so they c
 
 ### Android application
 
-The Android source lives in the `OrderIt` folder. Open the project with Android Studio (4.1 or newer) and let Gradle download the dependencies.
+The Android source lives in the `OrderIt` folder. Open the project with Android Studio Giraffe (or newer) and let Gradle download the dependencies.
 
 ### Kitchen module
 
