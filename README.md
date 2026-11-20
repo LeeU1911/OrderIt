@@ -13,6 +13,18 @@ At OrderIt, we aims to streamline ordering process for business owners so they c
 
 ## Getting started
 
+### Modern Web App & Backend (`orderit-web`)
+
+A complete, self-contained mobile-first web application and Express/SQLite backend (Waiter POS, FIFO Kitchen Display System, Customer QR Self-Order, and Manager Console with bilingual Tiếng Việt / English support) lives in [`orderit-web`](orderit-web/):
+
+```bash
+cd orderit-web
+npm install
+npm run dev   # http://localhost:3001
+```
+
+See [`orderit-web/README.md`](orderit-web/README.md) for demo accounts and test instructions (`npm test`).
+
 ### Android application
 
 The Android source lives in the `OrderIt` folder. Open the project with Android Studio Giraffe (or newer) and let Gradle download the dependencies.

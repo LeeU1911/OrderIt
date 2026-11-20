@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>OrderIt</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="toast-container"></div>
+
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" class="view-overlay active">
+    <div class="login-bg" style="background-image: url('assets/login-bg.jpg');"></div>
+    <div class="login-modal">
+      <button type="button" id="login-lang-btn" class="lang-toggle-btn btn-secondary btn-small" style="position: absolute; top: 16px; right: 16px;">🇻🇳 VI</button>
+      <img src="assets/nsr-app_icon.png" alt="OrderIt Logo" class="login-logo" />
+      <h2 data-i18n="Welcome to OrderIt">Welcome to OrderIt</h2>
+      <form id="login-form">
+        <input type="text" id="login-username" data-i18n-placeholder="Username" placeholder="Username" autocomplete="username" />
+        <input type="password" id="login-password" data-i18n-placeholder="Password" placeholder="Password" autocomplete="current-password" />
+        <button type="submit" class="btn-primary" data-i18n="Sign In">Sign In</button>
+      </form>
+      <div class="demo-buttons">
+        <p data-i18n="Or use 1-Click Demo Access:">Or use 1-Click Demo Access:</p>
+        <button type="button" class="btn-demo" data-role="waiter" data-user="staff1" data-i18n="Waiter (staff1)">Waiter (staff1)</button>
+        <button type="button" class="btn-demo" data-role="kitchen" data-user="kitchen1" data-i18n="Kitchen (kitchen1)">Kitchen (kitchen1)</button>
+        <button type="button" class="btn-demo" data-role="manager" data-user="manager1" data-i18n="Manager (manager1)">Manager (manager1)</button>
+        <button type="button" class="btn-demo" data-role="customer" data-i18n="Guest Self-Order">Guest Self-Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP CONTAINER -->
+  <div id="app-container" style="display: none;">
+    
+    <!-- TOP HEADER -->
+    <header id="top-header">
+      <div class="header-left">
+        <img src="assets/nsr-app_icon.png" alt="Logo" class="header-logo" />
+        <h1>OrderIt!</h1>
+        <div id="sse-badge" class="badge-live" data-i18n="● Live">● Live</div>
+        <button id="toggle-audio-btn" class="btn-icon" title="Toggle Audio Chime">🔔</button>
+      </div>
+      
+      <nav class="header-nav">
+        <button class="nav-tab active" data-view="waiter" data-i18n="Tables & POS">Tables & POS</button>
+        <button class="nav-tab" data-view="kitchen"><span data-i18n="Kitchen">Kitchen</span> <span class="badge" id="kds-badge">0</span></button>
+        <button class="nav-tab" data-view="customer" data-i18n="Customer QR">Customer QR</button>
+        <button class="nav-tab" data-view="manager" data-i18n="Manager">Manager</button>
+      </nav>
+
+      <div class="header-right">
+        <span id="current-user-display" class="hide-mobile"></span>
+        <button type="button" id="header-lang-btn" class="lang-toggle-btn btn-secondary btn-small">🇻🇳 VI</button>
+        <button id="logout-btn" class="btn-secondary btn-small" data-i18n="Switch Role">Switch Role</button>
+      </div>
+    </header>
+
+    <!-- MOBILE BOTTOM NAV -->
+    <nav id="bottom-nav">
+      <button type="button" class="bottom-tab active" data-view="waiter"><span class="bottom-tab-icon">🍽</span><span data-i18n="Tables">Tables</span></button>
+      <button type="button" class="bottom-tab" data-view="kitchen"><span class="bottom-tab-icon">👨‍🍳<span class="badge" id="kds-badge-mobile">0</span></span><span data-i18n="Kitchen">Kitchen</span></button>
+      <button type="button" class="bottom-tab" data-view="customer"><span class="bottom-tab-icon">📱</span><span data-i18n="QR Menu">QR Menu</span></button>
+      <button type="button" class="bottom-tab" data-view="manager"><span class="bottom-tab-icon">📊</span><span data-i18n="Manager">Manager</span></button>
+    </nav>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content">
+      
+      <!-- WAITER VIEW -->
+      <section id="view-waiter" class="view active">
+        <div class="waiter-layout" id="waiter-layout">
+          <div class="waiter-sidebar">
+            <div class="sidebar-header">
+              <input type="text" id="table-search" data-i18n-placeholder="Search tables..." placeholder="Search tables..." />
+              <div class="filter-chips" id="table-filters">
+                <button class="chip active" data-filter="all" data-i18n="All">All</button>
+                <button class="chip" data-filter="available" data-i18n="Available">Available</button>
+                <button class="chip" data-filter="occupied" data-i18n="Occupied">Occupied</button>
+                <button class="chip" data-filter="bill" data-i18n="Bill Req">Bill Req</button>
+              </div>
+            </div>
+            <div class="table-grid" id="table-grid"></div>
+          </div>
+          
+          <div class="waiter-workspace" id="waiter-workspace">
+            <div class="empty-workspace" id="empty-workspace" data-i18n="Select a table to begin">
+              Select a table to begin
+            </div>
+            
+            <div class="active-workspace" id="active-workspace" style="display: none;">
+              <!-- Table Status Bar -->
+              <div class="workspace-header">
+                <div style="display:flex; align-items:center; gap: 8px;">
+                  <button id="ws-back-btn" class="btn-secondary ws-back-btn" data-i18n="← Tables">← Tables</button>
+                  <h2 id="ws-table-name">Table 1</h2>
+                </div>
+                <div class="ws-controls">
+                  <button id="ws-status-toggle" class="btn-toggle btn-secondary" data-i18n="Free">Free</button>
+                  <div class="stepper">
+                    <button id="ws-guests-minus">−</button>
+                    <span id="ws-guests-count">2</span>
+                    <button id="ws-guests-plus">+</button>
+                  </div>
+                  <label class="toggle-label"><input type="checkbox" id="ws-reserved-toggle"> <span data-i18n="Rsv">Rsv</span></label>
+                  <div class="stage-pills" id="ws-stage-pills">
+                    <button class="pill" data-stage="available" data-i18n="Avail">Avail</button>
+                    <button class="pill" data-stage="starter" data-i18n="Start">Start</button>
+                    <button class="pill" data-stage="mains" data-i18n="Main">Main</button>
+                    <button class="pill" data-stage="dessert" data-i18n="Dess">Dess</button>
+                    <button class="pill" data-stage="bill" data-i18n="Bill">Bill</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sub-tabs -->
+              <div class="ws-tabs">
+                <button class="ws-tab active" data-tab="order-menu" data-i18n="Order Menu">Order Menu</button>
+                <button class="ws-tab" data-tab="live-bill" data-i18n="Live Bill">Live Bill</button>
+                <button class="ws-tab" data-tab="table-tickets" data-i18n="Tickets">Tickets</button>
+              </div>
+
+              <!-- Order Menu Tab -->
+              <div class="ws-tab-content active" id="tab-order-menu">
+                <div class="menu-layout">
+                  <div class="menu-main">
+                    <div class="menu-filters" id="ws-menu-categories"></div>
+                    <div class="menu-search-bar">
+                      <input type="text" id="menu-search" data-i18n-placeholder="Search menu..." placeholder="Search menu..." />
+                    </div>
+                    <div class="menu-grid" id="ws-menu-grid"></div>
+                  </div>
+                  <div class="cart-panel" id="ws-cart-panel">
+                    <div class="cart-header">
+                      <h3 data-i18n="Cart">Cart</h3>
+                      <button id="ws-close-cart-btn" class="btn-icon hide-desktop">×</button>
+                    </div>
+                    <div class="cart-items" id="ws-cart-items"></div>
+                    <div class="cart-footer">
+                      <div class="cart-summary">
+                        <span><span data-i18n="Est. Prep:">Est. Prep:</span> <strong id="ws-cart-prep">0m</strong></span>
+                      </div>
+                      <input type="text" id="ws-cart-note" data-i18n-placeholder="Order note (optional)" placeholder="Order note (optional)" />
+                      <button id="ws-send-order-btn" class="btn-primary w-100" data-i18n="Send to Kitchen">Send to Kitchen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Bill Tab -->
+              <div class="ws-tab-content" id="tab-live-bill">
+                <div class="bill-panel">
+                  <div class="bill-items" id="ws-bill-items"></div>
+                  <div class="bill-summary">
+                    <div class="bill-row"><span data-i18n="Subtotal:">Subtotal:</span> <span id="ws-bill-subtotal">0 ₫</span></div>
+                    <div class="bill-row">
+                      <span data-i18n="Tax %:">Tax %:</span> 
+                      <input type="number" id="ws-bill-tax" min="0" max="100" value="0" />
+                    </div>
+                    <div class="bill-row">
+                      <span data-i18n="Discount %:">Discount %:</span> 
+                      <input type="number" id="ws-bill-discount" min="0" max="100" value="0" />
+                    </div>
+                    <div class="bill-row grand-total"><span data-i18n="Grand Total:">Grand Total:</span> <strong id="ws-bill-total">0 ₫</strong></div>
+                    <div class="bill-actions">
+                      <label class="toggle-label"><input type="checkbox" id="ws-bill-req-toggle"> <span data-i18n="Request Bill">Request Bill</span></label>
+                      <button id="ws-pay-btn" class="btn-amber w-100" data-i18n="Finish & Pay">Finish & Pay</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Table Tickets Tab -->
+              <div class="ws-tab-content" id="tab-table-tickets">
+                <div class="table-tickets-list" id="ws-table-tickets-list"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- KITCHEN VIEW -->
+      <section id="view-kitchen" class="view">
+        <div class="kds-header">
+          <div class="kds-filters">
+            <select id="kds-station-filter">
+              <option value="" data-i18n="All Stations">All Stations</option>
+              <option value="kitchen" data-i18n="Kitchen (Food)">Kitchen (Food)</option>
+              <option value="bar" data-i18n="Bar (Drinks)">Bar (Drinks)</option>
+            </select>
+          </div>
+          <div class="kds-banner" data-i18n="⚠️ First-Come, First-Served (FIFO). Prepare in sequence.">
+            ⚠️ <strong>First-Come, First-Served (FIFO)</strong>. Prepare in sequence.
+          </div>
+        </div>
+        <div class="kds-grid" id="kds-grid"></div>
+      </section>
+
+      <!-- CUSTOMER VIEW -->
+      <section id="view-customer" class="view">
+        <div class="customer-layout">
+          <div class="customer-header">
+            <h2 data-i18n="Welcome!">Welcome!</h2>
+            <select id="customer-table-select">
+              <option value="" data-i18n="Select Table...">Select Table...</option>
+            </select>
+          </div>
+          <div id="customer-main" style="display: none;">
+            <div class="customer-tracker" id="customer-tracker" style="display: none;">
+              <h3 data-i18n="Your Order Status">Your Order Status</h3>
+              <div class="tracker-status" id="customer-tracker-status">Preparing</div>
+              <div class="tracker-eta"><span data-i18n="ETA:">ETA:</span> <strong id="customer-tracker-eta">0m</strong></div>
+            </div>
+            
+            <div class="menu-layout">
+              <div class="menu-main">
+                <div class="menu-filters" id="customer-menu-categories"></div>
+                <div class="menu-search-bar">
+                  <input type="text" id="customer-menu-search" data-i18n-placeholder="Search menu..." placeholder="Search menu..." />
+                </div>
+                <div class="menu-grid" id="customer-menu-grid"></div>
+              </div>
+              <div class="cart-panel" id="customer-cart-panel">
+                <div class="cart-header">
+                  <h3 data-i18n="Your Cart">Your Cart</h3>
+                  <button id="customer-close-cart-btn" class="btn-icon hide-desktop">×</button>
+                </div>
+                <div class="cart-items" id="customer-cart-items"></div>
+                <div class="cart-footer">
+                  <button id="customer-send-order-btn" class="btn-primary w-100" disabled data-i18n="Place Order">Place Order</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MANAGER VIEW -->
+      <section id="view-manager" class="view">
+        <div class="manager-layout">
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <h4 data-i18n="Today's Revenue">Today's Revenue</h4>
+              <div class="kpi-value" id="kpi-revenue">0 ₫</div>
+            </div>
+            <div class="kpi-card">
+              <h4 data-i18n="Paid Orders">Paid Orders</h4>
+              <div class="kpi-value" id="kpi-paid-orders">0</div>
+            </div>
+            <div class="kpi-card">
+              <h4 data-i18n="Active Orders">Active Orders</h4>
+              <div class="kpi-value" id="kpi-active-orders">0</div>
+            </div>
+            <div class="kpi-card">
+              <h4 data-i18n="Avg Prep Time">Avg Prep Time</h4>
+              <div class="kpi-value" id="kpi-avg-prep">0m</div>
+            </div>
+          </div>
+          
+          <div class="manager-content">
+            <div class="manager-panel">
+              <h3 data-i18n="Top Ranking Items">Top Ranking Items</h3>
+              <div class="ranking-list" id="manager-ranking-list"></div>
+            </div>
+            
+            <div class="manager-panel flex-2">
+              <div class="panel-header">
+                <h3 data-i18n="Menu Management">Menu Management</h3>
+                <button id="btn-add-menu-item" class="btn-secondary btn-small" data-i18n="+ Add Item">+ Add Item</button>
+              </div>
+              <div class="table-responsive">
+                <table class="manager-table">
+                  <thead>
+                    <tr>
+                      <th data-i18n="Name">Name</th>
+                      <th data-i18n="Category">Category</th>
+                      <th data-i18n="Price">Price</th>
+                      <th data-i18n="Prep (m)">Prep (m)</th>
+                      <th data-i18n="In Stock">In Stock</th>
+                      <th data-i18n="Actions">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="manager-menu-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="manager-panel">
+              <div class="panel-header">
+                <h3 data-i18n="Table Management">Table Management</h3>
+                <button id="btn-add-table" class="btn-secondary btn-small" data-i18n="+ Add Table">+ Add Table</button>
+              </div>
+              <div class="table-responsive">
+                  <table class="manager-table">
+                    <thead>
+                      <tr>
+                        <th data-i18n="Table">Table</th>
+                        <th data-i18n="Status">Status</th>
+                        <th data-i18n="Actions">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="manager-tables-tbody"></tbody>
+                  </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- CART DRAWER BACKDROP (Mobile/Tablet) -->
+    <div id="cart-backdrop" class="cart-backdrop"></div>
+
+    <!-- MOBILE CART BAR -->
+    <div id="mobile-cart-bar" style="display:none;">
+      <div class="mobile-cart-info">
+        <span id="mobile-cart-badge">0</span> <span data-i18n="items">items</span> • <strong id="mobile-cart-total">0 ₫</strong>
+      </div>
+      <button type="button" id="mobile-cart-btn" class="btn-primary" data-i18n="View Cart">View Cart</button>
+    </div>
+  </div>
+
+  <!-- MODALS -->
+
+  <!-- Quantity & Modifier Modal -->
+  <div id="modal-item" class="modal-overlay">
+    <div class="modal-content">
+      <h3 id="modal-item-name">Item Name</h3>
+      <div class="modal-quantity-row">
+        <button id="modal-qty-minus" class="btn-qty btn-red">−</button>
+        <span id="modal-qty-val" class="qty-val">1</span>
+        <button id="modal-qty-plus" class="btn-qty btn-green">+</button>
+      </div>
+      <div class="modal-modifiers" id="modal-modifiers">
+        <!-- Quick modifier chips -->
+        <button class="chip mod-chip" data-i18n="Less ice">Ít đá</button>
+        <button class="chip mod-chip" data-i18n="Less sugar">Ít đường</button>
+        <button class="chip mod-chip" data-i18n="+ Yogurt">+ Sữa chua</button>
+        <button class="chip mod-chip" data-i18n="No onion">Không hành</button>
+      </div>
+      <textarea id="modal-item-note" data-i18n-placeholder="Custom kitchen note..." placeholder="Custom kitchen note..."></textarea>
+      <div class="modal-actions">
+        <button id="modal-item-cancel" class="btn-secondary" data-i18n="Cancel">Cancel</button>
+        <button id="modal-item-confirm" class="btn-primary" data-i18n="Confirm">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FIFO Violation Modal -->
+  <div id="modal-fifo" class="modal-overlay">
+    <div class="modal-content modal-warning">
+      <h3 data-i18n="⚠️ FIFO Violation">⚠️ FIFO Violation</h3>
+      <p data-i18n="There are earlier tickets waiting!">There are earlier tickets waiting!</p>
+      <ul id="fifo-earlier-list" class="fifo-list"></ul>
+      <div class="modal-actions">
+        <button id="fifo-cancel" class="btn-secondary" data-i18n="Go to Earliest">Go to Earliest</button>
+        <button id="fifo-override" class="btn-red" data-i18n="Override & Start">Override & Start</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Menu Item Modal -->
+  <div id="modal-menu-form" class="modal-overlay">
+    <div class="modal-content">
+      <h3 data-i18n="Add Menu Item">Add Menu Item</h3>
+      <form id="form-add-menu">
+        <input type="text" id="add-menu-name" data-i18n-placeholder="Name" placeholder="Name" required />
+        <select id="add-menu-category" required></select>
+        <input type="number" id="add-menu-price" data-i18n-placeholder="Price (₫)" placeholder="Price (₫)" required />
+        <input type="number" id="add-menu-prep" data-i18n-placeholder="Prep Time (mins)" placeholder="Prep Time (mins)" required />
+        <select id="add-menu-station" required>
+          <option value="kitchen" data-i18n="Kitchen">Kitchen</option>
+          <option value="bar" data-i18n="Bar">Bar</option>
+        </select>
+        <div class="modal-actions mt-2">
+          <button type="button" id="modal-menu-cancel" class="btn-secondary" data-i18n="Cancel">Cancel</button>
+          <button type="submit" class="btn-primary" data-i18n="Save">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Table Modal -->
+  <div id="modal-table-form" class="modal-overlay">
+    <div class="modal-content">
+      <h3 data-i18n="Add Table">Add Table</h3>
+      <form id="form-add-table">
+        <input type="text" id="add-table-name" data-i18n-placeholder="Table Name (e.g. Table 11)" placeholder="Table Name (e.g. Table 11)" required />
+        <div class="modal-actions mt-2">
+          <button type="button" id="modal-table-cancel" class="btn-secondary" data-i18n="Cancel">Cancel</button>
+          <button type="submit" class="btn-primary" data-i18n="Save">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
